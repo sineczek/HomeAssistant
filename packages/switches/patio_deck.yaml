@@ -1,0 +1,11 @@
+switch:
+  - platform: mqtt
+    name: "Taras Podest"
+    state_topic: "taraspodest/stat/STATE"
+    command_topic: "taraspodest/cmnd/POWER"
+    availability_topic: "taraspodest/tele/LTW"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true

@@ -1,0 +1,4 @@
+device_tracker:
+  - platform: tractive
+    username: !secret tractivel
+    password: !secret tractivep

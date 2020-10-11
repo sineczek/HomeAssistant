@@ -1,0 +1,7 @@
+weather:
+  - platform: darksky
+    api_key: !secret darkapi
+    latitude: !secret lat
+    longitude: !secret long
+    name: Stacja pogodowa DarkSky
+    mode: daily

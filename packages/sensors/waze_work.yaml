@@ -1,0 +1,7 @@
+sensor:
+  - platform: waze_travel_time
+    name: Droga do pracy
+    origin: !secret waze_orgin
+    destination: !secret waze_praca
+    region: "EU"
+    vehicle_type: car

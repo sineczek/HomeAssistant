@@ -1,0 +1,8 @@
+media_player:
+  - platform: philips_android_tv
+    name: Philips_TV
+    host: 192.168.4.25
+    mac: 70:af:24:bc:a2:0a
+    username: ZrNPz9P7pP3ZsRlY
+    password: 877c2e75e7a03223fb9f097d4cc4ebfb7f8169ed736ab0ef036e2a566bbadaee
+    favorite_channels_only: false

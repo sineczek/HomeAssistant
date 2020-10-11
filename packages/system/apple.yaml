@@ -1,0 +1,13 @@
+icloud:
+  - username: !secret icloudl
+    password: !secret icloudp
+
+ios:
+
+homekit:
+  auto_start: false
+  filter:
+    exclude_domains:
+      - automation
+      - input_boolean
+      - script

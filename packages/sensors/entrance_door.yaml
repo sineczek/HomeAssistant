@@ -1,0 +1,17 @@
+sensor:
+  - platform: template
+    sensors:
+      door_entrance:
+        friendly_name: Drzwi wejściowe
+        value_template: >
+          {% if is_state("sensor.sensative_strips_access_control", "22") %}
+          otwarte
+          {% else %}
+          zamknięte
+          {% endif %}
+        icon_template: >-
+          {% if is_state("sensor.sensative_strips_access_control", "22") %}
+            mdi:door-open
+          {% else %}
+            mdi:door-closed
+          {% endif %}

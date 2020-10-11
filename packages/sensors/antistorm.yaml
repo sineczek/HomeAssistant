@@ -1,0 +1,8 @@
+sensor:
+  - platform: antistorm
+    station_id: !secret antistorm_id
+    monitored_conditions:
+      - "storm_probability"
+      - "storm_time"
+      - "rain_probability"
+      - "rain_time"

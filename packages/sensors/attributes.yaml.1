@@ -1,0 +1,13 @@
+sensor:
+  - platform: attributes
+    friendly_name: "atrybuty ostrzeżeń"
+    attribute: description
+    icon: "mdi:weather-lightning"
+    entities:
+      - binary_sensor.burze_dzis_net_storm_warning
+      - binary_sensor.burze_dzis_net_heat_warning
+      - binary_sensor.burze_dzis_net_precipitation_warning
+      - binary_sensor.burze_dzis_net_frost_warning
+      - binary_sensor.burze_dzis_net_storms_nearby
+      - binary_sensor.burze_dzis_net_tornado_warning
+      - binary_sensor.burze_dzis_net_wind_warning

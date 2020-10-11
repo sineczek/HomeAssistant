@@ -1,0 +1,12 @@
+sensor:
+  - platform: mqtt
+    name: "Temperatura na strychu"
+    state_topic: "smogpole/tele/SENSOR"
+    value_template: "{{ value_json['DHT11'].Temperature }}"
+    unit_of_measurement: "°C"
+
+  - platform: mqtt
+    name: "Wilgotność na strychu"
+    state_topic: "smogpole/tele/SENSOR"
+    value_template: "{{ value_json['DHT11'].Humidity }}"
+    unit_of_measurement: "%"

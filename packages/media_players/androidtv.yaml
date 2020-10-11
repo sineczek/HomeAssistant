@@ -1,0 +1,4 @@
+media_player:
+  - platform: androidtv
+    name: Philips Android TV
+    host: 192.168.4.25

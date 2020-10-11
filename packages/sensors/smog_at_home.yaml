@@ -1,0 +1,18 @@
+sensor:
+  - platform: mqtt
+    name: "Ciśnienie Nad Poziom Morza"
+    state_topic: "smogpole/tele/SENSOR"
+    unit_of_measurement: "hPa"
+    value_template: "{{ value_json.BME280['SeaPressure'] }}"
+
+  - platform: mqtt
+    name: "Pyły PM 2.5"
+    state_topic: "smogpole/tele/SENSOR"
+    unit_of_measurement: "ug/m3"
+    value_template: "{{ value_json['SDS0X1']['PM2.5'] }}"
+
+  - platform: mqtt
+    name: "Pyły PM 10"
+    state_topic: "smogpole/tele/SENSOR"
+    unit_of_measurement: "ug/m3"
+    value_template: "{{ value_json['SDS0X1'].PM10 }}"

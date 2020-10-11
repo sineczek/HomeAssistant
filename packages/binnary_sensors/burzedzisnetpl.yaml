@@ -1,0 +1,14 @@
+binary_sensor:
+  - platform: burze_dzis_net
+    api_key: !secret api_burze_dzis_net
+    latitude: !secret lat
+    longitude: !secret long
+    warnings:
+      - frost_warning
+      - heat_warning
+      - wind_warning
+      - precipitation_warning
+      - storm_warning
+      - tornado_warning
+    storms_nearby:
+      radius: 30

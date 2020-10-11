@@ -1,0 +1,48 @@
+sensor antistorm:
+  - platform: rest
+    resource: !secret antistorm_url
+    name: "Czas do burzy"
+    value_template: >
+      {% if value_json.t_b == 255 %}
+          Brak info
+      {% else %}
+          {{ ((value_json.t_b)) }}
+      {% endif %}
+    unit_of_measurement: "min"
+  - platform: rest
+    resource: !secret antistorm_url
+    name: "Prawdopodobieństwo burzy"
+    value_template: >
+      {% if value_json.p_b < 10 %}
+          Brak/małe
+      {% elif ((value_json.p_b >= 10) and (value_json.p_b < 30)) %}
+          Średnie
+      {% elif ((value_json.p_b >= 30) and (value_json.p_b < 50)) %}
+          Duże
+      {% elif value_json.p_b > 50 %}
+          Bardzo duże
+      {% endif %}
+  - platform: rest
+    resource: !secret antistorm_url
+    name: "Prawdopodobieństwo opadów"
+    value_template: >
+      {% if value_json.p_o < 10 %}
+          Brak/małe
+      {% elif ((value_json.p_o >= 10) and (value_json.p_o < 30)) %}
+          Średnie
+      {% elif ((value_json.p_o >= 30) and (value_json.p_o < 50)) %}
+          Duże
+      {% elif value_json.p_o > 50 %}
+          Bardzo duże
+      {% endif %}
+  - platform: rest
+    resource: !secret antistorm_url
+    name: "Czas do opadów"
+    value_template: >
+      {% if value_json.t_o == 255 %}
+          Brak info
+      {% else %}
+          {{ ((value_json.t_o)) }}
+      {% endif %}
+
+    unit_of_measurement: "min"

@@ -1,0 +1,59 @@
+
+homeassistant:
+  name: Centrum dowodzenia
+  latitude: !secret lat
+  longitude: !secret long
+  elevation: 431
+  unit_system: metric
+  time_zone: Europe/Warsaw
+  customize: !include customize.yaml
+  packages: !include_dir_named packages
+
+breaking_changes:
+
+panel_iframe:
+  tasmoadmin:
+    title: TasmoAdmin
+    icon: mdi:lightbulb-on
+    url: !secret tasmo_url
+  vscode:
+    title: VSCode
+    url: !secret vscode_url
+    icon: mdi:bug
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+system_health:
+
+config:
+
+mobile_app:
+
+http:
+
+updater:
+  include_used_components: true
+
+conversation:
+
+map:
+
+sun:
+
+cloud:
+
+logger:
+  default: info
+
+discovery:
+  enable:
+    - homekit
+
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml

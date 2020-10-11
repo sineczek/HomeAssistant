@@ -1,0 +1,7 @@
+binary_sensor:
+  - platform: mqtt
+    name: "Woda w Piwnicy"
+    state_topic: "tele/sonoff/RESULT"
+    value_template: "{{value_json.RfReceived.Data}}"
+    payload_on: "DA4DA9"
+    device_class: Moisture

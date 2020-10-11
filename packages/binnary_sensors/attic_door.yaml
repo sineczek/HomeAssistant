@@ -1,0 +1,7 @@
+binary_sensor:
+  - platform: mqtt
+    name: "Drzwi na strych"
+    state_topic: "smogpole/stat/POWER"
+    payload_on: "OFF"
+    payload_off: "ON"
+    device_class: door

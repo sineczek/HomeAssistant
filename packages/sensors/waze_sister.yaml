@@ -1,0 +1,7 @@
+sensor:
+  - platform: waze_travel_time
+    name: Droga do siostry Perkoza
+    origin: !secret waze_orgin
+    destination: !secret waze_sis2
+    region: "EU"
+    vehicle_type: car

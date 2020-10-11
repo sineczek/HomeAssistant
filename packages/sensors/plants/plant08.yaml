@@ -1,0 +1,16 @@
+plant:
+  Kwiatek8:
+    sensors:
+      moisture: sensor.miflora_kwiatek8_moisture
+      battery: sensor.miflora_kwiatek8_battery
+      temperature: sensor.miflora_kwiatek8_temperature
+      conductivity: sensor.miflora_kwiatek8_conductivity
+      brightness: sensor.miflora_kwiatek8_light
+    min_moisture: 17
+    max_moisture: 60
+    min_conductivity: 350
+    max_conductivity: 2000
+    max_brightness: 60000
+    min_temperature: 5
+    max_temperature: 35
+    min_battery: 17

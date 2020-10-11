@@ -1,0 +1,11 @@
+switch:
+  - platform: mqtt
+    name: "Taras Góra LED"
+    state_topic: "tasmota_taras_gora/stat/POWER"
+    command_topic: "stasmota_taras_gora/cmnd/POWER"
+    availability_topic: "tasmota_taras_gora/tele/LTW"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false

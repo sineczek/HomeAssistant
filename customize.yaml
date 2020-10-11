@@ -1,0 +1,212 @@
+#kwiatki
+plant.Kwiatek1:
+  friendly_name: Dendrobium Nobile (Dzienny)
+  entity_picture: /local/DendrobiumNobile.jpg
+
+plant.Kwiatek2:
+  friendly_name: Fuchsia Fulgens (Ganek)
+  entity_picture: /local/FuchsiaFulgens.jpg
+    
+plant.Kwiatek3:
+  friendly_name: Rosa Multiflora (Przy bramce)
+  entity_picture: /local/RosaMultiflora.jpg
+
+plant.Kwiatek4:
+  friendly_name: Phalaenopsis Andorra (Dzienny)
+  entity_picture: /local/PhalaenopsisAndorra.jpg
+
+plant.Kwiatek5:
+  friendly_name: Viola Alpina (Dzienny)
+  entity_picture: /local/ViolaAlpina.jpg
+
+plant.Kwiatek6:
+  friendly_name: Prunus Triloba (Przed domem)
+  entity_picture: /local/PrunusTriloba.jpg
+
+plant.Kwiatek7:
+  friendly_name: Rosa Gloria Dei (Podjazd)
+  entity_picture: /local/RosaGloriaDei.jpg
+
+plant.Kwiatek8:
+  friendly_name: Petunia Opera Supreme (Parapet ganku)
+  entity_picture: /local/PetuniaOperaSupreme.jpg
+  
+plant.Kwiatek9:
+  friendly_name: Yucca Rostrata Tree (Salon)
+  entity_picture: /local/YuccaRostrata.jpg
+
+plant.Kwiatek10:
+  friendly_name: Ficus Benjamina (Salon)
+  entity_picture: /local/FicusBenjamina.jpg  
+
+plant.Kwiatek11:
+  friendly_name: Delphinium Delphis Emetald (Podjazd)
+  entity_picture: /local/DelphiniumDelphisEmerald.jpg
+
+plant.Kwiatek12:
+  friendly_name: Delphinium Aurora (Ogródek za domem)
+  entity_picture: /local/DelphiniumAurora.jpg  
+  
+  
+#sensor.door_entrance:
+#  device_class: door
+#  icon: mdi:door
+#  icon: >
+#    if (state === '22') return 'mdi:door-open';
+#    return 'mdi:door-closed';
+#  icon_color: >
+#    if (state === 'on') return 'rgb(251, 205, 65)';
+#    return 'rgb(36, 224, 129)';
+automation.power_state_on_ha_start_up:
+  hidden: true
+automation.set_theme_at_startup:
+  hidden: true
+group.swiatla:
+  hidden: true
+#light.accf23420ae8_192_168_4_215:
+#  friendly_name: Pasek LED
+#sensor.inovalley_cb01_bat:
+#  friendly_name: Bateria
+#  icon: mdi:battery
+#sensor.inovalley_cb01_hum:
+#  friendly_name: Wilgotność
+#  icon: mdi:water-percent
+#sensor.inovalley_cb01_temp:
+#  friendly_name: Temperatura
+#  icon: mdi:thermometer
+#sensor.ft004t_5f35_temp:
+#  friendly_name: Temperatura przed domem przy ganku
+#  icon: mdi:thermometer
+#sensor.ft004t_5fcb_temp:
+#  friendly_name: Temperatura w ganku
+#  icon: mdi:thermometer
+#switch.sonoffosuszacz:
+#  friendly_name: Osuszacz w pokoju dziennym
+#switch.sonoffsalon:
+#  friendly_name: Kontakt w salonie
+#device_tracker.tvdzienny:
+#  hidden: true
+#switch.neo_coolcam_unknown_type_0200_id_1027_switch:
+#  friendly_name: NeT
+#switch.neo_coolcam_unknown_type_0200_id_1027_switch_2:
+#  friendly_name: Dzienny
+#switch.neo_coolcam_unknown_type_0200_id_1027_switch_3:
+#  friendly_name: Salon
+#switch.neo_coolcam_unknown_type_0200_id_1027_switch_4:
+#  friendly_name: Lodówka
+sensor.sonoffosuszacz_dht11_humidity:
+  friendly_name: Pokój dzienny - Wilgotność
+  icon: mdi:water-percent
+sensor.sonoffosuszacz_dht11_temperature:
+  friendly_name: Pokój dzienny - Temperatura
+  icon: mdi:thermometer
+sensor.sonoffsalon_dht11_humidity:
+  friendly_name: Salon - Wilgotność
+  icon: mdi:water-percent
+sensor.sonoffsalon_dht11_temperature:
+  friendly_name: Salon - Temperatura
+  icon: mdi:thermometer
+sun.sun:
+  hidden: true
+sensor.auriolv3_cb03_hum:
+  hidden: true
+sensor.auriolv3_cb03_temp:
+  hidden: true
+sensor.alectov1_010c_bat:
+  hidden: true
+sensor.alectov1_010c_hum:
+  hidden: true
+sensor.alectov1_010c_temp:
+  hidden: true
+sensor.digitech_0213_bat:
+  hidden: true
+sensor.digitech_0213_temp:
+  hidden: true
+sensor.biowin_00cb_hum:
+  hidden: true
+sensor.biowin_00cb_temp:
+  hidden: true
+sensor.globaltronics_01b0_bat:
+  hidden: true
+sensor.globaltronics_01b0_hum:
+  hidden: true
+sensor.globaltronics_01b0_temp:
+  hidden: true
+sensor.globaltronics_02b8_bat:
+  hidden: true
+sensor.globaltronics_02b8_hum:
+  hidden: true
+sensor.globaltronics_02b8_temp:
+  hidden: true
+sensor.auriolv3_cb01_hum:
+  hidden: true
+sensor.auriolv3_cb01_temp:
+  hidden: true
+sensor.auriolv3_cb02_hum:
+  hidden: true
+sensor.auriolv3_cb02_temp:
+  hidden: true
+sensor.digitech_01d2_bat:
+  hidden: true
+sensor.digitech_01d2_temp:
+  hidden: true
+sensor.digitech_0054_bat:
+  hidden: true
+sensor.digitech_0054_temp:
+  hidden: true
+light.eurodomest_058fc4_03:
+  hidden: true
+light.keeloq_1aac_04:
+  hidden: true
+light.keeloq_1aac_09:
+  hidden: true
+light.tristate_028984_1:
+  hidden: true
+light.ev1527_0cb92d_06:
+  hidden: true
+sensor.auriolv3_cb00_hum:
+  hidden: true
+sensor.auriolv3_cb00_temp:
+  hidden: true
+sensor.mebus_b400_temp:
+  hidden: true
+light.ab400d_42_7:
+  hidden: true
+light.ev1527_0d9275_07:
+  hidden: true
+light.ev1527_08afb1_09:
+  hidden: true
+sensor.bl999_012c_bat:
+  hidden: true
+sensor.bl999_012c_temp:
+  hidden: true
+sensor.globaltronics_00b0_bat:
+  hidden: true
+sensor.globaltronics_00b0_hum:
+  hidden: true
+sensor.globaltronics_00b0_temp:
+  hidden: true
+sensor.i51_bat:
+  hidden: true
+sensor.i51_hum:
+  hidden: true
+sensor.i56_bat:
+  hidden: true
+sensor.i56_hum:
+  hidden: true
+sensor.in7_bat:
+  hidden: true
+sensor.in7_hum:
+  hidden: true
+sensor.ino_bat:
+  hidden: true
+sensor.ino_hum:
+  hidden: true
+sensor.inovalle60_bat:
+  hidden: true
+sensor.inovalley4_bat:
+  hidden: true
+sensor.inovalley_bat:
+  hidden: true
+sensor.sensative_strips_access_control:
+  icon: mdi:door

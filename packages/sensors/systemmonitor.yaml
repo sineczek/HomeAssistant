@@ -1,0 +1,8 @@
+sensor:
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /home
+      - type: memory_free
+      - type: last_boot
+      - type: processor_use

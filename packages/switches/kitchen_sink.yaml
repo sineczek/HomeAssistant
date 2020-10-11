@@ -1,0 +1,11 @@
+switch:
+  - platform: mqtt
+    name: "LEDwKuchni"
+    state_topic: "sonoffledykuchnia/stat/POWER"
+    command_topic: "sonoffledykuchnia/cmnd/POWER"
+    availability_topic: "sonoffledykuchnia/tele/LTW"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false

@@ -1,0 +1,11 @@
+sensor:
+  - platform: unifigateway
+    host: !secret unifi_url
+    username: !secret unifil
+    password: !secret unifip
+    monitored_conditions:
+      - www
+      - wlan
+      - lan
+      - alerts
+      - firmware
