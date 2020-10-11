@@ -1,2 +1,2 @@
 adb_service:
-  host: 192.168.4.21
+  host: !secret adb_ip
