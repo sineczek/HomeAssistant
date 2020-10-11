@@ -1,2 +1,2 @@
-#adb_service:
-#  host: !secret adb_ip
+adb_service:
+  host: !secret adb_ip

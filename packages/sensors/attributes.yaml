@@ -1,32 +1,32 @@
-#sensor:
-#  - platform: attributes
-#    friendly_name: "Atrybuty ostrzeżeń"
-#    attribute: description
-#    icon: "mdi:weather-lightning"
-#    entities:
-#      - binary_sensor.burze_dzis_net_storm_warning
-#      - binary_sensor.burze_dzis_net_heat_warning
-#      - binary_sensor.burze_dzis_net_precipitation_warning
-#      - binary_sensor.burze_dzis_net_frost_warning
-#      - binary_sensor.burze_dzis_net_storms_nearby
-#      - binary_sensor.burze_dzis_net_tornado_warning
-#      - binary_sensor.burze_dzis_net_wind_warning
-#  
-#  - platform: attributes
-#    friendly_name: "Parametry Zwierząt"
-#    icon: mdi:dog
-#    attribute: battery_level
-#    unit_of_measurement: "%"
-#    entities:
-#      - device_tracker.hwuvoilu
-#      - device_tracker.igwpawhd
-#
-#  - platform: attributes
-#    friendly_name: "Parametry Zwierząt"
-#    icon: mdi:dog
-#    attribute: battery
-#    unit_of_measurement: "%"
-#    entities:
-#      - device_tracker.hwuvoilu
-#      - device_tracker.igwpawhd
+sensor:
+  - platform: attributes
+    friendly_name: "Atrybuty ostrzeżeń"
+    attribute: description
+    icon: "mdi:weather-lightning"
+    entities:
+      - binary_sensor.burze_dzis_net_storm_warning
+      - binary_sensor.burze_dzis_net_heat_warning
+      - binary_sensor.burze_dzis_net_precipitation_warning
+      - binary_sensor.burze_dzis_net_frost_warning
+      - binary_sensor.burze_dzis_net_storms_nearby
+      - binary_sensor.burze_dzis_net_tornado_warning
+      - binary_sensor.burze_dzis_net_wind_warning
+  
+  - platform: attributes
+    friendly_name: "Parametry Zwierząt"
+    icon: mdi:dog
+    attribute: battery_level
+    unit_of_measurement: "%"
+    entities:
+      - device_tracker.hwuvoilu
+      - device_tracker.igwpawhd
+
+  - platform: attributes
+    friendly_name: "Parametry Zwierząt"
+    icon: mdi:dog
+    attribute: battery
+    unit_of_measurement: "%"
+    entities:
+      - device_tracker.hwuvoilu
+      - device_tracker.igwpawhd
 
