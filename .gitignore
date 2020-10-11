@@ -35,7 +35,7 @@ tts
 custom_components
 scripts
 secrets.yaml
-travis_secrets.yaml
+!travis_secrets.yaml
 known_devices.yaml
 WIP*.py
 panels
