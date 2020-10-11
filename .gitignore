@@ -50,6 +50,4 @@ debug.log
 .coud
 .storage
 /node-red/*
-!/www/*.md
-!/www/*.jpg
-!/www/*.png
+/www/community
