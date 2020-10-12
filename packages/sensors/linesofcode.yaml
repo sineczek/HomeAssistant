@@ -1,4 +1,4 @@
 sensor:
   - platform: command_line
     name: "Ilość linii kodu YAML"
-    command: " find /config/ -name '*.yaml' | xrgs cat | wc -l"
+    command: " find /config/ -name '*.yaml' | xargs cat | wc -l"

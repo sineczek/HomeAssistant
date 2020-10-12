@@ -50,6 +50,8 @@ debug.log
 .coud
 .storage
 /node-red/*
-/www/community
+!/www/community
+!/www/community/*/*.js
+!/www/community/*/*.js.gz
 !gitupdate.sh
 !.travis.yml
