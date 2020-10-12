@@ -20,8 +20,18 @@ before_install:
   - cd ..
   - git clone https://github.com/custom-components/breaking_changes.git
   - mv breaking_changes/custom_components/breaking_changes/ ./custom_components/
+  - git clone https://github.com/pilotak/homeassistant-attributes.git
+  - mv homeassistant-attributes/custom_components/attributes/ ./custom_components/
+  - git clone https://github.com/Danielhiversen/home_assistant_tractive.git
+  - mv home_assistant_tractive/custom_components/tractive/ ./custom_components/
+  - git clone https://github.com/custom-components/sensor.unifigateway.git
+  - mv sensor.unifigateway/custom_components/unifigateway/ ./custom_components/
+  - git clone https://github.com/nstrelow/ha_philips_android_tv.git
+  - mv ha_philips_android_tv/custom_components/philips_android_tv/ ./custom_components/
+  - git clone https://github.com/mercs600/ha-adb_service.git
+  - mv ha-adb_service/custom_components/adb_service/ ./custom_components/
 
-
+  
 install:
   - pip3 install homeassistant
 
