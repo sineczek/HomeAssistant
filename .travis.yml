@@ -13,8 +13,6 @@ before_install:
 #  - "sudo mkdir -p /config/tmp"
   - sudo apt-get install -y libudev-dev
   - pip install getmac==0.8.1
-install:
-  - pip3 install homeassistant
 #testing
   - git clone https://github.com/jomwells/ambilights.git
   - cd /ambilights
@@ -23,6 +21,10 @@ install:
   - git https://github.com/custom-components/breaking_changes.git
   - cd /breaking_changes
   - mv /custom_components ..
+
+install:
+  - pip3 install homeassistant
+
 
 script:
   - hass --version
