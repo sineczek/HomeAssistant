@@ -31,7 +31,6 @@ before_install:
   - git clone https://github.com/mercs600/ha-adb_service.git
   - mv ha-adb_service/custom_components/adb_service/ ./custom_components/
 
-  
 install:
   - pip3 install homeassistant
 
