@@ -30,6 +30,17 @@ before_install:
   - mv ha_philips_android_tv/custom_components/philips_android_tv/ ./custom_components/
   - git clone https://github.com/mercs600/ha-adb_service.git
   - mv ha-adb_service/custom_components/adb_service/ ./custom_components/
+  - git clone https://github.com/PiotrMachowski/Home-Assistant-custom-components-Burze.dzis.net.git
+  - mv Home-Assistant-custom-components-Burze.dzis.net/custom_components/burze_dzis_net/ ./custom_components/
+  - git clone https://github.com/mrk-its/homeassistant-blitzortung.git
+  - mv homeassistant-blitzortung/custom_components/blitzortung/ ./custom_components/
+  - git clone https://github.com/StyraHem/ShellyForHASS.git
+  - mv ShellyForHASS/custom_components/shelly/ ./custom_components/
+  - git clone https://github.com/bieniu/ha-airly.git
+  - mv ha-airly/custom_components/airly/ ./custom_components/
+
+
+
 
 install:
   - pip3 install homeassistant
