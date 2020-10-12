@@ -1,0 +1,4 @@
+sensor:
+  - platform: travisci
+    api_key: !secret travis_api
+    repository: sineczek/HomeAssistant 
