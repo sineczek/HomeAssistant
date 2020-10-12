@@ -16,11 +16,11 @@ before_install:
 #testing
   - git clone https://github.com/jomwells/ambilights.git
   - cd ambilights/
-  - mv /custom_components ..
+  - mv custom_components/ ..
   - cd ..
   - git https://github.com/custom-components/breaking_changes.git
   - cd breaking_changes/
-  - mv /custom_components ..
+  - mv custom_components/ ..
 
 install:
   - pip3 install homeassistant
