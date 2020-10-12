@@ -16,5 +16,6 @@ install:
 
 script:
   - hass --version
-  - "hass -c . --script check_config --info all | tee check.output"
-  - '! less check.output | grep -q "Failed config"'
+  - "hass -c . --script check_config --info all"
+#  - "hass -c . --script check_config --info all | tee check.output"
+#  - '! less check.output | grep -q "Failed config"'
