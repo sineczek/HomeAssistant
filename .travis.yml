@@ -15,11 +15,11 @@ before_install:
   - pip install getmac==0.8.1
 #testing
   - git clone https://github.com/jomwells/ambilights.git
-  - cd /ambilights
+  - cd ambilights/
   - mv /custom_components ..
   - cd ..
   - git https://github.com/custom-components/breaking_changes.git
-  - cd /breaking_changes
+  - cd breaking_changes/
   - mv /custom_components ..
 
 install:
