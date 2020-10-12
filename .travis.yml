@@ -19,8 +19,8 @@ before_install:
   - mv custom_components/ ..
   - cd ..
   - git clone https://github.com/custom-components/breaking_changes.git
-  - cd breaking_changes/
-  - mv custom_components/ ..
+  - mv breaking_changes/custom_components/breaking_changes/ ./custom_components/
+
 
 install:
   - pip3 install homeassistant
