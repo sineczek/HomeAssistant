@@ -18,7 +18,7 @@ before_install:
   - cd ambilights/
   - mv custom_components/ ..
   - cd ..
-  - git https://github.com/custom-components/breaking_changes.git
+  - git clone https://github.com/custom-components/breaking_changes.git
   - cd breaking_changes/
   - mv custom_components/ ..
 
