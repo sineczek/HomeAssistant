@@ -1,0 +1,23 @@
+travis_build:
+  url: https://api.travis-ci.org/repo/sineczek/HomeAssistant/requests
+  method: POST
+  headers:
+    authorization: !secret travis_api
+    Content-Type: "application/json"
+    Accept: "application/json"
+    Travis-API-Version: 3
+  payload: '{"request": {"branch":"master"}}'
+
+github_issue_state:
+  url: "https://api.github.com/repos/sineczek/HomeAssistant/issues/{{issue_number}}"
+  method: POST
+  headers:
+    Authorization: !secret travis_git
+  payload: '{ "state":"{{ status }}" }'
+
+github_issue_comment:
+  url: "https://api.github.com/repos/sineczek/HomeAssistant/issues/{{issue_number}}/comments"
+  method: POST
+  headers:
+    Authorization: !secret travis_git
+  payload: '{ "body":"{{ message }}" }'

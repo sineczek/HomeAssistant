@@ -1,0 +1,10 @@
+- alias: Codzienny BackUP o 6AM
+  id: codziennybackupiczyszczenie
+  trigger:
+    platform: time
+    at: '06:00:00'
+  action:
+    - service: hassio.snapshot_full
+      data_template:
+        name: BackUP {{now().strftime('%d-%m-&Y') }}
+    - service: rest_command.dobackup

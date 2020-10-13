@@ -1,0 +1,13 @@
+- alias: "Homekit Start"
+  trigger:
+    - platform: homeassistant
+      event: start
+    - platform: event
+      event_type: zwave.network_ready
+    - platform: event
+      event_type: zwave.network_complete
+    - platform: event
+      event_type: zwave.network_complete_some_dead
+  action:
+    - delay: 00:01
+    - service: homekit.start

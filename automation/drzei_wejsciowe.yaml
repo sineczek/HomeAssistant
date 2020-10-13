@@ -1,0 +1,12 @@
+- alias: Drzwi_wejsciowe
+  trigger:
+    - platform: state
+      entity_id: sensor.door_entrance
+#      from: 'zamknięte'
+#      to: 'otwarte'
+  action:
+    service: notify.ios_iphone_sinq
+    data_template:
+      title: 'Drzwi wejściowe'
+      data:
+      message: "Drzwi wejściowe zostały {{ sensor.door_entrance.state }}."   

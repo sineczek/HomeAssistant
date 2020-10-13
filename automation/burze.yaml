@@ -1,0 +1,25 @@
+- alias: Burza_BlitzOrtnung
+  trigger:
+    - platform: state
+      entity_id: sensor.blitzortung_lightning_distance
+      from: 'unknown'
+#      to: 'on'
+  action:
+    service: notify.ios_iphone_sinq
+    data_template:
+      title: 'Wyładowania atmosferyczne bliżej niż 10km'
+      data:
+        message: "Wyładowania atmosferyczne bliżej niż 10km"
+
+        
+- alias: Burza_warning
+  trigger:
+      - platform: state
+        entity_id: binary_sensor.burze_dzis_net_storm_warning
+        from: 'off'
+  action:
+    service: notify.ios_iphone_sinq
+    data_template:
+      title: 'Ostrzeżenie przed burzami.'
+      data:
+        message: "Wydano ostrzeżenie przed burzami"   
