@@ -1,0 +1,30 @@
+- alias: Update avaiable notify
+
+  trigger: 
+    - platform: state
+      entity_id: sensor.latest_version
+
+  condition:
+    - condition: template
+      value_template: >-
+        {{ states("sensor.latest_version") != states("sensor.current_version") and states("sensor.latest_version") != "unknown" }}
+
+  action:
+    - service: persistent_notification.create
+      data:
+        title: Update Home Assistant
+        message: >
+          There is an update to Home Assistant avaiable
+            * {{ states("sensor.current_version") }} -> {{ states("sensor.latest_version") }}
+          
+      
+
+    - service: notify.sinq
+      data:
+        title: Update Home Assistant
+        message: >
+          There is an update to Home Assistant avaiable
+            * {{ states("sensor.current_version") }} -> {{ states("sensor.latest_version") }}
+          
+      
+

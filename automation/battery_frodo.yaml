@@ -1,0 +1,18 @@
+- alias: Niski Stan Baterii Froda Wieczorem
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:55:00'
+  condition:
+  - condition: state
+    entity_id: sensor.hwuvoilu_battery
+    state: <40
+  action:
+  - service: notify.family
+    data: 
+      title: Niski stan baterii u Froda
+      message: >
+        Jest wieczór a poziom baterii Froda wynosi
+          * {{ states("sensor.igwpawhd_battery") }}
+          Może podłaczyć do ładowania ... ?
+  mode: single

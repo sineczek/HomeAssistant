@@ -1,0 +1,6 @@
+notify: 
+  - platform: group
+    name: sinq
+    services:
+      - service: mobile_app_komofon_sinq
+      - service: mobile_app_ipad_sinq

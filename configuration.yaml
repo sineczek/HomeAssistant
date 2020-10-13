@@ -43,8 +43,8 @@ sun:
 
 cloud:
 
-logger:
-  default: info
+#logger:
+#  default: info
 
 discovery:
   enable:

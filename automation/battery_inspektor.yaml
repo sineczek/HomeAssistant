@@ -1,0 +1,18 @@
+- alias: Niski Stan Baterii Inspektor Wieczorem
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:55:00'
+  condition:
+  - condition: state
+    entity_id: sensor.igwpawhd_battery
+    state: <40
+  action:
+  - service: notify.family
+    data: 
+      title: Niski stan baterii u Inspektora
+      message: >
+        Jest wieczór a poziom baterii Inspektora wynosi
+          * {{ states("sensor.igwpawhd_battery") }}
+          Może podłaczyć do ładowania ... ?
+  mode: single

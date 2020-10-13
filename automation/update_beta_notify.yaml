@@ -1,0 +1,30 @@
+- alias: Update BETA avaiable notify
+
+  trigger: 
+    - platform: state
+      entity_id: sensor.beta_version
+
+  condition:
+    - condition: template
+      value_template: >-
+        {{ states("sensor.beta_version") != "unknown" }}
+
+  action:
+    - service: persistent_notification.create
+      data:
+        title: Update Home Assistant
+        message: >
+          There is an BETA version avaiable
+            * {{ states("sensor.beta_version") }}
+          
+      
+
+    - service: notify.sinq
+      data:
+        title: Update Home Assistant
+        message: >
+          There is an BETA version avaiable
+            * {{ states("sensor.beta_version") }}
+          
+      
+

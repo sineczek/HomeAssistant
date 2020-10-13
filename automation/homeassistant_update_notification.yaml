@@ -78,6 +78,15 @@
           Travis Build has {{states('sensor.sineczek_homeassistant_state')}}
       notification_id: update_ha
 
+  - service: notify.mobile_app_komofon_sinq
+    data:
+      title: Update Home Assistant
+      message: >
+        There is an update to Home Assistant Supervised
+          * {{ states("sensor.current_version") }} -> {{ states("sensor.latest_version") }}
+          Travis Build has {{states('sensor.sineczek_homeassistant_state')}}
+      notification_id: update_ha
+
 # post issue comment on Travis status
   - service: rest_command.github_issue_comment
     data:
