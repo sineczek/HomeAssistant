@@ -1,15 +1,7 @@
 # Pod Maską
 
----
-**MENU:**
-
-- [Home Assistant](https://github.com/sineczek/HomeAssistant/)
-- [Historia](https://github.com/sineczek/HomeAssistant/blob/master/www/historia.md)
-- [Node-Red](https://github.com/sineczek/HomeAssistant/blob/master/www/nodered.md)
-
----
 <p align="center">
-  <img width="800" src="https://github.com/sineczek/HomeAssistant/blob/master/www/06.png">
+  <img width="800" src="https://github.com/sineczek/HomeAssistant/blob/master/www/unifi.png">
 </p>
 **Internet :arrow_down_small:60Mbps / :arrow_up_small:10Mbps**
 
@@ -24,7 +16,7 @@
          - :electric_plug:[Neo Coolcam NAS-WR01ZE](https://pl.aliexpress.com/item/32787926055.html "Neo Coolcam NAS-WR01ZE") - Livingroom
          - :electric_plug:[Neo Coolcam NAS-WR01ZE](https://pl.aliexpress.com/item/32787926055.html "Neo Coolcam NAS-WR01ZE") - Kitchen
          - :door:[Sensative Strips](https://sensative.com/strips/ "Sensative Strips") - Doors
-         - :cloud:[Heiman Combustible Gas Sensor HS1CG-Z](http://www.heimantech.com/product/76.html "Heiman Combustible Gas Sensor HS1CG-Z") - Kitchen
+         - :cloud:[Heiman Combustible Gas Sensor HS1CG-Z](http://www.heimantech.com/product/?type=detail&id=34 "Heiman Combustible Gas Sensor HS1CG-Z") - Kitchen
          - :fire:[devolo Home Control Smoke Detector](https://www.devolo.co.uk/devolo-home-control-smoke-detector "devolo Home Control Smoke Detector") - Salon
      - :twisted_rightwards_arrows:[Sonoff RF Bridge](https://sonoff.tech/product/accessories/433-rf-bridge "Sonoff RF Bridge") with [Tasmota](https://github.com/arendst/Tasmota "Tasmota")
          - :ocean:[RF Flood Sensor](https://www.houseiq.pl/pl/p/Czujnik-zalania-z-antena-RF-433-MHz-Daleki-zasieg/776 "RF Flood Sensor") - Basement
@@ -91,3 +83,8 @@
          - :sunflower:[Xiaomi miFlora](https://www.aliexpress.com/i/32949499909.html "Xiaomi miFlora")
          - :sunflower:[Xiaomi miFlora](https://www.aliexpress.com/i/32949499909.html "Xiaomi miFlora")
          - :sunflower:[Xiaomi miFlora](https://www.aliexpress.com/i/32949499909.html "Xiaomi miFlora")
+
+
+<p align="center">
+[Home Assistant](https://github.com/sineczek/HomeAssistant/) | [Historia](https://github.com/sineczek/HomeAssistant/blob/master/www/historia.md) | [Node-Red](https://github.com/sineczek/HomeAssistant/blob/master/www/nodered.md)
+</p>
