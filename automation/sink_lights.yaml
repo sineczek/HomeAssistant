@@ -1,0 +1,17 @@
+# Automation handled in Node-Red
+
+#- alias: przełącz ledy 
+#  description: 'nad zlewem po naciśnięciu przycisku'
+#  trigger:
+#    - platform: mqtt
+#      topic: RFBridge/LEDKuchnia
+#      payload: 'AAF6A1'
+#  condition:
+#    - condition: time
+#      after: '16:00:00'
+#      before: '07:30:00'
+#  action:
+#    - type: toggle
+#      entity_id: switch.ledwkuchni
+#      domain: switch
+#  mode: single

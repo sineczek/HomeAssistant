@@ -94,5 +94,7 @@
 
 ## Links
 <p align="center">
+
 [Historia](https://github.com/sineczek/HomeAssistant/blob/master/www/historia.md) | [Pod maską](https://github.com/sineczek/HomeAssistant/blob/master/www/pod_maska.md)
+
 </p>

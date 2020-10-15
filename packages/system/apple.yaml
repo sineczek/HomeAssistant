@@ -1,6 +1,6 @@
-icloud:
-  - username: !secret icloudl
-    password: !secret icloudp
+#icloud:
+#  - username: !secret icloudl
+#    password: !secret icloudp
 
 ios:
 

@@ -43,8 +43,15 @@ sun:
 
 cloud:
 
-#logger:
-#  default: info
+history:
+  include:
+    domains:
+      - sensor
+      - switch
+      - media_player
+
+logger:
+  default: info
 
 discovery:
   enable:

@@ -1,0 +1,16 @@
+#- alias: wyłącz schody po wykryciu ruchu
+#  description: ''
+#  trigger:
+#    - platform: mqtt
+#      topic: RFBridge/pir_schody
+#      payload: 'OFF'
+#  condition:
+#    - condition: time
+#      after: '16:00:00'
+#      before: '07:30:00'
+#  action:
+#    - type: turn_off
+#      device_id: 4ea9807b099d11eb99cb873de826dc61
+#      entity_id: light.ledytv_ledytv
+#      domain: light
+#  mode: single
