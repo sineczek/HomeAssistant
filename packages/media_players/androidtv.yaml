@@ -1,4 +1,4 @@
 media_player:
   - platform: androidtv
     name: Philips Android TV
-    host: 192.168.4.26
+    host: !secret tv_ip
