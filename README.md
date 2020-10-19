@@ -85,7 +85,7 @@
 
 ## Screenshots
 <p align="center">
-  <img width="800" src="https://github.com/sineczek/HomeAssistant/blob/master/www/01.png">
+  <img width="800" src="https://github.com/sineczek/HomeAssistant/blob/master/www/main.png">
 </p>
 
 <p align="center">
