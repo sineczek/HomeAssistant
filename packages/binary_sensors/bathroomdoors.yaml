@@ -1,0 +1,10 @@
+binary_sensor:
+  - platform: mqtt
+    name: Bathroom doors Sensor
+    state_topic: bathroomdoors/stat/STATUS
+    value_template: ''
+
+  - platform: mqtt
+    name: Bathroom doors  Sensor Battery
+    state_topic: bathroomdoors/stat/BATT
+    value_template: ''

@@ -1,0 +1,7 @@
+sensor:
+  - platform: average
+    name: 'Średnia tygodniowa temperatura Netatmo'
+    duration:
+      days: 7
+    entities:
+      - sensor.netatmo_dom_ganek_temperature

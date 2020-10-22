@@ -1,0 +1,8 @@
+binary_sensor:
+  - platform: mqtt
+    name: "Czujnik zalania pod zlewem w kuchni"
+    state_topic: "shellies/shellyflood-40F52001ADE8/sensor/flood"
+    qos: 1
+    payload_on: "true"
+    payload_off: "false"
+    device_class: moisture

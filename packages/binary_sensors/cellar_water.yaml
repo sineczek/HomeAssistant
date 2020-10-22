@@ -1,11 +1,13 @@
 binary_sensor:
   - platform: mqtt
-    name: "Woda w Piwnicy"
-    #state_topic: "tele/sonoff/RESULT"
-    #value_template: "{{value_json.RfReceived.Data}}"
-    #payload_on: "DA4DA9"
-    #device_class: Moisture
-    state_topic: "RFBridge/Water1"
-    payload_on: "ON"
-    payload_off: "OFF"
+    name: Water Leak Celar Sensor
+    state_topic: celarwatersensor/stat/STATUS
+    value_template: ''
     device_class: moisture
+  - platform: mqtt
+    name: Water Leak Celar Sensor Battery
+    state_topic: celarwatersensor/stat/BATT
+    value_template: ''
+    device_class: battery
+    
+

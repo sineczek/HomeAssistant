@@ -1,0 +1,97 @@
+camera:
+  - platform: xiaomi_cloud_map_extractor
+    host: !secret roborock_host
+    token: !secret roborock_token
+    username: !secret xiaomil
+    password: !secret xiaomip
+    country: "de"
+    name: "My Vacuum Camera"
+    colors:
+      color_map_inside: [32, 115, 185]
+      color_map_outside: [19, 87, 148]
+      color_map_wall: [100, 196, 254]
+      color_map_wall_v2: [93, 109, 126]
+      color_grey_wall: [93, 109, 126]
+      color_path: [147, 194, 238]
+      color_goto_path: [0, 255, 0]
+      color_predicted_path: [255, 255, 0, 0]
+      color_zones: [0xAD, 0xD8, 0xFF, 0x8F]
+      color_zones_outline: [0xAD, 0xD8, 0xFF]
+      color_virtual_walls: [255, 0, 0]
+      color_no_go_zones: [255, 33, 55, 127]
+      color_no_go_zones_outline: [255, 0, 0]
+      color_no_mop_zones: [163, 130, 211, 127]
+      color_no_mop_zones_outline: [163, 130, 211]
+      color_charger: [0x66, 0xfe, 0xda, 0x7f]
+      color_robo: [75, 235, 149]
+      color_unknown: [0, 0, 0]
+      color_scan: [0xDF, 0xDF, 0xDF]
+    room_colors:
+      1: [240, 178, 122]
+      2: [133, 193, 233]
+      3: [217, 136, 128]
+      4: [52, 152, 219]
+      5: [205, 97, 85]
+      6: [243, 156, 18]
+      7: [88, 214, 141]
+      8: [245, 176, 65]
+      9: [252, 212, 81]
+      10: [72, 201, 176]
+      11: [84, 153, 199]
+      12: [133, 193, 233]
+      13: [245, 176, 65]
+      14: [82, 190, 128]
+      15: [72, 201, 176]
+      16: [165, 105, 18]
+    draw:
+      - charger
+      - path
+      - goto_path
+      - predicted_path
+      - no_go_zones
+      - no_mopping_zones
+      - vacuum_position
+      - virtual_walls
+      - zones
+    texts:
+      - text: "Dzienny"
+        x: 25
+        y: 25
+        color: [125, 20, 213]
+      - text: "Room 2"
+        x: 25
+        y: 75
+        color: [125, 20, 213, 127]
+    map_transformation:
+      scale: 6
+      rotate: 180
+      trim:
+        top: 10
+        bottom: 20
+        left: 30
+        right: 40
+    sizes:
+      charger_radius: 4
+      vacuum_radius: 6.5
+    attributes:
+      - calibration_points
+      - charger
+      - goto
+      - goto_path
+      - goto_predicted_path
+      - image
+      - is_empty
+      - map_name
+      - no_go_areas
+      - no_mopping_areas
+      - obstacles
+      - path
+      - room_numbers
+      - rooms
+      - vacuum_position
+      - vacuum_room
+      - walls
+      - zones
+    scan_interval:
+      seconds: 10
+    auto_update: true

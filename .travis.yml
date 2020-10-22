@@ -42,6 +42,8 @@ before_install:
   - mv lovelace-battery-entity-row/ ./custom_components/ 
   - git clone https://github.com/benct/lovelace-xiaomi-vacuum-card
   - mv lovelace-xiaomi-vacuum-card/ ./custom_components/
+  - git clone https://github.com/Limych/ha-average
+  - mv ha-average/custom_components/average/ ./custom_components/
 
 
 
