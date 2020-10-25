@@ -49,13 +49,19 @@ history:
       - sensor
       - switch
       - media_player
-
+recorder:
+  purge_keep_days: 14
+  include:
+    domains:
+      - sensor
+      - switch
+      - media_player
 logger:
   default: info
 
 discovery:
-  enable:
-    - homekit
+#  enable:
+#    - homekit
 
 tts:
   - platform: google_translate

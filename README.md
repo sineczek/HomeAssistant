@@ -27,7 +27,7 @@
 ## Lights
 
 * Xiaomi Yeelight Philips Bulbs [MUE4088RT]
-* WiZ LED filament WiFi Bulbs [8718699787172]
+* WiZ LED filament WiFi Bulbs [[Tasmota](https://tasmota.github.io/docs/) 8718699787172 ]
 * Arilux SL-LC01 RGB Controllers [[Tasmota](https://tasmota.github.io/docs/) firmware] + 2835 LED Strips [Warm and Cold]
 
 ## Switches

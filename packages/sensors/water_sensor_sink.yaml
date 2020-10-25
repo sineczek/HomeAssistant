@@ -2,7 +2,7 @@ sensor:
   - platform: mqtt  
     state_topic: "shellies/shellyflood-40F52001ADE8/sensor/temperature"  
     name: "Czujnik zalania pod zlewem w kuchni Temp"  
-    unit_of_measurement: "°F"  
+    unit_of_measurement: "°C"  
   - platform: mqtt  
     state_topic: "shellies/shellyflood-40F52001ADE8/sensor/battery"  
     name: "Czujnik zalania pod zlewem w kuchni Battery"  

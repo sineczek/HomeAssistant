@@ -1,5 +1,5 @@
 vacuum:
   - platform: xiaomi_miio
     name: RoboRock S6 maxV
-    host: !secret roborock_ip
+    host: !secret roborock_host
     token: !secret roborock_token
