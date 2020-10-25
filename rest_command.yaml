@@ -9,14 +9,14 @@ travis_build:
   payload: '{"request": {"branch":"master"}}'
 
 github_issue_state:
-  url: "https://api.github.com/repos/sineczek/HomeAssistant/issues/{{issue_number}}"
+  url: https://api.github.com/repos/sineczek/HomeAssistant/issues/{{issue_number}}
   method: POST
   headers:
     Authorization: !secret travis_git
   payload: '{ "state":"{{ status }}" }'
 
 github_issue_comment:
-  url: "https://api.github.com/repos/sineczek/HomeAssistant/issues/{{issue_number}}/comments"
+  url: https://api.github.com/repos/sineczek/HomeAssistant/issues/{{issue_number}}/comments
   method: POST
   headers:
     Authorization: !secret travis_git

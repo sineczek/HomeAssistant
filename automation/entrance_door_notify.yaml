@@ -1,19 +1,19 @@
-- alias: Drzwi_wejsciowe
-  trigger:
-    - platform: state
-      entity_id: sensor.door_entrance
-#      from: 'zamknięte'
-#      to: 'otwarte'
-  
-  condition:
-    - condition: time
-      after: '16:00:00'
-      before: '07:30:00'
-  
-  action:
-    - service: notify.family
-      data:
-        title: Drzwi wejściowe
-        message: > 
-          Drzwi wejściowe zostały 
-          * {{ state("sensor.door_entrance") }}   
+#- alias: Drzwi_wejsciowe
+#  trigger:
+#    - platform: state
+#      entity_id: sensor.door_entrance
+##      from: 'zamknięte'
+##      to: 'otwarte'
+#  
+#  condition:
+#    - condition: time
+#      after: '16:00:00'
+#      before: '07:30:00'
+#  
+#  action:
+#    - service: notify.family
+#      data:
+#        title: Drzwi wejściowe
+#        message: > 
+#          Drzwi wejściowe zostały 
+#          * {{ state("sensor.door_entrance") }}   
