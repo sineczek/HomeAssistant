@@ -54,7 +54,7 @@ camera:
       - virtual_walls
       - zones
     texts:
-      - text: "Gościnny"
+      - text: "Goscinny"
         x: 25
         y: 25
         color: [125, 20, 213]

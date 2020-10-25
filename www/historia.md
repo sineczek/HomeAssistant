@@ -4,9 +4,7 @@
 [Home Assistant](https://github.com/sineczek/HomeAssistant/) | [Pod Maską](https://github.com/sineczek/HomeAssistant/blob/master/www/pod_maska.md) | [Node-Red](https://github.com/sineczek/HomeAssistant/blob/master/www/nodered.md)
 </p>
 
-2020
-2019
-2018 - Początki
+# Changelog below
 
 ## 2020 
 ### Całkowita zmiana
@@ -54,3 +52,80 @@ Swoją przygodę z Inteligentnym domem zacząłem na przełomie 2018 i 2019 roku
 Przygodę rozpocząłem od Domoticza postawionego na Raspberry Pi B+, które posiadałem od 2013 roku do zabaw z kopaniem BTC. Szybko okazało się, że sprzęt ten jest już wolny i trochę zawodny. Nadaszła pora na zmianę w styczniu 2019 roku. Domoticz wylądował na Raspberry Pi 3B+ z 32GB kartą SD. 
 Wówczas już, po rozeznaniu się w istniejących technologiach, podjąłem decyzje, że mój MądryDom (MD) będzie funkcjonować z urządzeniami Wi-Fi, RF oraz technologią Z-Wave, która wówczas wydawała mi się o niebo lepsza od ZigBee.
 Zakupiłem kilka Sonoff'ów Basic oraz gniazdek S20, i rozpocząłęm swoje testy. Na pierwszy ogień poszedł alternatywy firmware wspomnianych Sonoff'ów. Z Holandi, tfu! z Niderlandów, przyszedł moduł RF oparty na Andruino oraz na pokładzie zagościł Aeotec Z-Stick Gen5 - moduł Z-Wave USB, zaś po okazyjnej cenie z Chin przypłynęły gniazdka Neo Coolcam NAS-WR01ZE Z-wave Plus Smart Power Plug EU Socket. Niestety od razu były z nimi problemy, a współpraca z Domoticzem prawie nie możliwa. Rozpocząłem poszukiwania nowych rozwiązań.
+
+
+---------------------------------------
+# Changelog
+
+## 25.10.2020
+Added:
+    - NUT (Network UPS Tools) sensor
+
+Node-Red:
+    - light flows
+        -- living room mail light
+        -- living room night lamp
+        -- kitchen main ligt
+        -- kitchen sink led
+    - covid-19
+        -- handwash reminder after entering home or work area
+
+Fixed:
+    - Philips TV integration
+    - Philips TV Ambilights integration
+
+Removed:
+    - Portainer Add-on (docker problems)
+    - home-assistant_v2.db (malformed)
+## 23.10.2020
+Added: 
+    - [Xiaomi map extractor integration (https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor)]
+
+Fixed: 
+    - TravisCI
+
+## 22.10.2020
+Added:
+    - Shelly Button (Shelly 1) Salon Night lamp
+    - Shelly Flood Kitchen sink
+    - Roborock S6 maxV
+    - Door sensor (Bathroom)
+    - Water sensor (Basement)
+    - Automations for new sensors
+
+## 19.10.2020
+Added:
+    - Portainer Add-on
+    - Google Assistant
+
+Removed:
+    - InfluxDB Add-on (high CPU usage)
+    - Grafana Add-on (high CPU usage)
+    - Glances Add-on (high CPU usage)
+
+## 16.10.2020
+Added:
+    - InfluxDB Add-on
+    - Grafana Add-on
+    - Glances Add-on
+
+## 15.10.2020
+Node-Red:
+    - basement automation
+        -- RF water sensor triggers water pump if water detected and change cellar stairs led lights to red
+        -- FAN starts if humidity is too high between 6:00 and 22:00
+        
+## 13.10.2020
+Node-Red:
+    - various notifications
+
+## 12.10.2020
+Fixed:
+    - TravisCI (finaly!)
+
+## 11.10.2020 
+Added:
+    - TravisCI Support
+
+## 11.10.2020
+Initial Commit
