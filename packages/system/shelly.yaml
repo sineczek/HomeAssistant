@@ -2,9 +2,9 @@
 ##################################### SHELLY #####################################
 ##################################################################################
 
-shelly:
-  cloud_auth_key: !secret shellyauth
-  cloud_server: !secret shellycloud
-  discovery: true #add all devices (default)
-  sensors:
-    - all
+#shelly:
+#  cloud_auth_key: !secret shellyauth
+#  cloud_server: !secret shellycloud
+#  discovery: true #add all devices (default)
+#  sensors:
+#    - all

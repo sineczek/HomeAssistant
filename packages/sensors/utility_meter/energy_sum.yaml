@@ -1,0 +1,12 @@
+sensor:
+  - platform: template
+    sensors:
+      consumption:
+        #unit_of_measurement:: "kWh"
+        value_template: "{{ (states('sensor.dzienny_internety_energy_monthly') | float) + (states('sensor.kuchnia_6gniazdek_energy_monthly') | float) + (states('sensor.kuchnia_kuchenka_i_zmywarka_energy_monthly') | float) + (states('sensor.kuchnia_lodowka_energy_monthly') | float) + (states('sensor.salon_tv_energy_monthly') | float) + (states('sensor.lazienka_pralka_energy_monthly') | float) }}"
+
+  - platform: template
+    sensors:
+      consumption_lights:
+        #unit_of_measurement:: "kWh"
+        value_template: "{{ (states('sensor.dzienny_swiatlo_1zarowka_energy_monthly') | float) + (states('sensor.dzienny_swiatlo_2zarowki_energy_monthly') | float) + (states('sensor.goscinny_swiatlo_energy_monthly') | float) + (states('sensor.kuchnia_swiatlo_energy_monthly') | float) + (states('sensor.lazienka_swiatlo_energy_monthly') | float) + (states('sensor.salon_swiatlo_energy_monthly') | float) }}"

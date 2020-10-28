@@ -1,0 +1,30 @@
+- id: shellies_update_available
+  alias: "Shelly Update Available"
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.shelly_1_dziennalapkanocna_firmware_update
+        - binary_sensor.shelly_1_lampka_nocna_salon_firmware_update
+        - binary_sensor.shelly_1pm_6gniazdek_firmware_update
+        - binary_sensor.shelly_1pm_dzienny_internety_firmware_update
+        - binary_sensor.shelly_1pm_kuchenka_i_zmywarka_firmware_update
+        - binary_sensor.shelly_1pm_lodowka_firmware_update
+        - binary_sensor.shelly_1pm_pralka_firmware_update
+        - binary_sensor.shelly_1pm_salon_tv_firmware_update
+        - binary_sensor.shelly_2_5_kuchnia_i_lazienka_firmware_update
+        - binary_sensor.shelly_2_5_swiatlo_dzienny_firmware_update
+        - binary_sensor.shelly_2_5_swiatlo_goscinny_firmware_update
+        - binary_sensor.shelly_2_5_swiatlo_salon_firmware_update
+        - binary_sensor.shelly_3em_3em_firmware_update
+        - binary_sensor.shelly_flood_kuchenny_zlew_firmware_update
+      from: "off"
+      to: "on"
+  action:
+    - service: notify.mobile_app_komofon_sinq
+      data:
+        title: "Aktualizacja oprogramowania Shelly"
+        message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name | replace(' Firmware Update', '')}}."
+    - service: persistent_notification.create
+      data:
+        title: "Aktualizacja oprogramowania Shelly"
+        message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name | replace(' Firmware Update', '')}}."

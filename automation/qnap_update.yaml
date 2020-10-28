@@ -1,0 +1,17 @@
+#- id: qnap_firmware_update_available
+#  alias: "QNap NAS Firmware Update Available"
+#  trigger:
+#    - platform: state
+#      entity_id:
+#        - 
+#      from: "off"
+#      to: "on"
+#  action:
+#    - service: notify.mobile_app_komofon_sinq
+#      data:
+#        title: "Aktualizacja oprogramowania QNap NAS TS-251"
+#        message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name | replace(' Firmware Update', '')}}."
+#    - service: persistent_notification.create
+#      data:
+#        title: "Aktualizacja oprogramowania QNap NAS TS-251"
+#        message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name | replace(' Firmware Update', '')}}."

@@ -1,0 +1,85 @@
+- id: shellies_announce
+  alias: 'Shellies Announce'
+  trigger:
+    - platform: homeassistant
+      event: start
+    - platform: time_pattern
+      hours: "/1"
+  action:
+    service: mqtt.publish
+    data:
+      topic: shellies/command
+      payload: announce
+
+- id: 'shellies_discovery'
+  alias: 'Shellies Discovery'
+  mode: queued
+  max: 999
+  trigger:
+    platform: mqtt
+    topic: shellies/announce
+  action:
+    service: python_script.shellies_discovery
+    data_template:
+      id: '{{ trigger.payload_json.id }}'
+      mac: '{{ trigger.payload_json.mac }}'
+      fw_ver: '{{ trigger.payload_json.fw_ver }}'
+      model: '{{ trigger.payload_json.model }}'
+      qos: 2
+      shelly1-dziennalapkanocna:
+        relay-0: "light"
+        relay-0-name: "Dzienny - lampka nocna"
+      shelly1-lampka_nocna_salon:  
+        relay-0: "light"
+        relay-0-name: "Salon - lampka nocna"
+      shelly1pm-6gniazdek:
+        relay-0: "switch"
+        relay-0-name: "Kuchnia - 6 gniazdek"
+      shelly1pm-kuchenka_i_zmywarka:
+        relay-0: "switch"
+        relay-0-name: "Kuchnia - kuchenka i zmywarka"
+      shelly1pm-lodowka:
+        relay-0: "switch"
+        relay-0-name: "Kuchnia - lodówka"
+      shelly1pm-salon_tv:
+        relay-0: "switch"
+        relay-0-name: "Salon - TV"
+      shelly1pm-dzienny_internety:
+        relay-0: "switch"
+        relay-0-name: "Dzienny - internety"
+      shelly1pm-pralka:
+        relay-0: "switch"
+        relay-0-name: "Łazienka - pralka"
+      shelly1pm-goscinny_taras:
+        relay-0: "switch"
+        relay-0-name: "Gościnny - taras"       
+      shellyswitch25-swiatlo_dzienny:
+        relay-0: "light"
+#        relay-0-name: "Dzienny - światło główne 2 żarówki"
+        relay-1: "light"
+#        relay-1-name: "Dzienny - światło główne 1 żarówka"
+      shellyem3-3em:
+        force_update_sensors: true
+      shellyswitch25-swiatlo_salon:
+        relay-0: "light"
+#        relay-0-name: "Salon - światło głowne"
+        relay-1: "light"
+#        relay-1-name: "Salon - lampka nocna, drzwi"
+      shellyswitch25-swiatlo_goscinny:
+        relay-0: "light"
+#        relay-0-name: "Gościnny - światło głowne"  
+        relay-1: "light"
+#        relay-1-name: "Gościnny - nic"
+      shellyswitch25-kuchnia_i_lazienka:
+        relay-0: "light"
+#        relay-0-name: "Kuchnia - światło główne" 
+        relay-1: "light"
+#        relay-1-name: "Łazienka - światło głowne"
+      shellyflood-kuchenny_zlew:
+        force_update_sensors: true
+        powered: battery
+
+
+
+
+

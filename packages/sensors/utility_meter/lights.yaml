@@ -1,0 +1,19 @@
+utility_meter:
+  lazienka_swiatlo_energy_monthly:
+    source: sensor.shelly_2_5_kuchnia_i_lazienka_energy_0
+    cycle: monthly
+  kuchnia_swiatlo_energy_monthly:
+    source: sensor.shelly_2_5_kuchnia_i_lazienka_energy_1
+    cycle: monthly
+  goscinny_swiatlo_energy_monthly:
+    source: sensor.shelly_2_5_swiatlo_goscinny_energy_0
+    cycle: monthly
+  salon_swiatlo_energy_monthly:
+    source: sensor.shelly_2_5_swiatlo_salon_energy_1
+    cycle: monthly
+  dzienny_swiatlo_1zarowka_energy_monthly:
+    source: sensor.dzienny_swiatlo_glowne_1_zarowka_energy
+    cycle: monthly
+  dzienny_swiatlo_2zarowki_energy_monthly:
+    source: sensor.dzienny_swiatlo_glowne_2_zarowki_energy
+    cycle: monthly

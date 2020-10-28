@@ -1,0 +1,20 @@
+utility_meter:
+  kuchnia_6gniazdek_energy_monthly:
+    source: sensor.shelly_1pm_6gniazdek_energy_0
+    cycle: monthly
+  dzienny_internety_energy_monthly:
+    source: sensor.shelly_1pm_dzienny_internety_energy_0
+    cycle: monthly
+  kuchnia_kuchenka_i_zmywarka_energy_monthly:
+    source: sensor.shelly_1pm_kuchenka_i_zmywarka_energy_0
+    cycle: monthly
+  kuchnia_lodowka_energy_monthly:
+    source: sensor.shelly_1pm_lodowka_energy_0
+    cycle: monthly
+  lazienka_pralka_energy_monthly:
+    source: sensor.shelly_1pm_pralka_energy_0
+    cycle: monthly
+  salon_tv_energy_monthly:
+    source: sensor.shelly_1pm_salon_tv_energy_0
+    cycle: monthly
+  

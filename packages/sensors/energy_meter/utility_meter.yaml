@@ -1,8 +1,0 @@
-utility_meter:
-  daily_energy:
-    source: sensor.shelly_shsw_pm_8caab542b640_total_consumption #sama lodówka
-    cycle: daily
-
-  monthly_energy:
-    source: sensor.shelly_shsw_pm_8caab542b640_total_consumption #sama lodówka
-    cycle: monthly

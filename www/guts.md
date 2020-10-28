@@ -1,9 +1,15 @@
-# Pod Maską
+# Guts
+
+<p align="center">
+
+[Home Assistant](https://github.com/sineczek/HomeAssistant/)  [Historia](https://github.com/sineczek/HomeAssistant/blob/master/www/changelog.md)  [Node-Red](https://github.com/sineczek/HomeAssistant/blob/master/www/nodered.md)
+
+</p>
 
 <p align="center">
   <img width="800" src="https://github.com/sineczek/HomeAssistant/blob/master/www/unifi.png">
 </p>
-**Internet :arrow_down_small:60Mbps / :arrow_up_small:10Mbps**
+**Internet :arrow_down_small:100Mbps / :arrow_up_small:20Mbps**
 
 - :large_blue_diamond:[UniFi USG](https://www.ui.com/unifi-routing/usg/ "UniFi USG")
 - :large_blue_diamond:[UniFi US-8](https://www.ui.com/unifi-switching/unifi-switch-8/ "UniFi US-8")
@@ -85,6 +91,3 @@
          - :sunflower:[Xiaomi miFlora](https://www.aliexpress.com/i/32949499909.html "Xiaomi miFlora")
 
 
-<p align="center">
-[Home Assistant](https://github.com/sineczek/HomeAssistant/) | [Historia](https://github.com/sineczek/HomeAssistant/blob/master/www/historia.md) | [Node-Red](https://github.com/sineczek/HomeAssistant/blob/master/www/nodered.md)
-</p>

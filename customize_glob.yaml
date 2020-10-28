@@ -1,0 +1,59 @@
+#### SENSORS ####
+"sensor.temperature_*":
+  device_class: temperature
+
+"sensor.humidity_*":
+  device_class: humidity
+
+"sensor.pressure_*":
+  device_class: pressure
+
+"binary_sensor.motion_*":
+  device_class: motion
+
+"binary_sensor.balcony_door_*":
+  device_class: window
+
+"binary_sensor.window_*":
+  device_class: window
+
+#### CLIMATE ####
+"climate.thermostat_*":
+  icon: mdi:radiator
+  max_temp: 28
+  min_temp: 4
+
+#### Winter ####
+"*.christmas_tree*":
+  icon: mdi:pine-tree
+"*.christmas_lights_*":
+  icon: mdi:pine-tree  # string-lights
+"switch.tree_*":
+  icon: mdi:tree
+
+"sensor.*_uptime":
+  device_class: timestamp
+  icon: mdi:timer-outline
+
+
+#### SHELLY ####
+"binary_sensor.shelly_1_*_status":
+  icon: mdi:light-switch
+"binary_sensor.shelly_2_*_status":
+  icon: mdi:light-switch
+"binary_sensor.shelly_plug_*_status":
+  icon: mdi:light-switch
+"binary_sensor.shelly_flood_*_status":
+  icon: mdi:water
+
+#### LIGHTS ####
+"light.led*":
+  icon: mdi:led-variant-on
+"light.*led":
+  icon: mdi:led-variant-on
+
+#### status ####
+"binary_sensor.*_status":
+  device_class: connectivity
+
+

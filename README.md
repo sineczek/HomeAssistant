@@ -95,6 +95,6 @@
 ## Links
 <p align="center">
 
-[Historia](https://github.com/sineczek/HomeAssistant/blob/master/www/historia.md) | [Pod maską](https://github.com/sineczek/HomeAssistant/blob/master/www/pod_maska.md)
+[Changelog](https://github.com/sineczek/HomeAssistant/blob/master/www/changelog.md)  [Guts](https://github.com/sineczek/HomeAssistant/blob/master/www/guts.md)  [Node-Red](https://github.com/sineczek/HomeAssistant/blob/master/www/nodered.md)
 
 </p>

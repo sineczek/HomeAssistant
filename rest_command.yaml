@@ -1,5 +1,5 @@
 travis_build:
-  url: https://api.travis-ci.org/repo/sineczek/HomeAssistant/requests
+  url: https://api.travis-ci.org/repo/sineczek%2FHomeAssistant/requests
   method: POST
   headers:
     authorization: !secret travis_api

@@ -1,0 +1,4 @@
+notify:
+  - platform: nfandroidtv
+    name: Philips TV Dzienny
+    host: 192.168.4.26

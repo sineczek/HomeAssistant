@@ -1,0 +1,71 @@
+type: vertical-stack
+cards:
+  - cards:
+      - entities:
+          - HiBrightness: 255
+            LowBrightness: 30
+            MedBrightness: 100
+            customSetpoints: true
+            customTheme: true
+            entity: light.ledywkuchni_ledywkuchni
+            name: LED Kuchnia
+            type: 'custom:light-brightness-preset-row'
+          - HiBrightness: 255
+            LowBrightness: 30
+            MedBrightness: 100
+            customSetpoints: true
+            customTheme: true
+            entity: light.ledytv_ledytv
+            name: LED Schody
+            type: 'custom:light-brightness-preset-row'
+          - HiBrightness: 255
+            LowBrightness: 30
+            MedBrightness: 100
+            customSetpoints: true
+            customTheme: true
+            entity: light.tarasgoraled
+            name: Taras Góra LED
+            type: 'custom:light-brightness-preset-row'
+          - entity: switch.taraspodestled
+            name: Taras Podest LED
+          - entity: light.dzienny_ambilight
+        show_header_toggle: false
+        title: Poziom Świateł LED
+        type: entities
+    type: horizontal-stack
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        name: Dzienny
+        cards:
+          - entity: light.shelly_shsw_25_10521c45e674_2
+            name: Dzienny 1 żarówka
+            type: light
+          - entity: light.shelly_shsw_25_10521c45e674_1
+            name: Dzienny 2 żarówki
+            type: light
+          - entity: light.shelly_shsw_1_a4cf12f3e1e8
+            name: Dzienny Lampka nocna
+            type: light
+          - entity: light.tasmota
+            name: Dzienny Lampka nocna WiFi
+            type: light
+      - type: horizontal-stack
+        cards:
+          - entity: light.shelly_shsw_25_40f52004e9b6_2
+            name: Kuchnia
+            type: light
+          - entity: light.shelly_shsw_25_40f52004e9b6_1
+            name: Łazienka
+            type: light
+      - type: horizontal-stack
+        cards:
+          - entity: light.shelly_shsw_25_10521c45c723_2
+            type: light
+            name: Salon
+          - entity: light.shelly_shsw_1_40f52001ade8
+            name: Salon Lampka nocna
+            type: light
+          - entity: light.shelly_shsw_25_10521c445139_1
+            type: light
+            name: Gościnny
