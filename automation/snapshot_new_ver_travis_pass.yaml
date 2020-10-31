@@ -1,0 +1,23 @@
+# backup when travis build pass
+- id: backup_when_new_ha_ver_and_travis_build_pass
+  alias: backup when new ha ver and travis build pass
+
+  trigger:
+    - platform: homeassistant
+      event: start
+    - platform: state
+      entity_id: sensor.latest_version
+
+  condition:
+    - condition: state
+      entity_id: sensor.sineczek_homeassistant_state
+      state: passed
+
+    - condition: template
+      value_template: >
+        {{ states("sensor.latest_version") != states("sensor.current_version") and states("sensor.latest_version") != "unknown" }}
+
+  action:
+    - service: hassio.snapshot_full
+      data_template:
+        name: Backup {{now().strftime('%d-%m-&Y').states("sensor.latest_version") }}

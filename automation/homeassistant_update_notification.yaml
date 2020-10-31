@@ -89,3 +89,5 @@
     data:
       message: "Travis build has {{ states('sensor.sineczek_homeassistant_state') }}"
       issue_number: 2
+  
+
