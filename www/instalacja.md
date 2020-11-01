@@ -39,6 +39,15 @@
 
 7. Pełny backup VM
 
+8. Instalacja Mosquitto MQTT Broker as a service
+	- sudo apt-get install mosquitto
+	- sudo mosquitto_passwd -c /etc/mosquitto/passwd $USER$
+	  Password: password
+	- sudo nano /etc/mosquitto/conf.d/default.conf
+		allow_anonymous false
+		password_file /etc/mosquitto/passwd
+	- sudo systemctl restart mosquitto
+
 -------------------------------
 ## za duże obciążenie dla NASa
 
@@ -125,3 +134,4 @@
 
 6. Instalacja Home-Assistant
     > niestety NAS i VM już klękał z bólu i tego kroku nie wykonałem
+

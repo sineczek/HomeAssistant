@@ -6,6 +6,20 @@
 
 ***
 # Changelog
+## 01.11.2020
+Added:
+    - Mosquitto MQTT Broker as a service
+    - new Shelly Integration (beta) to be tested befor implementation in 0.118
+
+Removed:
+    - Mosquitto MQTT Broker as a AddOn
+
+## 28.10.2020
+Added:
+    - Shellies Discovery - python script (moved shellies to MQTT)
+
+Removed: 
+    - Shelly Integration
 
 ## 25.10.2020
 Added:

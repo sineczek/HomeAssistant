@@ -56,6 +56,7 @@
 * Philips Android TV
 * Philips Ambilight
 * QNap
+* Network UPS Tools
 * iPhone/iPad [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401) app]
 * nVidia Shield [Android [Home Assistant](https://play.google.com/store/apps/details?id=io.homeassistant.companion.android) app]
 
@@ -67,6 +68,7 @@
 * [BlitzOrtnung](https://github.com/mrk-its/homeassistant-blitzortung)
 * [Antistorm](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Antistorm)
 * [HACS](https://github.com/custom-components/hacs)
+* [Shiellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Tractive](https://github.com/Danielhiversen/home_assistant_tractive)
 * [Waze Travel Time](https://github.com/r-renato/ha-card-waze-travel-time)
 
