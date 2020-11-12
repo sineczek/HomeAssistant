@@ -5,7 +5,7 @@
       from: 'unknown'
 #      to: 'on'
   action:
-    service: notify.ios_iphone_sinq
+    service: notify.mobile_app_komofon_sinq
     data_template:
       title: 'Wyładowania atmosferyczne bliżej niż 10km'
       data:
@@ -18,7 +18,7 @@
         entity_id: binary_sensor.burze_dzis_net_storm_warning
         from: 'off'
   action:
-    service: notify.ios_iphone_sinq
+    service: notify.mobile_app_komofon_sinq
     data_template:
       title: 'Ostrzeżenie przed burzami.'
       data:

@@ -1,0 +1,4 @@
+google:
+  client_id: !secret calendarid
+  client_secret: !secret calendarsecret
+  track_new_calendar: false

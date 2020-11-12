@@ -29,6 +29,9 @@
 * Xiaomi Yeelight Philips Bulbs [MUE4088RT]
 * WiZ LED filament WiFi Bulbs [[Tasmota](https://tasmota.github.io/docs/) 8718699787172 ]
 * Arilux SL-LC01 RGB Controllers [[Tasmota](https://tasmota.github.io/docs/) firmware] + 2835 LED Strips [Warm and Cold]
+* Philips Hue Bulbs [Philips Hue Bridge](https://www.home-assistant.io/integrations/hue/) 
+* Philips Hue Strips [Philips Hue Bridge](https://www.home-assistant.io/integrations/hue/) 
+* Philips Hue Ambilight [Philips TV](https://www.home-assistant.io/integrations/philips_js/) 
 
 ## Switches
 
@@ -50,15 +53,19 @@
 ## Other Integrated Devices
 
 * Netatmo Weather Station 
+* Netatmo Thermostat
 * Ubiquity UniFi
 * Shelly
 * ONVIF
 * Philips Android TV
 * Philips Ambilight
+* Philips Hue Bridge
 * QNap
 * Network UPS Tools
-* iPhone/iPad [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401) app]
-* nVidia Shield [Android [Home Assistant](https://play.google.com/store/apps/details?id=io.homeassistant.companion.android) app]
+* iPhone/iPad 
+* nVidia Shield [Android 
+* RPi Reporter MQTT2HA Daemon
+
 
 
 
@@ -84,6 +91,7 @@
 * [light-brightness-preset-row](https://github.com/finity69x2/light-brightness-preset-row)
 * [flex-horseshoe-card](https://github.com/AmoebeLabs/flex-horseshoe-card)
 * [button-card](https://github.com/custom-cards/button-card)
+* [rpi-monitor-card](https://github.com/ironsheep/lovelace-rpi-monitor-card)
 
 ## Screenshots
 <p align="center">

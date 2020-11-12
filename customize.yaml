@@ -70,3 +70,6 @@ sensor.sonoffsalon_dht11_temperature:
 
 sensor.sensative_strips_access_control:
   icon: mdi:door
+
+switch.drzwi_lazienki:
+  icon: mdi:door

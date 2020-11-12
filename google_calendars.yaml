@@ -1,0 +1,23 @@
+
+- cal_id: !secret cal1
+  entities:
+  - device_id: urodziny
+    ignore_availability: true
+    name: Urodziny
+    track: false
+
+- cal_id: !secret cal2
+  entities:
+  - device_id: domowy_kalendarz
+    ignore_availability: true
+    name: Domowy Kalendarz
+    track: true
+
+- cal_id: !secret cal3
+  entities:
+  - device_id: michal
+    ignore_availability: true
+    name: "Michal"
+    track: false
+
+

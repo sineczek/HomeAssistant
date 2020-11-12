@@ -1,0 +1,11 @@
+binary_sensor:
+  - platform: mqtt
+    name: Full Dehumidifier tank
+    state_topic: RFBridge/Water1
+    payload_on: "ON"
+    payload_off: "OFF"
+    qos: 1 
+    device_class: moisture
+
+    
+

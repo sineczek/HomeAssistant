@@ -1,0 +1,17 @@
+sensor:
+  - platform: template
+    sensors:
+      bathroom_door:
+        friendly_name: Drzwi do łazienki
+        value_template: >
+          {% if is_state("switch.drzwi_lazienki", "on") %}
+          otwarte
+          {% else %}
+          zamknięte
+          {% endif %}
+        icon_template: >-
+          {% if is_state("switch.drzwi_lazienki", "on") %}
+            mdi:door-open
+          {% else %}
+            mdi:door-closed
+          {% endif %}

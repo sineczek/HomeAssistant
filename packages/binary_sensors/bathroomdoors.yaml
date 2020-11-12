@@ -1,7 +1,10 @@
 binary_sensor:
   - platform: mqtt
     name: Bathroom doors Sensor
-    state_topic: bathroomdoors/stat/STATUS
+    #state_topic: bathroomdoors/stat/STATUS
+    state_topic: bathroomdoors/stat/RESULT
+    payload_on: '{"POWER":"ON"}'
+    payload_off: '{"POWER":"OFF"}'
     value_template: ''
 
   - platform: mqtt
