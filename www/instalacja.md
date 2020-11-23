@@ -15,7 +15,7 @@
 
 	- docker version (sprawdzenie czy działa)
 
-3. Instalacja Kubernetes ( https://microk8s.io/ )       - do ogarnięcia
+3. Instalacja Kubernetes ( https://microk8s.io/ )       - można pominąć
 	- sudo snap install microk8s --channel=1.19 --classic
     - sudo usermod -a -G microk8s $USER$ 
                                         lub sudo chown -f -R $USER% ~/.kube
