@@ -43,16 +43,16 @@ camera:
       14: [82, 190, 128]
       15: [72, 201, 176]
       16: [165, 105, 18]
-    draw:
-      - charger
-      - path
-      - goto_path
-      - predicted_path
-      - no_go_zones
-      - no_mopping_zones
-      - vacuum_position
-      - virtual_walls
-      - zones
+    draw: ['all']
+      #- charger
+      #- path
+      #- goto_path
+      #- predicted_path
+      #- no_go_zones
+      #- no_mopping_zones
+      #- vacuum_position
+      #- virtual_walls
+      #- zones
     texts:
       - text: "Goscinny"
         x: 25
@@ -80,7 +80,7 @@ camera:
         #font_size: 26
     map_transformation:
       scale: 1
-      rotate: 180
+      rotate: 0
       trim:
         top: 20
         bottom: 20
