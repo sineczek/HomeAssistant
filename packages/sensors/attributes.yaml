@@ -19,7 +19,7 @@ sensor:
     unit_of_measurement: "%"
     entities:
       - device_tracker.hwuvoilu
-      - device_tracker.igwpawhd
+      - device_tracker.wgpsemgr
 
   - platform: attributes
     friendly_name: "Parametry Zwierząt"
@@ -28,5 +28,5 @@ sensor:
     unit_of_measurement: "%"
     entities:
       - device_tracker.hwuvoilu
-      - device_tracker.igwpawhd
+      - device_tracker.wgpsemgr
 

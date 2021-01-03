@@ -13,13 +13,13 @@
 #      title: Niski stan baterii u Froda
 #      message: >
 #        Jest wieczór a poziom baterii Froda wynosi
-#          * {{ states("sensor.igwpawhd_battery") }}
+#          * {{ states("sensor.hwuvoilu_battery") }}
 #          Może podłaczyć do ładowania ... ?
 #  - service: notify.mobile_app_iphone_malgorzata
 #    data: 
 #      title: Niski stan baterii u Froda
 #      message: >
 #        Jest wieczór a poziom baterii Froda wynosi
-#          * {{ states("sensor.igwpawhd_battery") }}
+#          * {{ states("sensor.hwuvoilu_battery") }}
 #          Może podłaczyć do ładowania ... ?
 #  mode: single

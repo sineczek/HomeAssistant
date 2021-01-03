@@ -5,7 +5,7 @@
 #    at: '22:55:00'
 #  condition:
 #  - condition: state
-#    entity_id: sensor.igwpawhd_battery
+#    entity_id: sensor.wgpsemgr_battery
 #    state: <40
 #  action:
 #  - service: notify.mobile_app_komofon_sinq
@@ -13,13 +13,13 @@
 #      title: Niski stan baterii u Inspektora
 #      message: >
 #        Jest wieczór a poziom baterii Inspektora wynosi
-#          * {{ states("sensor.igwpawhd_battery") }}
+#          * {{ states("sensor.wgpsemgr_battery") }}
 #          Może podłaczyć do ładowania ... ?
 #    - service: notify.mobile_app_iphone_malgorzata
 #    data: 
 #      title: Niski stan baterii u Inspektora
 #      message: >
 #        Jest wieczór a poziom baterii Inspektora wynosi
-#          * {{ states("sensor.igwpawhd_battery") }}
+#          * {{ states("sensor.wgpsemgr_battery") }}
 #          Może podłaczyć do ładowania ... ?
 #  mode: single

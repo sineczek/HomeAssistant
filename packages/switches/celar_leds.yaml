@@ -1,0 +1,11 @@
+switch:
+  - platform: mqtt
+    name: "LEDwPiwnicy"
+    state_topic: "schody/stat/POWER"
+    command_topic: "schody/cmnd/POWER"
+    availability_topic: "stat/schody_fb/LTW"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false

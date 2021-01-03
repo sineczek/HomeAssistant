@@ -4,4 +4,4 @@ sensor:
     duration:
       days: 7
     entities:
-      - sensor.netatmo_dom_ganek_temperature
+      - sensor.netatmo_dom_pokoj_dzienny_ganek_temperature
