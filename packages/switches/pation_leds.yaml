@@ -8,4 +8,4 @@ switch:
     payload_not_available: "Offline"
     payload_on: "ON"
     payload_off: "OFF"
-    retain: false
+    #retain: false
