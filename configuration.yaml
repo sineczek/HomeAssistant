@@ -9,7 +9,7 @@ homeassistant:
   customize: !include customize.yaml
   packages: !include_dir_named packages
 
-breaking_changes:
+#breaking_changes:
 
 panel_iframe:
   tasmoadmin:

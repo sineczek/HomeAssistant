@@ -18,8 +18,8 @@ before_install:
   - cd ambilights/
   - mv custom_components/ ..
   - cd ..
-  - git clone https://github.com/custom-components/breaking_changes.git
-  - mv breaking_changes/custom_components/breaking_changes/ ./custom_components/
+#  - git clone https://github.com/custom-components/breaking_changes.git
+#  - mv breaking_changes/custom_components/breaking_changes/ ./custom_components/
   - git clone https://github.com/pilotak/homeassistant-attributes.git
   - mv homeassistant-attributes/custom_components/attributes/ ./custom_components/
   - git clone https://github.com/Danielhiversen/home_assistant_tractive.git
