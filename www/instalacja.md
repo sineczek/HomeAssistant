@@ -27,7 +27,8 @@
 	- apt-get update
 	- apt-get install -y apparmor-utils apt-transport-https avahi-daemon ca-certificates curl dbus jq network-manager socat software-properties-common
 	- curl -sSL https://get.docker.com | sh
-	- curl -sL "https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh" | bash -s
+	-  docker run -d   --name homeassistant   --privileged   --restart=unless-stopped   -e TZ=Europe/Warsaw   -v /usr/share/hassio:/config   --network=host   ghcr.io/home-assistant/home-assistant:stable
+	- deprecated: curl -sL "https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh" | bash -s
 
 5. Pi-Hole
 	- curl -sSL https://install.pi-hole.net | bash
