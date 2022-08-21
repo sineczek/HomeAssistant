@@ -1,0 +1,58 @@
+- id: '1661113638003'
+  alias: Zmywarka.done
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: f1a5f1cb08e111eba0bc1909e0d89c47
+    entity_id: sensor.zmywarka_power
+    domain: sensor
+    above: 0
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    below: 5
+  condition:
+  - type: is_power
+    condition: device
+    device_id: f1a5f1cb08e111eba0bc1909e0d89c47
+    entity_id: sensor.zmywarka_power
+    domain: sensor
+    above: 0
+    below: 10
+  action:
+  - service: notify.mobile_app_komofon_sinq
+    data:
+      message: Zmywarka zakończyła pracę!
+      title: Zmywarka
+  mode: single
+- id: '1661113848440'
+  alias: Nowa automatyzacja
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: f1a5f1cb08e111eba0bc1909e0d89c47
+    entity_id: sensor.zmywarka_power
+    domain: sensor
+    above: 0
+    below: 10
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  condition:
+  - type: is_power
+    condition: device
+    device_id: f1a5f1cb08e111eba0bc1909e0d89c47
+    entity_id: sensor.zmywarka_power
+    domain: sensor
+    above: 0
+    below: 10
+  action:
+  - service: notify.mobile_app_komofon_sinq
+    data:
+      message: Zmywarka zakończyła pracę.
+      title: Zmywarka
+  mode: single

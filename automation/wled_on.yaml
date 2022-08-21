@@ -1,0 +1,18 @@
+alias: wled ganek on
+description: "Christmas WLEDs ON at 17:00"
+# mode: single
+trigger:
+  - platform: time
+    at: '17:00'
+action:
+  - type: turn_on
+    device_id: f5120fd13e5e7520053696e74ffff4a6
+    entity_id: light.wled
+    domain: light
+    brightness_pct: 100
+  - type: turn_on
+    device_id: 0008b91ec505e6de1c444b7bf7b6c172
+    entity_id: light.wled_2
+    domain: light
+    brightness_pct: 100
+mode: single
