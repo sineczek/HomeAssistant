@@ -29,6 +29,12 @@
 	- curl -sSL https://get.docker.com | sh
 	-  docker run -d   --name homeassistant   --privileged   --restart=unless-stopped   -e TZ=Europe/Warsaw   -v /usr/share/hassio:/config   --network=host   ghcr.io/home-assistant/home-assistant:stable
 	- deprecated: curl -sL "https://raw.githubusercontent.com/home-assistant/supervised-installer/master/installer.sh" | bash -s
+	- if above failes:
+		-supervisor: 
+		docker run -d        --name hassio_supervisor         --privileged --security-opt apparmor="hassio-supervisor"         -v /run/docker.sock:/run/docker.sock:rw         -v /run/dbus:/run/dbus:ro         -v /run/supervisor:/run/os:rw         -v /run/udev:/run/udev:ro         -v /etc/machine-id:/etc/machine-id:ro         -v /usr/share/hassio:/data:rw         -e SUPERVISOR_SHARE=/usr/share/hassio          -e SUPERVISOR_NAME=hassio_supervisor         -e SUPERVISOR_MACHINE=qemux86-64         ghcr.io/home-assistant/amd64-hassio-supervisor:2022.08.6
+		-core:
+		docker run -d   --name homeassistant   --privileged   --restart=unless-stopped   -e TZ=Europe/Warsaw   -v /usr/share/hassio:/config   --network=host   ghcr.io/home-assistant/home-assistant:stable
+
 
 5. Pi-Hole
 	- curl -sSL https://install.pi-hole.net | bash
