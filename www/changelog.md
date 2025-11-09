@@ -6,6 +6,9 @@
 
 ***
 # Changelog
+## 09.11.2025
+A lot of changes.
+
 ## 01.11.2020
 Added:
     - Mosquitto MQTT Broker as a service
