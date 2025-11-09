@@ -1,58 +1,3530 @@
-- id: '1661113638003'
-  alias: Zmywarka.done
-  description: ''
+- id: '1689445038167'
+  alias: Warrning - Heat
+  description: ostrzezenie przed upalem
   trigger:
-  - type: power
+  - type: unsafe
     platform: device
-    device_id: f1a5f1cb08e111eba0bc1909e0d89c47
-    entity_id: sensor.zmywarka_power
-    domain: sensor
-    above: 0
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-    below: 5
+    device_id: 14fa8e2bcee1649b63d759d1e288cfe3
+    entity_id: 743aa2be0d96ebdf08920b0623f8d681
+    domain: binary_sensor
   condition:
-  - type: is_power
-    condition: device
-    device_id: f1a5f1cb08e111eba0bc1909e0d89c47
-    entity_id: sensor.zmywarka_power
-    domain: sensor
-    above: 0
-    below: 10
+  - condition: time
+    after: 06:00:00
+    before: '23:00:00'
   action:
-  - service: notify.mobile_app_komofon_sinq
+  - service: notify.mobile_app_iphone
     data:
-      message: Zmywarka zakończyła pracę!
-      title: Zmywarka
+      message: Mogą wystąpić wysokie temperatury
+      title: Ostrzeżenie przed upałem
+  - service: notify.mobile_app_igos
+    data:
+      message: Mogą wystąpić wysokie temperatury
+      title: Ostrzeżenie przed upałem
   mode: single
-- id: '1661113848440'
-  alias: Nowa automatyzacja
+- id: '1689450385486'
+  alias: Light - Outside Stairs - Turn Off at 2300 weekdays
+  description: zgaszenie swiatel o 23 w tygodniu
+  trigger:
+  - platform: time
+    at: '23:00:00'
+  condition:
+  - condition: time
+    weekday:
+    - thu
+    - wed
+    - tue
+    - mon
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.schody_na_ganek_2
+  mode: single
+- id: '1689450407851'
+  alias: Light - Outside Stairs - Turn On at Sun set or at 2115
+  description: zapalenie o zmroku
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: '1'
+  - platform: time
+    at: '21:30:00'
+  condition:
+  - condition: state
+    entity_id: light.schody_na_ganek_2
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.schody_na_ganek_2
+  mode: single
+- id: '1689526387550'
+  alias: Light - Outside Stairs - Turn Off at 2330 weekends
+  description: zgaszenie swiatel o 2330 weekend
+  triggers:
+  - at: '23:59:00'
+    trigger: time
+  conditions:
+  - condition: time
+    weekday:
+    - fri
+    - sat
+    - sun
+  actions:
+  - data: {}
+    target:
+      entity_id: light.schody_na_ganek_2
+    action: light.turn_off
+  mode: single
+- id: '1689526900649'
+  alias: Warrning - Storm
+  description: ostrzezenie przed burzami
+  trigger:
+  - type: unsafe
+    platform: device
+    device_id: 14fa8e2bcee1649b63d759d1e288cfe3
+    entity_id: c841de6089b3592c6409e66733d432f0
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: 06:00:00
+    before: '23:00:00'
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      message: Burza w rejonie
+  - service: notify.mobile_app_igos
+    data:
+      message: Mogą wystąpić burze
+      title: Ostrzeżenie przed burzami
+  mode: single
+- id: '1689527194678'
+  alias: Warrning - Thunders
+  description: ostrzezenie przed burzami
+  trigger:
+  - type: unsafe
+    platform: device
+    device_id: 14fa8e2bcee1649b63d759d1e288cfe3
+    entity_id: bb8c8f76dc07e735a835916e612cb531
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: 06:00:00
+    before: '23:00:00'
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      message: Wyładowania w odległości nie większej jak 25km
+      title: Ostrzeżenie przed burzami
+  - service: notify.mobile_app_igos
+    data:
+      message: Wyładowania w odległości nie większej jak 25km
+      title: Ostrzeżenie przed burzami
+  mode: single
+- id: '1689528495429'
+  alias: Warning - Salt level below 20%
+  description: ''
+  triggers:
+  - entity_id: sensor.salt_level
+    for:
+      hours: 24
+      minutes: 0
+      seconds: 0
+    below: 20
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - action: notify.mobile_app_iphone
+    data: {}
+  mode: single
+- id: '1689528538346'
+  alias: Warning - Salt level below 10%
+  description: ''
+  triggers:
+  - entity_id: sensor.salt_level
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    below: 10
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - action: notify.mobile_app_iphone
+    data: {}
+  mode: single
+- id: '1689529361963'
+  alias: Warning - Lightnining less than 10km
   description: ''
   trigger:
-  - type: power
+  - type: distance
     platform: device
-    device_id: f1a5f1cb08e111eba0bc1909e0d89c47
-    entity_id: sensor.zmywarka_power
+    device_id: 6082bfc408e211eba67c2d37587de278
+    entity_id: bfda07f6ae586cfd6f138a4453ff0191
     domain: sensor
-    above: 0
-    below: 10
+    below: 11
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.blitzortung_lightning_counter
+    above: 1
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      message: Wyładowania atmosferyczne w odległości poniżej 10km
+      title: Ostrzeżenie - Wyładowania
+  mode: single
+- id: '1689614612348'
+  alias: 'Warning - Wash machine '
+  description: ''
+  use_blueprint:
+    path: sbyx/notify-or-do-something-when-an-appliance-like-a-dishwasher-or-washing-machine-finishes.yaml
+    input:
+      power_sensor: sensor.kuchnia_pralka_power
+      actions:
+      - service: notify.mobile_app_iphone
+        data:
+          message: Zakończyła pracę
+          title: Pralka
+      pre_actions:
+      - service: notify.mobile_app_igos
+        data:
+          message: Zakończyła pracę
+          title: Pralka
+      finishing_threshold: 2
+      starting_threshold: 10
+      starting_hysteresis: 2.5
+- id: '1689615269148'
+  alias: Warning - Dishwasher
+  description: ''
+  use_blueprint:
+    path: sbyx/notify-or-do-something-when-an-appliance-like-a-dishwasher-or-washing-machine-finishes.yaml
+    input:
+      power_sensor: sensor.zmywarka_power
+      actions:
+      - service: notify.mobile_app_iphone
+        data:
+          message: Zakończyło zmywanie i suszenie.
+          title: Zmywarka
+      - service: notify.mobile_app_igos
+        data:
+          message: Zakończyło zmywanie i suszenie.
+          title: Zmywarka
+      pre_actions: []
+      finishing_threshold: 2
+      finishing_hysteresis: 10
+- id: '1689623159883'
+  alias: Light - Ambilight - ON when TV is ON
+  description: Włącza Ambilight i synchronizację Hue, gdy telewizor jest włączony
+    po zmroku
+  triggers:
+  - entity_id: switch.philips_tv_screen_state
+    from: 'off'
+    to: 'on'
+    for: 00:00:30
+    trigger: state
+  - device_id: b6f653943e9b6c8f67ac00e347bcdbb3
+    domain: media_player
+    entity_id: c3fd41b76cf12c6b9022ae76971a88cc
+    type: turned_on
+    trigger: device
+  - device_id: b6f653943e9b6c8f67ac00e347bcdbb3
+    domain: philips_js
+    type: turn_on
+    trigger: device
+  - entity_id: media_player.dzienny
+    from: 'off'
+    to: 'on'
+    for: 00:02:00
+    trigger: state
+  conditions:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: person.michal
+      state: home
+    - condition: state
+      entity_id: person.gosia
+      state: home
+  - condition: sun
+    after: sunset
+  - condition: time
+    after: '16:00:00'
+    before: '22:59:00'
+  actions:
+  - alias: Włącz synchronizację Ambilight + Hue (tylko jeśli wyłączona)
+    if:
+    - condition: state
+      entity_id: switch.philips_tv_ambilight_hue
+      state: 'off'
+    then:
+    - target:
+        entity_id: switch.philips_tv_ambilight_hue
+      action: switch.turn_on
+      data: {}
+    - delay: 00:00:05
+  - alias: Włącz Ambilight
+    target:
+      entity_id: light.philips_tv_ambilight
+    action: light.turn_on
+    data: {}
+  - alias: Zaloguj akcję
+    data:
+      name: Ambilight Automation
+      message: Ambilight+Hue zostało uruchomione po włączeniu TV.
+      entity_id: light.philips_tv_ambilight
+    action: logbook.log
+  mode: restart
+  max_exceeded: silent
+- id: '1689625054477'
+  alias: Light - Ambilight + Hue OFF at 2300
+  description: Wyłącza Ambilight+Hue o 23:00 i gasi światła Hue
+  triggers:
+  - at: '23:00:00'
+    trigger: time
+  conditions: []
+  actions:
+  - target:
+      entity_id: switch.philips_tv_ambilight_hue
+    action: switch.turn_off
+    data: {}
+  - action: rest_command.hue_stop_entertainment
+  - delay: 00:00:03
+  - target:
+      entity_id:
+      - light.philips_tv_ambilight
+      - light.hue_lightstrip_plus_1
+      - light.regal_led_2
+    action: light.turn_off
+    data: {}
+  mode: single
+- id: '1689625383324'
+  alias: ALERT - water in basement
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.czujnik_zalania_odstojnik_piwnica_water_leak
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    id: Water removed in basement
+  - trigger: state
+    entity_id:
+    - binary_sensor.czujnik_zalania_odstojnik_piwnica_water_leak
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    id: Water in basement
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Water in cellar
+      - Water in basement
+    then:
+    - data:
+        message: Woda w piwnicy!
+        title: '* ALERT *'
+      action: notify.mobile_app_iphone
+  - if:
+    - condition: trigger
+      id:
+      - Water removed in basement
+    then:
+    - data:
+        message: Juz powinno byc OK.
+        title: '* ALERT *'
+      action: notify.mobile_app_iphone
+  - alias: Pompa ON
+    if:
+    - condition: trigger
+      id:
+      - Water in basement
+    then:
+    - type: turn_on
+      device_id: f1c9e0b408e111eb81f1b5cc8cc3e2a3
+      entity_id: 541e5a7fb970a5fe62b4ad2387a42f96
+      domain: switch
+  - alias: Pompa OFF
+    if:
+    - condition: trigger
+      id:
+      - Water removed in basement
+    then:
+    - type: turn_off
+      device_id: f1c9e0b408e111eb81f1b5cc8cc3e2a3
+      entity_id: 541e5a7fb970a5fe62b4ad2387a42f96
+      domain: switch
+  mode: parallel
+  max: 10
+- id: '1689625543258'
+  alias: ALERT - gas sensor in kitchen
+  description: ''
+  triggers:
+  - type: gas
+    device_id: 14841e89287942305f6f4746bf89e8ef
+    entity_id: d13f23221a0042d6ce5fb0ac8d5142e0
+    domain: binary_sensor
+    trigger: device
     for:
       hours: 0
       minutes: 2
       seconds: 0
-  condition:
-  - type: is_power
-    condition: device
-    device_id: f1a5f1cb08e111eba0bc1909e0d89c47
-    entity_id: sensor.zmywarka_power
-    domain: sensor
-    above: 0
-    below: 10
+  conditions: []
+  actions:
+  - action: notify.mobile_app_iphone
+    data: {}
+  mode: single
+- id: '1690144999500'
+  alias: Warning - Frodo Tractive battery
+  description: ''
+  triggers:
+  - entity_id: sensor.hwuvoilu_battery
+    below: 14.8
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - action: notify.mobile_app_iphone
+    data: {}
+  - data:
+      message: Poziom baterii ponizej 15%
+      title: Bateria Frodo Tractive
+    action: notify.mobile_app_igos
+  mode: single
+- id: '1691326303744'
+  alias: Update Map Extractor camera
+  description: ''
+  use_blueprint:
+    path: PiotrMachowski/update_map_extractor.yaml
+    input:
+      vacuum: vacuum.alex
+      camera: camera.plan_odkurzacza
+      mode_to_handle: two_intervals
+- id: '1691933084523'
+  alias: FANs -OFF
+  description: Włącz wiatraki o 23:15
+  trigger:
+  - platform: time
+    at: '23:15:00'
+  condition: []
   action:
-  - service: notify.mobile_app_komofon_sinq
+  - service: fan.turn_off
+    data: {}
+    target:
+      entity_id:
+      - fan.wiatrakpiwnica
+      - fan.bathroom_fan_bathroom_fan
+  mode: queued
+  max: 10
+- id: '1691936925194'
+  alias: FAN - Basement - ON
+  description: 'on: schedule'
+  trigger:
+  - platform: state
+    entity_id:
+    - schedule.basement_fan
+    to: 'on'
+    id: Basement FAN ON
+  - platform: state
+    entity_id:
+    - schedule.basement_fan
+    from: 'on'
+    to: 'off'
+    id: Basement FAN OFF
+  condition:
+  - condition: time
+    after: 05:00:00
+    before: '23:00:00'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  action:
+  - if:
+    - condition: trigger
+      id:
+      - Basement FAN ON
+    then:
+    - service: fan.turn_on
+      data: {}
+      target:
+        entity_id: fan.wiatrakpiwnica
+  - if:
+    - condition: trigger
+      id:
+      - Basement FAN OFF
+    then:
+    - service: fan.turn_off
+      data: {}
+      target:
+        entity_id: fan.wiatrakpiwnica
+  mode: queued
+  max: 10
+- id: '1691938524610'
+  alias: Light - Livingroom - Night Lamp
+  description: 'single: toggle
+
+    long: turn off all in Livingroom'
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: 27fafe840ef511eb87fafdc72a8691c0
+      button_single:
+      - data:
+          transition: 6
+        target:
+          entity_id:
+          - light.hue_color_lamp_2
+        action: light.toggle
+      button_long: []
+- id: '1691938835568'
+  alias: Light - Livingroom - Main - 1bulb/hue
+  description: ''
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: f1a79ba608e111eba408370aaf130dd4
+      channel: 2
+      button_single:
+      - data:
+          transition: 10
+          color_temp: 428
+          brightness_pct: 71
+        target:
+          entity_id:
+          - light.hue_color_lamp_2
+        action: light.toggle
+      button_long:
+      - data: {}
+        target:
+          entity_id:
+          - light.philips_hue_bulb_dzienny_duza
+        action: light.toggle
+- id: '1691939048693'
+  alias: Light - Livingroom - Main - reading/2bulbs
+  description: ''
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: f1a79ba608e111eba408370aaf130dd4
+      channel: 1
+      button_single:
+      - data:
+          transition: 3
+        action: light.toggle
+        target:
+          entity_id: light.philips_hue_bulb_do_czytania
+      button_long:
+      - data: {}
+        target:
+          entity_id:
+          - light.philips_huew_bulb_dzienny_mala_1z2
+          - light.philips_huew_bulb_dzienny_mala_2z2
+        action: light.toggle
+- id: '1691939587905'
+  alias: Light - Kitchen - main/leds
+  description: ''
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: d7bb37325026cde9bb1c42ed23107923
+      button_single:
+      - if:
+        - condition: time
+          before: '15:00:00'
+          weekday:
+          - sun
+          - sat
+          - fri
+          - thu
+          - wed
+          - mon
+          - tue
+          after: '23:00:00'
+        then:
+        - data:
+            transition: 4
+          target:
+            entity_id:
+            - light.kuchnia_cokol_kuchnia_cokol
+            - light.blat_lewy_ledy_blat_lewy
+            - light.ledywkuchni_2
+          action: light.toggle
+        enabled: false
+      - if:
+        - condition: sun
+          after: sunrise
+        - condition: time
+          after: '15:00:00'
+          weekday:
+          - sun
+          - sat
+          - fri
+          - thu
+          - wed
+          - mon
+          - tue
+          before: '23:00:00'
+        then:
+        - data:
+            transition: 10
+            brightness_pct: 90
+          target:
+            entity_id:
+            - light.ledywkuchni_2
+            - light.kuchnia_cokol_kuchnia_cokol
+            - light.blat_lewy_ledy_blat_lewy
+          action: light.toggle
+        enabled: false
+      - data:
+          profile: Kuchnia main
+        action: light.toggle
+        target:
+          entity_id: light.kuchnia_2
+      button_long:
+      - data:
+          profile: Kuchnia main
+        action: light.toggle
+        target:
+          entity_id: light.kuchnia_2
+      channel: 2
+      button_double: []
+- id: '1691941854764'
+  alias: Light - Salon - Night Lamp
+  description: 'single: toggle
+
+    long: turn off all in Salon'
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: cf2109ad13a611eb9f6c9bef4b65b860
+      button_single:
+      - data:
+          transition: 6
+          brightness_pct: 95
+        action: light.toggle
+        target:
+          entity_id: light.philips_hue_bulb_salon_nocna
+      button_long:
+      - data: {}
+        target:
+          entity_id:
+          - light.swiatlo_glowne
+        action: light.toggle
+      channel: 1
+- id: '1691941983562'
+  alias: Light - Salon - Main
+  description: ''
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: c5d37a1413d60d7d833ba9563d0e30d3
+      button_single:
+      - data: {}
+        target:
+          entity_id:
+          - light.swiatlo_glowne
+        action: light.toggle
+      button_long:
+      - data: {}
+        target:
+          entity_id:
+          - light.philips_hue_bulb_salon_nocna
+        action: light.toggle
+      channel: 2
+- id: '1691942082115'
+  alias: Light - Salon - Main - Night Lamp
+  description: ''
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: c5d37a1413d60d7d833ba9563d0e30d3
+      channel: 1
+      button_single:
+      - data:
+          transition: 6
+          brightness_pct: 95
+        action: light.toggle
+        target:
+          entity_id: light.philips_hue_bulb_salon_nocna
+- id: '1691986633659'
+  alias: Light - Kitchen - Motion detection in the morning
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.philips_motion_sensor_zigbee_kuchnia_occupancy
+    to: 'on'
+    id: Kitchen - motion detected
+    trigger: state
+  - entity_id:
+    - binary_sensor.philips_motion_sensor_zigbee_kuchnia_occupancy
+    to: 'off'
+    id: Kitchen - motion cleared
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    trigger: state
+  conditions:
+  - condition: time
+    after: 05:55:00
+    before: '10:00:00'
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Kitchen - motion detected
+      sequence:
+      - data:
+          transition: 20
+          rgb_color:
+          - 255
+          - 199
+          - 119
+          brightness_pct: 95
+        target:
+          entity_id:
+          - light.kuchnia_cokol
+        action: light.turn_on
+      - data:
+          transition: 10
+          brightness_pct: 75
+        target:
+          entity_id:
+          - light.kuchnia_blat_lewy
+        action: light.turn_on
+      - data:
+          transition: 10
+          brightness_pct: 75
+        action: light.turn_on
+        target:
+          entity_id:
+          - light.kuchnia_blat_prawy
+    - conditions:
+      - condition: trigger
+        id:
+        - Kitchen - motion cleared
+      sequence:
+      - data:
+          transition: 20
+        target:
+          entity_id:
+          - light.kuchnia_blat_lewy
+          - light.kuchnia_blat_prawy
+          - light.kuchnia_cokol
+        action: light.turn_off
+  mode: queued
+  max: 10
+- id: '1691992815523'
+  alias: Light - Kitchen - turn off @ 2315
+  description: ''
+  triggers:
+  - at: '23:15:00'
+    trigger: time
+  conditions: []
+  actions:
+  - data: {}
+    target:
+      entity_id:
+      - light.kuchnia_blat_lewy
+      - light.kuchnia_blat_prawy
+      - light.kuchnia_cokol
+    action: light.turn_off
+  mode: queued
+  max: 10
+- id: '1691992964622'
+  alias: Light - Kitchen - Motion night light
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.philips_motion_sensor_zigbee_kuchnia_occupancy
+    to: 'on'
+    id: Kitchen - motion detected
+    trigger: state
+  - entity_id:
+    - binary_sensor.philips_motion_sensor_zigbee_kuchnia_occupancy
+    to: 'off'
+    id: Kitchen - motion cleared
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    trigger: state
+  conditions:
+  - condition: time
+    after: '23:16:00'
+    before: 05:54:00
+    weekday:
+    - sun
+    - sat
+    - fri
+    - thu
+    - wed
+    - tue
+    - mon
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Kitchen - motion detected
+      sequence:
+      - data:
+          transition: 20
+          rgb_color:
+          - 255
+          - 199
+          - 119
+          brightness_pct: 35
+        target:
+          entity_id:
+          - light.kuchnia_cokol
+        action: light.turn_on
+    - conditions:
+      - condition: trigger
+        id:
+        - Kitchen - motion cleared
+      sequence:
+      - data:
+          transition: 20
+        target:
+          entity_id:
+          - light.kuchnia_blat_lewy
+          - light.kuchnia_blat_prawy
+          - light.kuchnia_cokol
+        action: light.turn_off
+  mode: queued
+  max: 10
+- id: '1691995298233'
+  alias: FAN - Bathroom - Humidity actions
+  description: ''
+  trigger:
+  - type: humidity
+    platform: device
+    device_id: 5185abf0b8afe4712782037efb7cc929
+    entity_id: d84053efb2f9e16c1c44952cf7c7e1b2
+    domain: sensor
+    above: 90
+    id: Bathroom humidity 90+
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - type: humidity
+    platform: device
+    device_id: 5185abf0b8afe4712782037efb7cc929
+    entity_id: d84053efb2f9e16c1c44952cf7c7e1b2
+    domain: sensor
+    above: 80
+    id: Bathroom humidity 80+
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - type: humidity
+    platform: device
+    device_id: 5185abf0b8afe4712782037efb7cc929
+    entity_id: d84053efb2f9e16c1c44952cf7c7e1b2
+    domain: sensor
+    id: Bathroom humidity 80-
+    below: 80
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: and
+          conditions:
+          - condition: state
+            for:
+              hours: 0
+              minutes: 15
+              seconds: 0
+            entity_id: fan.bathroom_fan_bathroom_fan
+            state: 'on'
+          - condition: trigger
+            id:
+            - Bathroom humidity 90+
+        - condition: and
+          conditions:
+          - condition: state
+            for:
+              hours: 0
+              minutes: 15
+              seconds: 0
+            entity_id: fan.bathroom_fan_bathroom_fan
+            state: 'on'
+          - type: is_humidity
+            condition: device
+            device_id: 5185abf0b8afe4712782037efb7cc929
+            entity_id: d84053efb2f9e16c1c44952cf7c7e1b2
+            domain: sensor
+            above: 90
+      sequence:
+      - service: fan.turn_off
+        data: {}
+        target:
+          entity_id: fan.bathroom_fan_bathroom_fan
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: and
+          conditions:
+          - condition: state
+            for:
+              hours: 0
+              minutes: 10
+              seconds: 0
+            entity_id: fan.bathroom_fan_bathroom_fan
+            state: 'on'
+          - condition: trigger
+            id:
+            - Bathroom humidity 80+
+        - condition: and
+          conditions:
+          - condition: state
+            for:
+              hours: 0
+              minutes: 10
+              seconds: 0
+            entity_id: fan.bathroom_fan_bathroom_fan
+            state: 'on'
+          - type: is_humidity
+            condition: device
+            device_id: 5185abf0b8afe4712782037efb7cc929
+            entity_id: d84053efb2f9e16c1c44952cf7c7e1b2
+            domain: sensor
+            above: 80
+      sequence:
+      - service: fan.turn_off
+        data: {}
+        target:
+          entity_id: fan.bathroom_fan_bathroom_fan
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: and
+          conditions:
+          - condition: state
+            for:
+              hours: 0
+              minutes: 4
+              seconds: 0
+            entity_id: fan.bathroom_fan_bathroom_fan
+            state: 'on'
+          - condition: trigger
+            id:
+            - Bathroom humidity 80-
+        - condition: and
+          conditions:
+          - condition: state
+            for:
+              hours: 0
+              minutes: 4
+              seconds: 0
+            entity_id: fan.bathroom_fan_bathroom_fan
+            state: 'on'
+          - type: is_humidity
+            condition: device
+            device_id: 5185abf0b8afe4712782037efb7cc929
+            entity_id: d84053efb2f9e16c1c44952cf7c7e1b2
+            domain: sensor
+            below: 80
+      sequence:
+      - service: fan.turn_off
+        data: {}
+        target:
+          entity_id: fan.bathroom_fan_bathroom_fan
+  mode: queued
+  max: 10
+- id: '1692091727545'
+  alias: FAN - Bathroom - Trigger after 30 sec, End based on humidity
+  description: uses another automation
+  triggers:
+  - entity_id:
+    - light.lazienka_2
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+    id: Bathroom FAN ON
+    trigger: state
+  - entity_id:
+    - light.lazienka_2
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    id: Bathroom FAN OFF
+    trigger: state
+  - entity_id:
+    - light.lazienka_2
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    id: Bathroom FAN OFF
+    trigger: state
+  - entity_id:
+    - light.lazienka_2
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+    id: Bathroom FAN OFF 15min
+    trigger: state
+  conditions:
+  - condition: time
+    after: 05:00:00
+    before: '23:00:00'
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  actions:
+  - data: {}
+    target:
+      entity_id: fan.bathroom_fan
+    enabled: false
+    action: fan.turn_on
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - Bathroom FAN ON
+      sequence:
+      - data: {}
+        target:
+          entity_id: fan.bathroom_fan_bathroom_fan
+        action: fan.turn_on
+    - conditions:
+      - condition: trigger
+        id:
+        - Bathroom FAN OFF
+      sequence:
+      - data:
+          skip_condition: false
+        target:
+          entity_id: automation.bathroom_fan_humidity_actions
+        action: automation.trigger
+    - conditions:
+      - condition: trigger
+        id:
+        - Bathroom FAN OFF 15min
+      sequence:
+      - data: {}
+        target:
+          entity_id: fan.bathroom_fan_bathroom_fan
+        action: fan.turn_off
+  mode: queued
+  max: 10
+- id: '1692093428996'
+  alias: Blinds - Kitchen
+  description: '0% - 23:00
+
+    25% - sunset
+
+    33% - sunrise, 6:15
+
+    80% - 9:00'
+  trigger:
+  - platform: time
+    at: 06:15:00
+    id: 33% at 615
+  - platform: sun
+    event: sunrise
+    offset: 0
+    id: 33% at sunrise
+  - platform: time
+    at: '23:00:00'
+    id: 0% at 2300
+  - platform: sun
+    event: sunset
+    offset: 0
+    id: 25% at sunset
+  - platform: time
+    at: 09:00:00
+    id: 80% at 900
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id:
+          - 33% at 615
+        - condition: trigger
+          id:
+          - 33% at sunrise
+      sequence:
+      - service: cover.set_cover_position
+        data:
+          position: 33
+        target:
+          device_id: 61abb4dbe991d78b9f93a326c239309e
+    - conditions:
+      - condition: trigger
+        id:
+        - 0% at 2300
+      sequence:
+      - service: cover.set_cover_position
+        data:
+          position: 0
+        target:
+          device_id: 61abb4dbe991d78b9f93a326c239309e
+    - conditions:
+      - condition: trigger
+        id:
+        - 25% at sunset
+      sequence:
+      - service: cover.set_cover_position
+        data:
+          position: 25
+        target:
+          device_id: 61abb4dbe991d78b9f93a326c239309e
+    - conditions:
+      - condition: trigger
+        id:
+        - 80% at 900
+      sequence:
+      - service: cover.set_cover_position
+        data:
+          position: 80
+        target:
+          device_id: 61abb4dbe991d78b9f93a326c239309e
+  mode: queued
+  max: 10
+- id: '1694721818101'
+  alias: Alert - Enemy at the gate
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 65c68fb6cd02e5f18974bb091153edbe
+    entity_id: a14b465554e45421e68afd2c61c82668
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - data:
+      filename: /config/www/wjazd_image.jpg
+    target:
+      entity_id: camera.g5_bullet_high
+    action: camera.snapshot
+  - action: notify.mobile_app_iphone
+    data: {}
+  - action: fully_kiosk.load_url
+    target:
+      device_id: 0521ba719b6ea817c0bd1959b6b4f5f9
     data:
-      message: Zmywarka zakończyła pracę.
-      title: Zmywarka
+      url: /lovelace/camera-wejscie
+  mode: single
+- id: '1696357487621'
+  alias: Light - Livingroom - Reading Lamp
+  description: ''
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: 6fd08be7e2e4ba48377635d7ccc259e8
+      button_single:
+      - data:
+          transition: 3
+        action: light.toggle
+        target:
+          entity_id: light.philips_hue_bulb_do_czytania
+      channel: 0
+- id: '1696685927606'
+  alias: Light - Livingroom - Reading Light HUE
+  description: ''
+  triggers:
+  - device_id: 6fd08be7e2e4ba48377635d7ccc259e8
+    domain: shelly
+    type: single
+    subtype: button
+    trigger: device
+  conditions: []
+  actions:
+  - data:
+      transition: 3
+    action: light.toggle
+    target:
+      entity_id: light.philips_hue_bulb_do_czytania
+  mode: single
+- id: '1702919578096'
+  alias: WARNING - water leak in the bathroom
+  description: ''
+  triggers:
+  - type: moist
+    device_id: 33c634af12f511ebb4d7bfde55b97c5e
+    entity_id: d879d4bc49e20ad729da294c45664aa9
+    domain: binary_sensor
+    trigger: device
+  conditions: []
+  actions:
+  - data:
+      message: 'woda w łazience !! '
+      title: WODA
+    enabled: true
+    action: notify.mobile_app_igos
+  - action: notify.mobile_app_iphone
+    data: {}
+  mode: single
+- id: '1706428323355'
+  alias: BACKUP weekly to TrueNas
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00:00
+  condition:
+  - condition: time
+    weekday:
+    - sat
+    after: 06:00:00
+    before: 08:00:00
+  action:
+  - service: hassio.backup_full
+    metadata: {}
+    data:
+      compressed: true
+      homeassistant_exclude_database: false
+  mode: single
+- id: '1708774798457'
+  alias: Light - Piwnica OFF po 10min
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: 70ab2f720cb3e8176ad6469885f47683
+    entity_id: 841b3ae576a765b202e995248a5b7413
+    domain: switch
+    trigger: device
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  conditions:
+  - type: is_open
+    condition: device
+    device_id: 85371c19d29c2a5d38ab63a501a17556
+    entity_id: 79f5413791938af685d34f141593e7e2
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  actions:
+  - type: turn_off
+    device_id: 70ab2f720cb3e8176ad6469885f47683
+    entity_id: 841b3ae576a765b202e995248a5b7413
+    domain: switch
+  mode: single
+- id: '1708774888071'
+  alias: Light - Piwnica OFF gdy drzwi zamkniete
+  description: ''
+  triggers:
+  - type: opened
+    device_id: 85371c19d29c2a5d38ab63a501a17556
+    entity_id: 79f5413791938af685d34f141593e7e2
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  conditions:
+  - condition: device
+    type: is_off
+    device_id: 70ab2f720cb3e8176ad6469885f47683
+    entity_id: 841b3ae576a765b202e995248a5b7413
+    domain: switch
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  actions:
+  - type: turn_off
+    device_id: 70ab2f720cb3e8176ad6469885f47683
+    entity_id: 841b3ae576a765b202e995248a5b7413
+    domain: switch
+  mode: single
+- id: '1711394690674'
+  alias: Dzienny - Osuszacz
+  description: ''
+  triggers:
+  - at: 09:00:00
+    id: 9rano start
+    trigger: time
+  - at: '21:59:00'
+    id: 22stop
+    trigger: time
+  - at: '11:00:00'
+    id: 11rano start
+    trigger: time
+  conditions:
+  - condition: or
+    conditions:
+    - condition: time
+      after: 09:00:00
+      before: '22:00:00'
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+    - condition: time
+      after: '11:00:00'
+      before: '22:00:00'
+      weekday:
+      - sat
+      - sun
+  actions:
+  - if:
+    - condition: or
+      conditions:
+      - condition: trigger
+        id:
+        - 11rano start
+      - condition: trigger
+        id:
+        - 9rano start
+    then:
+    - type: turn_on
+      device_id: 26cf0af03622297f5b69b484a04fbb48
+      entity_id: eb9f9d25abfa7cb009768a7297617b93
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - 22stop
+    then:
+    - type: turn_off
+      device_id: 26cf0af03622297f5b69b484a04fbb48
+      entity_id: eb9f9d25abfa7cb009768a7297617b93
+      domain: switch
+  mode: parallel
+  max: 10
+- id: '1717063783404'
+  alias: ALERT Skrzynka pocztowa
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.skrzynka_na_listy_contact
+    from:
+    to:
+    - 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+    trigger: state
+  conditions: []
+  actions:
+  - action: notify.mobile_app_igos
+    metadata: {}
+    data:
+      title: Skrzynka pocztowa zostala otwarta
+      message: Poczta
+  - action: notify.mobile_app_iphone
+    metadata: {}
+    data:
+      message: Poczta
+      title: Skrzynka pocztowa zostala otwarta
+  mode: single
+- id: '1717176045238'
+  alias: Smart Irrigation
+  description: Start Smart Irrigation based on event and run it only if the `sensor.smart_irrigation_trawnik`
+    is >0 and run it for precisely that many seconds
+  triggers:
+  - at: '22:55:00'
+    id: Irrigation ON
+    trigger: time
+  - at: '23:00:00'
+    id: Irrigation OFF
+    trigger: time
+  conditions:
+  - type: is_precipitation
+    condition: device
+    device_id: 06f2b2a4c704d2ee70f749eca2214994
+    entity_id: 85e84355318563353927dad9146815bb
+    domain: sensor
+    below: 15
+  - condition: template
+    value_template: '{{ now().month in [4,5,6,7,8,9] }}'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: sensor.season
+      state: spring
+    - condition: state
+      entity_id: sensor.season
+      state: summer
+    - condition: state
+      entity_id: sensor.season
+      state: autumn
+  actions:
+  - alias: Irrigation ON
+    if:
+    - condition: trigger
+      id:
+      - Irrigation ON
+    - type: is_precipitation
+      condition: device
+      device_id: 06f2b2a4c704d2ee70f749eca2214994
+      entity_id: 4660c0e1667081bb9514f203d02e4dde
+      domain: sensor
+      below: 3
+    then:
+    - data: {}
+      action: switch.turn_on
+      target:
+        entity_id: switch.sterownik_nawadniania
+  - alias: Irrigation OFF
+    if:
+    - condition: trigger
+      id:
+      - Irrigation OFF
+    then:
+    - data: {}
+      action: switch.turn_off
+      target:
+        entity_id: switch.sterownik_nawadniania
+    - data: {}
+      entity_id: sensor.smart_irrigation_trawnik
+      action: smart_irrigation.reset_bucket
+  mode: single
+- id: '1718963624382'
+  alias: Turn off sprinklers after 15 min
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: adc1b511fee2f2645bed19989338b610
+    entity_id: ed645974fd28c13fc81d135c51e91a2e
+    domain: switch
+    trigger: device
+    for:
+      hours: 0
+      minutes: 12
+      seconds: 0
+  conditions: []
+  actions:
+  - metadata: {}
+    data: {}
+    action: switch.turn_off
+    target:
+      entity_id: switch.sterownik_nawadniania
+  mode: single
+- id: '1721558774848'
+  alias: Oczyszczacz OFF
+  description: ''
+  triggers:
+  - type: turned_off
+    device_id: 0c1c3a9f6c6e17a56f0533cf64995242
+    entity_id: ed40b0f185fb02f18599197c56019414
+    domain: switch
+    trigger: device
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  conditions: []
+  actions:
+  - metadata: {}
+    data:
+      message: Gniazdko oczyszczacza wody zgłasza sie, że jest OFF od ponad 15min
+      title: Oczyszczacz
+    action: notify.mobile_app_iphone
+  mode: single
+- id: '1721654785340'
+  alias: Turn ON zigbee after power off
+  description: ''
+  triggers:
+  - entity_id:
+    - switch.gniazdko_piwnica_oczyszczacz_wody
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+    trigger: state
+    from:
+  conditions: []
+  actions:
+  - metadata: {}
+    data: {}
+    action: switch.turn_on
+    target:
+      entity_id: switch.gniazdko_piwnica_oczyszczacz_wody
+  mode: single
+- id: '1722518106161'
+  alias: Roden repelant
+  description: odstraszacz kun i gryzoni
+  triggers:
+  - at: '23:55:00'
+    id: Kuny ON
+    trigger: time
+  - at: 05:00:00
+    id: Kuny OFF
+    trigger: time
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Kuny ON
+    then:
+    - type: turn_on
+      device_id: 6745a3f46134870d5640aac657741896
+      entity_id: ec55d6a86712bd786fd019cfc226ca34
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - Kuny OFF
+    then:
+    - type: turn_off
+      device_id: 6745a3f46134870d5640aac657741896
+      entity_id: ec55d6a86712bd786fd019cfc226ca34
+      domain: switch
+  mode: parallel
+  max: 10
+- id: '1725822715646'
+  alias: Smart Irrigation @12
+  description: Start Smart Irrigation based on event and run it only if the `sensor.smart_irrigation_trawnik`
+    is >0 and run it for precisely that many seconds
+  triggers:
+  - at: '12:00:00'
+    id: Irrigation ON
+    trigger: time
+  - at: '12:02:00'
+    id: Irrigation OFF
+    trigger: time
+  conditions:
+  - type: is_precipitation
+    condition: device
+    device_id: 06f2b2a4c704d2ee70f749eca2214994
+    entity_id: 85e84355318563353927dad9146815bb
+    domain: sensor
+    below: 10
+  - condition: template
+    value_template: '{{ now().month in [4,5,6,7,8,9] }}'
+  - condition: time
+    weekday:
+    - mon
+    - wed
+    - fri
+    - tue
+    - thu
+  actions:
+  - alias: Irrigation ON
+    if:
+    - condition: trigger
+      id:
+      - Irrigation ON
+    - type: is_precipitation
+      condition: device
+      device_id: 06f2b2a4c704d2ee70f749eca2214994
+      entity_id: 4660c0e1667081bb9514f203d02e4dde
+      domain: sensor
+      below: 3
+    then:
+    - data: {}
+      action: switch.turn_on
+      target:
+        entity_id: switch.sterownik_nawadniania
+  - alias: Irrigation OFF
+    if:
+    - condition: trigger
+      id:
+      - Irrigation OFF
+    then:
+    - data: {}
+      action: switch.turn_off
+      target:
+        entity_id: switch.sterownik_nawadniania
+    - data: {}
+      entity_id: sensor.smart_irrigation_trawnik
+      action: smart_irrigation.reset_bucket
+  mode: single
+- id: '1725823303531'
+  alias: BMW - windows open not home
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:30:00'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.320d_xdrive_lids
+      state: 'on'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+    - condition: state
+      entity_id: device_tracker.320d_xdrive
+      state: not_home
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+  action:
+  - action: notify.mobile_app_iphone
+    data:
+      message: Nie zamknięte okno/a w aucie!
+  mode: single
+- id: '1725823715529'
+  alias: BMW - not locked not home
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.320d_xdrive_door_lock_state
+      state: 'on'
+      for:
+        hours: 0
+        minutes: 5
+        seconds: 0
+    - condition: state
+      entity_id: device_tracker.320d_xdrive
+      state: not_home
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+  action:
+  - action: notify.mobile_app_iphone
+    data:
+      message: Nie zamknięte auto!
+  - action: lock.lock
+    metadata: {}
+    data: {}
+    target:
+      entity_id: lock.320d_xdrive_zamek
+  mode: single
+- id: '1725824216725'
+  alias: BMW - low gasoline lvl (below 15%)
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00:00
+  condition:
+  - condition: and
+    conditions:
+    - type: is_value
+      condition: device
+      device_id: 980fc52ce12b71d59741d3bdd601ad4f
+      entity_id: 95652f00e9bf44ad17cd7ad4fd4b8e69
+      domain: sensor
+      below: 15
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+  action:
+  - action: notify.mobile_app_iphone
+    data:
+      message: BMW niski poziom paliwa - trzeba bedzie dzis zatankowac
+  mode: single
+- id: '1725824339768'
+  alias: BMW - open between 10PM - 5AM
+  description: ''
+  trigger:
+  - type: not_locked
+    platform: device
+    device_id: 980fc52ce12b71d59741d3bdd601ad4f
+    entity_id: ce49e8b2e8c50e627a52c761a5f0457f
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition:
+  - condition: time
+    after: '22:00:00'
+    before: 07:00:00
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+    - sun
+  action:
+  - action: notify.mobile_app_iphone
+    data:
+      message: BMW - AUTO ZOSAŁO OTWARTE
+  mode: single
+- id: '1726398774714'
+  alias: FAN & Lights - Bathroom lights and FAN
+  description: ''
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: d7bb37325026cde9bb1c42ed23107923
+      button_long:
+      - type: toggle
+        device_id: 03fe8747295dc34e5f89c99fea1bfad9
+        entity_id: 7e25b4b40fff125e12265004607173d9
+        domain: switch
+        enabled: true
+      button_single:
+      - type: toggle
+        device_id: d7bb37325026cde9bb1c42ed23107923
+        entity_id: 3213c3f7920d6e36abef6b2f6d0eaa7e
+        domain: light
+        enabled: true
+      channel: 2
+- id: '1733250789420'
+  alias: ALERT - Smoke in the kitchen
+  description: ''
+  triggers:
+  - type: smoke
+    device_id: 408b3aaec1ddd310edcef8b48fb9c911
+    entity_id: 5ef88ade7366c0acde798d3d4b9b7d9d
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    id: Smoke ON
+  - trigger: state
+    entity_id:
+    - binary_sensor.czujnik_dymu_w_kuchni_smoke
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    id: Smoke OFF
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Smoke ON
+    then:
+    - action: notify.mobile_app_iphone
+      data:
+        message: Dym w kuchni
+    - action: notify.mobile_app_igos
+      data:
+        message: Dym w kuchni
+  - if:
+    - condition: trigger
+      id:
+      - Smoke OFF
+    then:
+    - action: notify.mobile_app_iphone
+      data:
+        message: Dym w kuchni powinno byc juz ok
+    - action: notify.mobile_app_igos
+      data:
+        message: Dym w kuchni - powinno byc juz OK
+  mode: parallel
+  max: 10
+- id: '1733569743950'
+  alias: Lights - Ganek
+  description: ''
+  triggers:
+  - domain: mqtt
+    device_id: bb672d670217b2959d9d51208610e8e5
+    type: action
+    subtype: single_right
+    trigger: device
+  conditions: []
+  actions:
+  - type: toggle
+    device_id: 63b4e2e53d2e9428054e7fed512714ed
+    entity_id: 581fa0b775c32729f874e7d539b9b63b
+    domain: light
+  mode: single
+- id: '1733569783667'
+  alias: Lights - Ganek wejscie
+  description: ''
+  triggers:
+  - domain: mqtt
+    device_id: bb672d670217b2959d9d51208610e8e5
+    type: action
+    subtype: single_left
+    trigger: device
+  conditions: []
+  actions:
+  - type: toggle
+    device_id: 875b5e6039ab8515394507df8fd306d7
+    entity_id: 3305583afe0d52fa8d21054f88bb20c6
+    domain: light
+  mode: single
+- id: '1733596297975'
+  alias: Osuszacz
+  description: ''
+  triggers:
+  - trigger: time
+    at: 09:00:00
+    id: start 9
+  - trigger: time
+    at: '11:00:00'
+    id: start 11
+  - trigger: time
+    at: '22:00:00'
+    id: stop 22
+  conditions:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - start 9
+      - condition: time
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - start 11
+      - condition: time
+        weekday:
+        - sat
+        - sun
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - stop 22
+      - condition: time
+        weekday:
+        - sat
+        - sun
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - start 9
+      - start 11
+    then:
+    - action: switch.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.gniazdko_goscinny_okno
+  - if:
+    - condition: trigger
+      id:
+      - stop 22
+    then:
+    - action: switch.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.gniazdko_goscinny_okno
+  mode: parallel
+  max: 10
+- id: '1733657235514'
+  alias: Lights - schody do piwnicy
+  description: ''
+  triggers:
+  - type: opened
+    device_id: 78d5ebec11bb58195a740856e3359a38
+    entity_id: af2bf13bef98e3a79eb715f5b1eb3d7b
+    domain: binary_sensor
+    trigger: device
+    id: drzwi do piwnicy otwarte
+  - type: not_opened
+    device_id: 78d5ebec11bb58195a740856e3359a38
+    entity_id: af2bf13bef98e3a79eb715f5b1eb3d7b
+    domain: binary_sensor
+    trigger: device
+    id: drzwi do piwnicy zamkniete
+  - type: occupied
+    device_id: 466e5275df6278c9aa3043c2d3f9c6c2
+    entity_id: 5f33c141607cf88cb3712d34c940e26d
+    domain: binary_sensor
+    trigger: device
+    id: ruch w piwnicy jest
+  - type: not_occupied
+    device_id: 466e5275df6278c9aa3043c2d3f9c6c2
+    entity_id: 5f33c141607cf88cb3712d34c940e26d
+    domain: binary_sensor
+    trigger: device
+    id: ruch w piwnicy brak
+  - type: turned_on
+    device_id: 0a3da878c08101e7bc5788a2e38c5aba
+    entity_id: 1f2e51398bd80df79f0f495709f5c66d
+    domain: switch
+    trigger: device
+    id: switch swiatlo w piwnicy ON
+  - type: turned_off
+    device_id: 0a3da878c08101e7bc5788a2e38c5aba
+    entity_id: 1f2e51398bd80df79f0f495709f5c66d
+    domain: switch
+    trigger: device
+    id: switch swiatlo w piwnicy OFF
+  conditions: []
+  actions:
+  - alias: Ruch lub otwarte drzwi
+    if:
+    - condition: or
+      conditions:
+      - condition: trigger
+        id:
+        - drzwi do piwnicy otwarte
+      - condition: trigger
+        id:
+        - ruch w piwnicy jest
+    then:
+    - action: switch.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - switch.wlacznik_schody_do_piwnicy_left
+    - action: light.turn_on
+      metadata: {}
+      data:
+        brightness_pct: 99
+      target:
+        entity_id: light.schody_schody
+  - alias: Brak ruchu lub zamkniete drzwi
+    if:
+    - condition: or
+      conditions:
+      - condition: trigger
+        id:
+        - drzwi do piwnicy zamkniete
+      - condition: trigger
+        id:
+        - ruch w piwnicy brak
+    then:
+    - action: switch.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - switch.wlacznik_schody_do_piwnicy_left
+        - switch.ledwpiwnicy
+    - action: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - light.schody_schody
+        - light.swiatlo_w_piwnicy
+  - if:
+    - condition: trigger
+      id:
+      - switch swiatlo w piwnicy ON
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data:
+        brightness_pct: 100
+      target:
+        entity_id: light.schody_schody
+    alias: Switch ON
+  - alias: Switch OFF
+    if:
+    - condition: trigger
+      id:
+      - switch swiatlo w piwnicy OFF
+    then:
+    - action: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: light.schody_schody
+  mode: parallel
+  max: 10
+- id: '1734642294282'
+  alias: Light - Kitchen - turn off when its light
+  description: ''
+  triggers:
+  - trigger: time
+    at: '10:00:00'
+  conditions: []
+  actions:
+  - data: {}
+    target:
+      entity_id:
+      - light.kuchnia_blat_lewy
+      - light.kuchnia_blat_prawy
+      - light.kuchnia_cokol
+    action: light.turn_off
+  mode: queued
+  max: 10
+- id: '1734643273255'
+  alias: Light - Kitchen - blue when time for DRUGS
+  description: ''
+  triggers:
+  - at: '23:00:00'
+    trigger: time
+  - at: 07:00:00
+    trigger: time
+  conditions: []
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 100
+    target:
+      entity_id:
+      - light.kuchnia_blat_lewy
+      - light.kuchnia_blat_prawy
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_pct: 100
+      rgb_color:
+      - 0
+      - 0
+      - 255
+    target:
+      entity_id:
+      - light.kuchnia_cokol
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - data:
+      transition: 20
+      rgb_color:
+      - 255
+      - 199
+      - 119
+      brightness_pct: 95
+    target:
+      entity_id:
+      - light.kuchnia_cokol
+    action: light.turn_on
+  - data:
+      transition: 10
+      brightness_pct: 75
+    action: light.turn_on
+    target:
+      entity_id: light.kuchnia_blat_prawy
+  - action: light.turn_off
+    metadata: {}
+    data:
+      transition: 20
+    target:
+      entity_id: light.kuchnia_blat_lewy
+  mode: queued
+  max: 10
+- id: '1734645080645'
+  alias: Info - Lekarstwa dla Froda
+  description: zmiana Lekarstwa na ON
+  triggers:
+  - at: 07:00:00
+    trigger: time
+  - at: '23:00:00'
+    trigger: time
+  - at: '15:00:00'
+    trigger: time
+  conditions: []
+  actions:
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.lekarstwa
+  mode: single
+- id: '1734726686340'
+  alias: Info - reset lekarstw
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.lekarstwa
+    from: 'on'
+    to: 'off'
+  conditions: []
+  actions:
+  - action: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.lekarstwa
+  mode: single
+- id: '1734808271449'
+  alias: WLED - ogrodzenie presety
+  description: ''
+  triggers:
+  - trigger: time
+    at: '17:00:00'
+    id: '17'
+  - trigger: time
+    at: '18:00:00'
+    id: '18'
+  - trigger: time
+    at: '20:00:00'
+    id: '20'
+  - trigger: time
+    at: '19:00:00'
+    id: '22'
+  - trigger: time
+    at: '23:00:00'
+    id: '23'
+  - trigger: time
+    at: '23:30:00'
+    id: '2330'
+  - trigger: sun
+    event: sunset
+    offset: 00:30:00
+    id: wschod
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - '17'
+    then:
+    - device_id: f5120fd13e5e7520053696e74ffff4a6
+      domain: select
+      entity_id: 4f36fcfdc6d068948d4b8f06447cfd2b
+      type: select_option
+      option: Pride 2015
+  - if:
+    - condition: trigger
+      id:
+      - '18'
+    then:
+    - device_id: f5120fd13e5e7520053696e74ffff4a6
+      domain: select
+      entity_id: 4f36fcfdc6d068948d4b8f06447cfd2b
+      type: select_option
+      option: Chase Rainbow
+  - if:
+    - condition: trigger
+      id:
+      - '20'
+    then:
+    - device_id: f5120fd13e5e7520053696e74ffff4a6
+      domain: select
+      entity_id: 4f36fcfdc6d068948d4b8f06447cfd2b
+      type: select_option
+      option: Rainbow
+  - if:
+    - condition: trigger
+      id:
+      - '22'
+    then:
+    - device_id: f5120fd13e5e7520053696e74ffff4a6
+      domain: select
+      entity_id: 4f36fcfdc6d068948d4b8f06447cfd2b
+      type: select_option
+      option: Rainbow Runner
+  - if:
+    - condition: trigger
+      id:
+      - '2330'
+    then:
+    - device_id: f5120fd13e5e7520053696e74ffff4a6
+      domain: select
+      entity_id: 4f36fcfdc6d068948d4b8f06447cfd2b
+      type: select_option
+      option: 'OFF'
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 10
+        milliseconds: 0
+    - action: light.turn_off
+      metadata: {}
+      data:
+        transition: 10
+      target:
+        entity_id: light.wled
+  - if:
+    - condition: trigger
+      id:
+      - wschod
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data:
+        brightness_pct: 99
+        transition: 7
+      target:
+        entity_id: light.wled
+  mode: parallel
+  max: 10
+- id: '1735054031081'
+  alias: Light - xmass
+  description: ''
+  triggers:
+  - trigger: time
+    at: '16:00:01'
+    id: 'on'
+  - trigger: time
+    at: '23:00:00'
+    id: 'off'
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - 'on'
+    then:
+    - type: turn_on
+      device_id: 3126ff3b984ab9bbc1556309d323172e
+      entity_id: db051f2e9068e2d6d1e29f5b942af9cb
+      domain: light
+    - type: turn_on
+      device_id: 4c64ee58cc90d2bd0c396dcd625af669
+      entity_id: 90808bd9da74fa0a2cd65803de1c3e62
+      domain: light
+  - if:
+    - condition: trigger
+      id:
+      - 'off'
+    then:
+    - type: turn_off
+      device_id: 3126ff3b984ab9bbc1556309d323172e
+      entity_id: db051f2e9068e2d6d1e29f5b942af9cb
+      domain: light
+    - type: turn_off
+      device_id: 4c64ee58cc90d2bd0c396dcd625af669
+      entity_id: 90808bd9da74fa0a2cd65803de1c3e62
+      domain: light
+  mode: parallel
+  max: 10
+- id: '1735248177650'
+  alias: Info - Zmywarka zakończyła pracę
+  description: Włącza znacznik zakończenia pracy po pełnym cyklu mycia
+  triggers:
+  - entity_id: sensor.zmywarka_power
+    above: 8
+    for:
+      minutes: 5
+    id: started
+    trigger: numeric_state
+  - entity_id: sensor.zmywarka_power
+    below: 3
+    for:
+      minutes: 7
+    id: finished
+    trigger: numeric_state
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: started
+      sequence:
+      - target:
+          entity_id: input_boolean.zmywarka_pracuje
+        action: input_boolean.turn_on
+    - conditions:
+      - condition: trigger
+        id: finished
+      - condition: state
+        entity_id: input_boolean.zmywarka_pracuje
+        state: 'on'
+      sequence:
+      - target:
+          entity_id: input_boolean.zmywarka_pracuje
+        action: input_boolean.turn_off
+      - target:
+          entity_id: input_boolean.zmywarka_zakonczyla
+        action: input_boolean.turn_on
+  mode: single
+- id: '1735248909636'
+  alias: Info - Resetuj stan zmywarki
+  description: Wyłącza sensor po kliknięciu
+  triggers:
+  - entity_id:
+    - input_boolean.zmywarka_zakonczyla
+    from: 'on'
+    to: 'off'
+    trigger: state
+  actions:
+  - action: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.zmywarka_zakonczyla
+- id: '1735300203925'
+  alias: Info - Pralka zakończyła pracę
+  description: Włącza znacznik zakończenia prania po faktycznym cyklu
+  triggers:
+  - entity_id: sensor.kuchnia_pralka_power
+    above: 100
+    for:
+      minutes: 3
+    id: started
+    trigger: numeric_state
+  - entity_id: sensor.kuchnia_pralka_power
+    below: 2
+    for:
+      minutes: 7
+    id: finished
+    trigger: numeric_state
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: started
+      sequence:
+      - target:
+          entity_id: input_boolean.pralka_pracuje
+        action: input_boolean.turn_on
+        data: {}
+    - conditions:
+      - condition: trigger
+        id: finished
+      - condition: state
+        entity_id: input_boolean.pralka_pracuje
+        state: 'on'
+      sequence:
+      - target:
+          entity_id: input_boolean.pralka_pracuje
+        action: input_boolean.turn_off
+        data: {}
+      - target:
+          entity_id: input_boolean.pralka_zakonczyla
+        action: input_boolean.turn_on
+        data: {}
+  mode: single
+- id: '1735300301991'
+  alias: Info - Resetuj stan pralki
+  description: Wyłącza sensor po kliknięciu
+  triggers:
+  - entity_id:
+    - sensor.kuchnia_pralka_power
+    from: 'on'
+    to: 'off'
+    trigger: state
+  conditions: []
+  actions:
+  - action: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.pralka_zakonczyla
+  mode: single
+- id: '1735421972131'
+  alias: Info - Wysokie CO2 - salon
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.netatmo_dom_pokoj_dzienny_salon_co2
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    above: 2499.5
+    id: Wysokie CO2
+  - trigger: numeric_state
+    entity_id:
+    - sensor.netatmo_dom_pokoj_dzienny_salon_co2
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    id: Znosne CO2
+    below: 999.7
+  conditions:
+  - condition: time
+    after: 07:00:00
+    before: '23:00:00'
+    weekday:
+    - sun
+    - sat
+    - fri
+    - thu
+    - wed
+    - tue
+    - mon
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Wysokie CO2
+    then:
+    - action: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.wysokie_co2_salon
+  - if:
+    - condition: trigger
+      id:
+      - Znosne CO2
+    then:
+    - action: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.wysokieco2
+  mode: parallel
+  max: 10
+- id: '1735460203718'
+  alias: Info - Wysokie CO2 - dzienny
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.netatmo_dom_pokoj_dzienny_co2
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    above: 2499.5
+    id: Wysokie CO2
+  - trigger: numeric_state
+    entity_id:
+    - sensor.netatmo_dom_pokoj_dzienny_co2
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    id: Znosne CO2
+    below: 999.7
+  conditions:
+  - condition: time
+    after: 07:00:00
+    before: '23:00:00'
+    weekday:
+    - sun
+    - sat
+    - fri
+    - thu
+    - wed
+    - tue
+    - mon
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Wysokie CO2
+    then:
+    - action: input_boolean.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - input_boolean.wysokie_co2_dzienny
+  - if:
+    - condition: trigger
+      id:
+      - Znosne CO2
+    then:
+    - action: input_boolean.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: input_boolean.wysokieco2
+  mode: parallel
+  max: 10
+- id: '1735461316012'
+  alias: Alert/Light - Wysokie CO2 - dzienny
+  description: ''
+  conditions:
+  - condition: time
+    after: 07:00:00
+    before: '23:00:00'
+  use_blueprint:
+    path: rschutte/custom-blinking-lights-blueprint.yaml
+    input:
+      lights:
+        entity_id:
+        - light.hue_lightstrip_plus_1
+        - light.kuchnia_cokol_kuchnia_cokol
+      color:
+      - 255
+      - 0
+      - 0
+      blink_count: 5
+      trigger_entity: input_boolean.wysokie_co2_dzienny
+      to_state: 'on'
+      from_state: 'off'
+- id: '1735481675976'
+  alias: Alert/Light - zmywarka zakonczyla
+  description: ''
+  use_blueprint:
+    path: rschutte/custom-blinking-lights-blueprint.yaml
+    input:
+      lights:
+        entity_id:
+        - light.kuchnia_cokol_kuchnia_cokol
+        - light.hue_lightstrip_plus_1
+      color:
+      - 0
+      - 255
+      - 0
+      trigger_entity: input_boolean.zmywarka_zakonczyla
+      to_state: 'on'
+      from_state: 'off'
+- id: '1735481821540'
+  alias: Alert/Light - Wysokie CO2 - salon
+  description: ''
+  conditions:
+  - condition: time
+    after: 07:00:00
+    before: '23:00:00'
+  use_blueprint:
+    path: rschutte/custom-blinking-lights-blueprint.yaml
+    input:
+      lights:
+        entity_id:
+        - light.hue_lightstrip_plus_1
+        - light.kuchnia_cokol_kuchnia_cokol
+      color:
+      - 255
+      - 0
+      - 0
+      blink_count: 5
+      trigger_entity: input_boolean.wysokie_co2_salon
+      from_state: 'off'
+      to_state: 'on'
+- id: '1735481978408'
+  alias: Alert/Light - Pralka zakonczyla
+  description: ''
+  use_blueprint:
+    path: rschutte/custom-blinking-lights-blueprint.yaml
+    input:
+      lights:
+        entity_id:
+        - light.kuchnia_cokol_kuchnia_cokol
+        - light.hue_lightstrip_plus_1
+      color:
+      - 0
+      - 255
+      - 0
+      trigger_entity: input_boolean.pralka_zakonczyla
+      to_state: 'on'
+      from_state: 'off'
+- id: '1735487415232'
+  alias: Alert/Light - Lekarstwa
+  description: ''
+  use_blueprint:
+    path: rschutte/custom-blinking-lights-blueprint.yaml
+    input:
+      lights:
+        entity_id:
+        - light.hue_lightstrip_plus_1
+        - light.kuchnia_cokol_kuchnia_cokol
+      color:
+      - 0
+      - 0
+      - 255
+      trigger_entity: input_boolean.lekarstwa
+      from_state: 'off'
+      to_state: 'on'
+- id: '1735589265655'
+  alias: Kiosk - czujnik ruchu dzien
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.philips_motion_sensor_zigbee_kuchnia_occupancy
+    to: 'on'
+    id: Kitchen - motion detected
+    trigger: state
+  - entity_id:
+    - binary_sensor.philips_motion_sensor_zigbee_kuchnia_occupancy
+    to: 'off'
+    id: Kitchen - no motion
+    trigger: state
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  conditions:
+  - condition: or
+    conditions:
+    - condition: time
+      after: 06:00:00
+      before: '23:30:00'
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+    - condition: time
+      after: 08:00:00
+      before: '23:30:00'
+      weekday:
+      - sun
+      - sat
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Kitchen - motion detected
+    then:
+    - type: turn_on
+      device_id: 0521ba719b6ea817c0bd1959b6b4f5f9
+      entity_id: 03994d48dfb59d20ec22fbe06d7d7d18
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - Kitchen - no motion
+    then:
+    - type: turn_off
+      device_id: 0521ba719b6ea817c0bd1959b6b4f5f9
+      entity_id: 03994d48dfb59d20ec22fbe06d7d7d18
+      domain: switch
+  mode: parallel
+  max: 10
+- id: '1735590028675'
+  alias: Kiosk - kamera
+  description: ''
+  triggers:
+  - type: motion
+    device_id: 65c68fb6cd02e5f18974bb091153edbe
+    entity_id: 44886ec5f89386720fac3a98d025fcb8
+    domain: binary_sensor
+    trigger: device
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  conditions: []
+  actions:
+  - action: fully_kiosk.load_url
+    target:
+      device_id: 0521ba719b6ea817c0bd1959b6b4f5f9
+    data:
+      url: http://192.168.4.9:8123/lovelace/camera-wejscie
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - device_id: 0521ba719b6ea817c0bd1959b6b4f5f9
+    domain: button
+    entity_id: 20f0cf6d43ddd9a8bde83410466eecf8
+    type: press
+  mode: single
+- id: '1735834577216'
+  alias: Turn On Vacuum Active
+  description: ''
+  triggers:
+  - entity_id:
+    - vacuum.alex
+    trigger: state
+    to: cleaning
+  actions:
+  - action: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.vacuum_active
+- id: '1735834674483'
+  alias: Turn Off Vacuum Active After 5 Minutes
+  description: ''
+  triggers:
+  - entity_id:
+    - vacuum.alex
+    from:
+    trigger: state
+    to: docked
+  actions:
+  - delay: 00:05:00
+  - action: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.vacuum_active
+- id: '1740685973968'
+  alias: Turn off tablet charging at 85%, turn on at 20%
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.galaxy_tab_a7_bateria
+    above: 85
+    id: '85'
+  - trigger: numeric_state
+    entity_id:
+    - sensor.galaxy_tab_a7_bateria
+    above: -0.5
+    id: '20'
+    below: 19.8
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - '85'
+    then:
+    - type: turn_off
+      device_id: b56da48cbba7513f0e1c4d36bd307ccc
+      entity_id: 84fa721efea04c26cdcf37b58028d808
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - '20'
+    then:
+    - type: turn_on
+      device_id: b56da48cbba7513f0e1c4d36bd307ccc
+      entity_id: 84fa721efea04c26cdcf37b58028d808
+      domain: switch
+  mode: parallel
+  max: 10
+- id: '1740910632098'
+  alias: Restart Zigbee2Mqtt
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.zigbee2mqtt_bridge_connection_state
+    to: unavailable
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  conditions: []
+  actions:
+  - action: hassio.addon_restart
+    data:
+      addon: 45df7312_zigbee2mqtt
+  - action: notify.mobile_app_iphone
+    metadata: {}
+    data:
+      message: restart z2m
+  mode: single
+- id: '1745355815584'
+  alias: Smart irrigation 5:45-6
+  description: Start Smart Irrigation based on event and run it only if the `sensor.smart_irrigation_trawnik`
+    is >0 and run it for precisely that many seconds
+  triggers:
+  - at: 05:45:00
+    id: Irrigation ON
+    trigger: time
+  - at: 06:00:00
+    id: Irrigation OFF
+    trigger: time
+  conditions:
+  - type: is_precipitation
+    condition: device
+    device_id: 06f2b2a4c704d2ee70f749eca2214994
+    entity_id: 85e84355318563353927dad9146815bb
+    domain: sensor
+    below: 5
+  - condition: template
+    value_template: '{{ now().month in [4,5,6,7,8,9] }}'
+  actions:
+  - alias: Irrigation ON
+    if:
+    - condition: trigger
+      id:
+      - Irrigation ON
+    - type: is_precipitation
+      condition: device
+      device_id: 06f2b2a4c704d2ee70f749eca2214994
+      entity_id: 4660c0e1667081bb9514f203d02e4dde
+      domain: sensor
+      below: 3
+    then:
+    - data: {}
+      action: switch.turn_on
+      target:
+        entity_id: switch.sterownik_nawadniania
+  - alias: Irrigation OFF
+    if:
+    - condition: trigger
+      id:
+      - Irrigation OFF
+    then:
+    - data: {}
+      action: switch.turn_off
+      target:
+        entity_id: switch.sterownik_nawadniania
+    - data: {}
+      entity_id: sensor.smart_irrigation_trawnik
+      action: smart_irrigation.reset_bucket
+  mode: single
+- id: '1749300279027'
+  alias: Dyson
+  description: ''
+  triggers:
+  - trigger: time
+    at: '23:00:00'
+    id: 'ON'
+  - trigger: time
+    at: 09:00:00
+    id: 'OFF'
+  conditions:
+  - condition: device
+    device_id: 926cac18a5ca3deceeb47eb41e79259c
+    domain: fan
+    entity_id: dfef1bff4b68fc3f3cae79aff403c523
+    type: is_on
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - 'ON'
+    then:
+    - type: turn_on
+      device_id: 926cac18a5ca3deceeb47eb41e79259c
+      entity_id: 20a928f38ba1d76083d0548f79ce1a37
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - 'OFF'
+    then:
+    - type: turn_off
+      device_id: 926cac18a5ca3deceeb47eb41e79259c
+      entity_id: 20a928f38ba1d76083d0548f79ce1a37
+      domain: switch
+  mode: queued
+  max: 10
+- id: '1756406416702'
+  alias: Garaz - przelacznik bramy
+  description: ''
+  triggers:
+  - domain: mqtt
+    device_id: 92b1d9e5f8f8839bccca6781a2ed6418
+    type: action
+    subtype: single_center
+    trigger: device
+    id: Garaz - brama
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - Garaz - brama
+    then:
+    - type: toggle
+      device_id: bb2f1d531f3de9de7a6f6c2dd85cfc5d
+      entity_id: 3ef0a746d93cf5327281ef5f5491e96c
+      domain: switch
+  mode: parallel
+  max: 10
+- id: '1756835954264'
+  alias: Garaz - Włącz światło w garażu przy otwieraniu bramy gdy ciemno
+  description: ''
+  triggers:
+  - type: opened
+    device_id: bb2f1d531f3de9de7a6f6c2dd85cfc5d
+    entity_id: 3884a8a677d0b8de5b6ef0d37a83c680
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - condition: sun
+    before: sunrise
+    before_offset: -02:00:00
+    after_offset: 02:00:00
+    after: sunset
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.garaz_wlacznik_swiatla_i_brama_right
+  mode: single
+- id: '1756836203956'
+  alias: Garaz - światło ON / OFF na ruch
+  description: ''
+  triggers:
+  - type: not_occupied
+    device_id: cb2764d49707478b0b3d845df674f886
+    entity_id: 5868693e851970e49cffa150e898573a
+    domain: binary_sensor
+    trigger: device
+    id: brak ruchu
+  - type: occupied
+    device_id: cb2764d49707478b0b3d845df674f886
+    entity_id: 5868693e851970e49cffa150e898573a
+    domain: binary_sensor
+    trigger: device
+    id: ruchu
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - brak ruchu
+    then:
+    - action: light.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - light.garaz_wlacznik_swiatla_i_brama_right
+        - light.garaz_wlacznik_swiatla_i_brama_left
+  - if:
+    - condition: trigger
+      id:
+      - ruchu
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id:
+        - light.garaz_wlacznik_swiatla_i_brama_right
+        - light.garaz_wlacznik_swiatla_i_brama_left
+  mode: parallel
+  max: 10
+- id: '1756836637324'
+  alias: Garaz - wylacone swiatlo gdy brama zamknieta
+  description: ''
+  triggers:
+  - device_id: bb2f1d531f3de9de7a6f6c2dd85cfc5d
+    domain: cover
+    entity_id: 0a56af6b4e0d1a14e64e3799c5baebce
+    type: closed
+    trigger: device
+  conditions:
+  - type: is_not_occupied
+    condition: device
+    device_id: cb2764d49707478b0b3d845df674f886
+    entity_id: 5868693e851970e49cffa150e898573a
+    domain: binary_sensor
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.garaz_wlacznik_swiatla_i_brama_right
+      - light.garaz_wlacznik_swiatla_i_brama_left
+  mode: parallel
+  max: 10
+- id: '1757189540687'
+  alias: Lights - schody na ganek w tygodniu
+  description: 'Włącza światło na ganku po zachodzie słońca w dni robocze, jeśli wykryto
+    ruch. Gasi po 5 minutach braku ruchu.
+
+    '
+  triggers:
+  - type: occupied
+    device_id: a2592b402fb7ae88d40737757c624fa8
+    entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+    domain: binary_sensor
+    id: ruch przy schodach
+    trigger: device
+  - type: not_occupied
+    device_id: a2592b402fb7ae88d40737757c624fa8
+    entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+    domain: binary_sensor
+    id: brak ruchu przy schodach
+    for:
+      minutes: 5
+    trigger: device
+  - event: sunset
+    offset: +00:30:00
+    id: po zachodzie słońca
+    trigger: sun
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: ruch przy schodach
+      - condition: sun
+        after: sunset
+        after_offset: +00:30:00
+      - condition: time
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        before: '23:00:00'
+      - condition: numeric_state
+        entity_id: sensor.ganek_czujnik_ruchu_na_schodach_illuminance
+        below: 10
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.schody_na_ganek_2
+        data: {}
+      - action: logbook.log
+        data:
+          name: Schody na ganek
+          message: Włączono światło – wykryto ruch po zmroku (dni robocze).
+    - conditions:
+      - condition: trigger
+        id: brak ruchu przy schodach
+      sequence:
+      - action: light.turn_off
+        target:
+          entity_id: light.schody_na_ganek_2
+        data: {}
+      - action: logbook.log
+        data:
+          name: Schody na ganek
+          message: Zgaszono światło – brak ruchu przez 5 minut.
+    - conditions:
+      - condition: trigger
+        id: po zachodzie słońca
+      - condition: time
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        before: '23:00:00'
+      - condition: state
+        entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sensor.ganek_czujnik_ruchu_na_schodach_illuminance
+        below: 10
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.schody_na_ganek_2
+        data: {}
+      - action: logbook.log
+        data:
+          name: Schody na ganek
+          message: Włączono światło – po zachodzie, ruch trwa (dni robocze
+- id: '1757189612871'
+  alias: Lights - schody na ganek - ruch w weekend
+  description: 'Włącza światło na ganku po zachodzie słońca w weekendy, jeśli wykryto
+    ruch. Gasi po 5 minutach braku ruchu.
+
+    '
+  triggers:
+  - type: occupied
+    device_id: a2592b402fb7ae88d40737757c624fa8
+    entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+    domain: binary_sensor
+    id: ruch przy schodach
+    trigger: device
+  - type: not_occupied
+    device_id: a2592b402fb7ae88d40737757c624fa8
+    entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+    domain: binary_sensor
+    id: brak ruchu przy schodach
+    for:
+      minutes: 5
+    trigger: device
+  - event: sunset
+    offset: +00:30:00
+    id: po zachodzie słońca
+    trigger: sun
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: ruch przy schodach
+      - condition: sun
+        after: sunset
+        after_offset: +00:30:00
+      - condition: time
+        weekday:
+        - fri
+        - sat
+        - sun
+        before: '23:59:00'
+      - condition: numeric_state
+        entity_id: sensor.ganek_czujnik_ruchu_na_schodach_illuminance
+        below: 10
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.schody_na_ganek_2
+      - action: logbook.log
+        data:
+          name: Schody na ganek
+          message: Włączono światło – wykryto ruch po zmroku (weekend).
+    - conditions:
+      - condition: trigger
+        id: brak ruchu przy schodach
+      sequence:
+      - action: light.turn_off
+        target:
+          entity_id: light.schody_na_ganek_2
+      - action: logbook.log
+        data:
+          name: Schody na ganek
+          message: Zgaszono światło – brak ruchu przez 5 minut.
+    - conditions:
+      - condition: trigger
+        id: po zachodzie słońca
+      - condition: time
+        weekday:
+        - fri
+        - sat
+        - sun
+        before: '23:59:00'
+      - condition: state
+        entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sensor.ganek_czujnik_ruchu_na_schodach_illuminance
+        below: 10
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id: light.schody_na_ganek_2
+      - action: logbook.log
+        data:
+          name: Schody na ganek
+          message: Włączono światło – po zachodzie, ruch trwa (weekend).
+  mode: restart
+- id: '1757189931770'
+  alias: Lights - schody na ganek - auto off (noc i dzień)
+  description: 'Automatyczne gaszenie światła na ganku poza godzinami działania automatyzacji
+    ruchu.
+
+    '
+  triggers:
+  - minutes: /5
+    trigger: time_pattern
+  - entity_id: light.schody_na_ganek_2
+    to: 'on'
+    trigger: state
+  actions:
+  - choose:
+    - conditions:
+      - condition: sun
+        after: sunrise
+        after_offset: +00:15:00
+      - condition: sun
+        before: sunset
+      sequence:
+      - action: light.turn_off
+        target:
+          entity_id: light.schody_na_ganek_2
+      - action: logbook.log
+        data:
+          name: Schody na ganek
+          message: Światło zgaszone – dzień.
+    - conditions:
+      - condition: time
+        after: 00:00:00
+        before: 05:00:00
+      sequence:
+      - action: light.turn_off
+        target:
+          entity_id: light.schody_na_ganek_2
+      - action: logbook.log
+        data:
+          name: Schody na ganek
+          message: Światło zgaszone – nocne godziny bezpieczeństwa.
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: and
+          conditions:
+          - condition: time
+            weekday:
+            - mon
+            - tue
+            - wed
+            - thu
+            after: '23:00:00'
+        - condition: and
+          conditions:
+          - condition: time
+            weekday:
+            - fri
+            - sat
+            - sun
+            after: '23:59:00'
+      sequence:
+      - action: light.turn_off
+        target:
+          entity_id: light.schody_na_ganek_2
+      - action: logbook.log
+        data:
+          name: Schody na ganek
+          message: Światło zgaszone – po godzinach aktywności.
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+        state: 'off'
+        for:
+          minutes: 10
+      sequence:
+      - action: light.turn_off
+        target:
+          entity_id: light.schody_na_ganek_2
+      - action: logbook.log
+        data:
+          name: Schody na ganek
+          message: Światło zgaszone – brak ruchu (awaryjnie).
+  mode: single
+- id: '1759600211530'
+  alias: Oczyszczacz Dyson ON / OFF
+  description: ''
+  triggers:
+  - trigger: time
+    at: '23:30:00'
+    id: '2330'
+  - trigger: time
+    at: 07:00:00
+    id: '700'
+  - trigger: time
+    at: '14:00:00'
+    id: '900'
+  - trigger: time
+    at: '22:30:00'
+    id: '2230'
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - '2330'
+    then:
+    - type: turn_off
+      device_id: 926cac18a5ca3deceeb47eb41e79259c
+      entity_id: dfef1bff4b68fc3f3cae79aff403c523
+      domain: fan
+  - if:
+    - condition: trigger
+      id:
+      - '700'
+    then:
+    - type: turn_on
+      device_id: 926cac18a5ca3deceeb47eb41e79259c
+      entity_id: dfef1bff4b68fc3f3cae79aff403c523
+      domain: fan
+    - type: turn_on
+      device_id: 926cac18a5ca3deceeb47eb41e79259c
+      entity_id: 20a928f38ba1d76083d0548f79ce1a37
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - '900'
+    then:
+    - type: turn_off
+      device_id: 926cac18a5ca3deceeb47eb41e79259c
+      entity_id: 20a928f38ba1d76083d0548f79ce1a37
+      domain: switch
+  - if:
+    - condition: trigger
+      id:
+      - '2230'
+    then:
+    - type: turn_on
+      device_id: 926cac18a5ca3deceeb47eb41e79259c
+      entity_id: 20a928f38ba1d76083d0548f79ce1a37
+      domain: switch
+  mode: parallel
+  max: 10
+- id: '1760635844683'
+  alias: Garaz - jesli brak ruchu po otwarciu zamknij
+  description: ''
+  triggers:
+  - type: opened
+    device_id: bb2f1d531f3de9de7a6f6c2dd85cfc5d
+    entity_id: 3884a8a677d0b8de5b6ef0d37a83c680
+    domain: binary_sensor
+    trigger: device
+  conditions:
+  - type: is_not_occupied
+    condition: device
+    device_id: cb2764d49707478b0b3d845df674f886
+    entity_id: 5868693e851970e49cffa150e898573a
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  actions:
+  - action: cover.close_cover
+    metadata: {}
+    data: {}
+    target:
+      entity_id: cover.garaz_brama_state
+  mode: single
+- id: '1761406757420'
+  alias: Light - Kitchen main/led ori
+  description: ''
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: d7bb37325026cde9bb1c42ed23107923
+      button_single:
+      - if:
+        - condition: time
+          before: '15:00:00'
+          weekday:
+          - sun
+          - sat
+          - fri
+          - thu
+          - wed
+          - mon
+          - tue
+          after: '23:00:00'
+        then:
+        - data:
+            transition: 4
+          target:
+            entity_id:
+            - light.kuchnia_blat_lewy
+            - light.kuchnia_blat_prawy
+            - light.kuchnia_cokol
+          action: light.toggle
+        enabled: true
+      - if:
+        - condition: sun
+          after: sunrise
+        - condition: time
+          after: '15:00:00'
+          weekday:
+          - sun
+          - sat
+          - fri
+          - thu
+          - wed
+          - mon
+          - tue
+          before: '23:00:00'
+        then:
+        - data:
+            transition: 10
+            brightness_pct: 90
+          target:
+            entity_id:
+            - light.kuchnia_blat_lewy
+            - light.kuchnia_blat_prawy
+            - light.kuchnia_cokol
+          action: light.toggle
+        enabled: true
+      button_long:
+      - data:
+          profile: Kuchnia main
+        action: light.toggle
+        target:
+          entity_id: light.kuchnia_2
+      channel: 1
+      button_double: []
+- id: '1761406912009'
+  alias: Light - Kitchen - leds TEMP
+  description: ''
+  use_blueprint:
+    path: nok/shelly-device-switch-template-for-each-click-type.yaml
+    input:
+      remote: d7bb37325026cde9bb1c42ed23107923
+      channel: 1
+      button_single:
+      - if:
+        - condition: or
+          conditions:
+          - condition: time
+            after: '23:00:00'
+          - condition: time
+            before: '15:00:00'
+        - condition: time
+          weekday:
+          - sun
+          - sat
+          - fri
+          - thu
+          - wed
+          - tue
+          - mon
+        then:
+        - choose:
+          - conditions:
+            - condition: state
+              entity_id:
+              - light.kuchnia_blat_lewy
+              - light.kuchnia_blat_prawy
+              - light.kuchnia_cokol
+              match: any
+              state: 'off'
+            sequence:
+            - target:
+                entity_id:
+                - light.kuchnia_blat_lewy
+                - light.kuchnia_blat_prawy
+                - light.kuchnia_cokol
+              data:
+                transition: 4
+              action: light.turn_on
+          - conditions:
+            - condition: state
+              entity_id:
+              - light.kuchnia_blat_lewy
+              - light.kuchnia_blat_prawy
+              - light.kuchnia_cokol
+              match: any
+              state: 'on'
+            sequence:
+            - target:
+                entity_id:
+                - light.kuchnia_blat_lewy
+                - light.kuchnia_blat_prawy
+                - light.kuchnia_cokol
+              data:
+                transition: 4
+              action: light.turn_off
+        enabled: true
+      - if:
+        - condition: sun
+          after: sunrise
+        - condition: time
+          after: '15:00:00'
+          before: '23:00:00'
+          weekday:
+          - sun
+          - sat
+          - fri
+          - thu
+          - wed
+          - tue
+          - mon
+        then:
+        - choose:
+          - conditions:
+            - condition: state
+              entity_id:
+              - light.kuchnia_blat_lewy
+              - light.kuchnia_blat_prawy
+              - light.kuchnia_cokol
+              match: any
+              state: 'off'
+            sequence:
+            - target:
+                entity_id:
+                - light.kuchnia_blat_lewy
+                - light.kuchnia_blat_prawy
+                - light.kuchnia_cokol
+              data:
+                brightness_pct: 90
+                transition: 10
+              action: light.turn_on
+          - conditions:
+            - condition: state
+              entity_id:
+              - light.kuchnia_blat_lewy
+              - light.kuchnia_blat_prawy
+              - light.kuchnia_cokol
+              match: any
+              state: 'on'
+            sequence:
+            - target:
+                entity_id:
+                - light.kuchnia_blat_lewy
+                - light.kuchnia_blat_prawy
+                - light.kuchnia_cokol
+              data:
+                transition: 4
+              action: light.turn_off
+        enabled: true
+      button_long:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id:
+            - light.kuchnia_blat_lewy
+            - light.kuchnia_blat_prawy
+            - light.kuchnia_cokol
+            match: any
+            state: 'off'
+          sequence:
+          - target:
+              entity_id:
+              - light.kuchnia_blat_lewy
+              - light.kuchnia_blat_prawy
+              - light.kuchnia_cokol
+            data:
+              brightness_pct: 90
+              transition: 4
+            action: light.turn_on
+        - conditions:
+          - condition: state
+            entity_id:
+            - light.kuchnia_blat_lewy
+            - light.kuchnia_blat_prawy
+            - light.kuchnia_cokol
+            match: any
+            state: 'on'
+          sequence:
+          - target:
+              entity_id:
+              - light.kuchnia_blat_lewy
+              - light.kuchnia_blat_prawy
+              - light.kuchnia_cokol
+            data:
+              transition: 4
+            action: light.turn_off
+      button_double: []
+- id: '1762631080831'
+  alias: Light - Ambilight manual ON → Hue Sync
+  description: Włącza synchronizację Hue, jeśli Ambilight jest włączony ręcznie
+  triggers:
+  - entity_id: light.philips_tv_ambilight
+    from: 'off'
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: switch.philips_tv_ambilight_hue
+    state: 'off'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: person.michal
+      state: home
+    - condition: state
+      entity_id: person.gosia
+      state: home
+  - condition: sun
+    after: sunset
+  - condition: time
+    after: '16:00:00'
+    before: '22:59:00'
+  actions:
+  - target:
+      entity_id: switch.philips_tv_ambilight_hue
+    action: switch.turn_on
   mode: single

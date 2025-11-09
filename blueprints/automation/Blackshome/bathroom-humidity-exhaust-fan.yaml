@@ -1,0 +1,1397 @@
+blueprint:
+  name: Bathroom Humidity Exhaust Fan
+  description: "# Bathroom Humidity Exhaust Fan\n**Version: 1.6**\n\nThe most common
+    automation used for a bathroom humidity exhaust fan.\n\nLet us know what you think
+    of this blueprint and for community support including updates: [Click Here](https://community.home-assistant.io/t/bathroom-humidity-exhaust-fan/509992)\n\n**The
+    Automation Process:**\n  - When the humidity rises above a set percentage value
+    over a time window the fan will turn ON. You also have the option to set a maximum
+    humidity % that will also turn the fan ON.\n  - When the humidity falls below
+    a set percentage value over a time window the automation will then wait for the
+    time delay and then turn the fan OFF.\n  - You have the option to use the \"Fan
+    Speed - Switch Off Option\". Sometimes you need to select a different entity to
+    turn ON for the fan to turn OFF.\n  - You have the option to set a \"Winter Mode\".
+    This allows you to have different settings for the colder months of the year.
+    \n  - You have the option to turn ON lights and use the \"Light Control\" option.
+    This allows you to set a brightness level, colour temperature in kelvin and a
+    transition time for your lights.\n  - You have the option to use a By-pass. This
+    allows you to add a switch to manually By-pass the \"Humidity Derivative Sensor\".\n
+    \ - You have a safe guard to set the maximum run time for the fan.\n  - Safe guard
+    built in for HA restart.\n  - Works with my Blueprint Add ON [Click Here](https://community.home-assistant.io/t/591824)\n\nNote:
+    You must set up a \"Derivative Sensor Helper\" for this automation to work. See
+    our FAQ on how to set this up correctly.\n\nRequired = *\nNeed help? See our FAQ:
+    [Click Here](https://community.home-assistant.io/t/bathroom-humidity-exhaust-fan/509992/2?u=blacky)\n\n**If
+    you like my blueprints, and would like to show your support or just say thank
+    you?** [Click Here](https://www.paypal.com/donate/?hosted_button_id=WAZS3QSDTPGA8)
+    \U0001F642\n"
+  domain: automation
+  input:
+    trigger:
+      name: Humidity Derivative Sensor - Trigger *
+      description: Select your humidity derivative sensor.
+      selector:
+        entity:
+          domain:
+          - sensor
+          multiple: false
+    fan_switch:
+      name: Fan Switch *
+      description: Select the fan you would like to turn ON. Fans, switches & scripts
+        are allowed. If you would like to turn on lights, see below.
+      selector:
+        target:
+          entity:
+          - domain:
+            - fan
+            - switch
+            - script
+    include_fan_speed_off:
+      name: Use The Fan Speed - Switch Off Option (Optional)
+      description: Sometimes you need to select a different entity to turn ON for
+        the fan to turn OFF. This is normally used when you have a fan that has different
+        speeds.
+      default: fan_speed_off_disabled
+      selector:
+        select:
+          options:
+          - label: Enable the fan speed - switch off option
+            value: fan_speed_off_enabled
+          - label: Disable the fan speed - switch off option
+            value: fan_speed_off_disabled
+          multiple: false
+          custom_value: false
+    fan_speed_off:
+      name: Fan Speed - Switch Off Option
+      description: Select the entity that will turn the fan off. Please DO NOT select
+        the same entities that are selected above in "Fan Switch" here, as the automation
+        will not work.
+      default: []
+      selector:
+        entity:
+          multiple: true
+          domain:
+          - fan
+          - switch
+          - script
+    bathroom_humidity_sensor:
+      name: Input - Bathroom Humidity Sensor (Optional)
+      description: Select your bathroom humidity sensor. This will be the reference
+        sensor if you have chosen to use "The Maximum Humidity Option" below.
+      default: []
+      selector:
+        entity:
+          domain:
+          - sensor
+          multiple: false
+    rising_humidity:
+      name: Rising Humidity
+      description: Set the percentage the humidity must rise within the derivative
+        sensor time window to turn the fan ON.
+      default: 1
+      selector:
+        number:
+          min: 0.0
+          max: 5.0
+          step: 0.1
+          unit_of_measurement: '%'
+          mode: slider
+    falling_humidity:
+      name: Falling Humidity
+      description: Set the percentage the humidity must fall within the derivative
+        sensor time window to turn the fan OFF.
+      default: -1
+      selector:
+        number:
+          min: -5.0
+          max: 0.0
+          step: 0.1
+          unit_of_measurement: '%'
+          mode: slider
+    time_delay:
+      name: Time Delay
+      description: Set the delay time to wait before turning the fan OFF after the
+        falling humidity % has been achieved or the safe guards set time has passed.
+      default: 10
+      selector:
+        number:
+          min: 0.0
+          max: 20.0
+          step: 0.5
+          unit_of_measurement: minutes
+          mode: slider
+    time_out:
+      name: Safe Guard - Maximum Run Time
+      description: Set the safe guard time. If the fan gets turned ON by the automation
+        and the falling humidity fails to execute, then the safe guard will by-pass
+        the falling humidity after its maximum run time and proceed to the time delay.
+      default: 20
+      selector:
+        number:
+          min: 5.0
+          max: 60.0
+          step: 0.5
+          unit_of_measurement: minutes
+          mode: slider
+    include_max_humidity:
+      name: Use The Maximum Humidity Option (Optional)
+      description: 'Sometimes after a shower the humidity can take longer to fall
+        back to its normal level. This can cause a lower rising % when having another
+        shower before the humidity has time to return to its normal level, thus not
+        triggering the automation. Enabling this option will allow the fan to be turned
+        ON when the humidity rises above the set value.
+
+        **NOTE** - You must input your "Bathroom Humidity Sensor" above for this option
+        to work.'
+      default: maximum_humidity_disabled
+      selector:
+        select:
+          options:
+          - label: Enable the maximum humidity option
+            value: maximum_humidity_enabled
+          - label: Disable the maximum humidity option
+            value: maximum_humidity_disabled
+          multiple: false
+          custom_value: false
+    max_humidity:
+      name: Maximum Humidity
+      description: Set the maximum humidity. When using this option, it is recommended
+        to set this value as high as possible to stop false triggers.
+      default: 100
+      selector:
+        number:
+          min: 95.0
+          max: 100.0
+          step: 0.5
+          unit_of_measurement: '%'
+          mode: slider
+    include_winter_mode:
+      name: Use The Winter Mode Option (Optional)
+      description: Sometimes you need to apply different settings to the colder months
+        of the year. Enabling this option will allow you to apply a "Winter Mode"
+        automatically to the months you select below.
+      default: winter_mode_disabled
+      selector:
+        select:
+          options:
+          - label: Enable winter mode option
+            value: winter_mode_enabled
+          - label: Disable winter mode option
+            value: winter_mode_disabled
+          multiple: false
+          custom_value: false
+    month_winter_mode:
+      name: Months For Winter Mode
+      description: Select the months to apply the winter mode settings to.
+      default: []
+      selector:
+        select:
+          multiple: true
+          mode: list
+          options:
+          - label: January
+            value: '1'
+          - label: February
+            value: '2'
+          - label: March
+            value: '3'
+          - label: April
+            value: '4'
+          - label: May
+            value: '5'
+          - label: June
+            value: '6'
+          - label: July
+            value: '7'
+          - label: August
+            value: '8'
+          - label: September
+            value: '9'
+          - label: October
+            value: '10'
+          - label: November
+            value: '11'
+          - label: December
+            value: '12'
+          custom_value: false
+    winter_rising_humidity:
+      name: Winter Rising Humidity
+      description: Set the percentage the humidity must rise within the derivative
+        sensor time window to turn the fan ON.
+      default: 1
+      selector:
+        number:
+          min: 0.0
+          max: 5.0
+          step: 0.1
+          unit_of_measurement: '%'
+          mode: slider
+    winter_falling_humidity:
+      name: Winter Falling Humidity
+      description: Set the percentage the humidity must fall within the derivative
+        sensor time window to turn the fan OFF.
+      default: -1
+      selector:
+        number:
+          min: -5.0
+          max: 0.0
+          step: 0.1
+          unit_of_measurement: '%'
+          mode: slider
+    winter_time_delay:
+      name: Winter Time Delay
+      description: Set the delay time to wait before turning the fan OFF after the
+        falling humidity % has been achieved or the safe guards set time has passed.
+      default: 10
+      selector:
+        number:
+          min: 0.0
+          max: 20.0
+          step: 0.5
+          unit_of_measurement: minutes
+          mode: slider
+    winter_time_out:
+      name: Winter Safe Guard - Maximum Run Time
+      description: Set the safe guard time. If the fan gets turned ON by the automation
+        and the falling humidity fails to execute, then the safe guard will by-pass
+        the falling humidity after its maximum run time and proceed to the time delay.
+      default: 20
+      selector:
+        number:
+          min: 5.0
+          max: 60.0
+          step: 0.5
+          unit_of_measurement: minutes
+          mode: slider
+    winter_include_max_humidity:
+      name: Winter - Use The Maximum Humidity Option (Optional)
+      description: 'Sometimes in winter (colder months) after a shower the humidity
+        can take longer to fall back to its normal level. This can cause a lower rising
+        % when having another shower before the humidity has time to return to its
+        normal level, thus not triggering the automation. Enabling this option will
+        allow the fan to be turned ON when the humidity rises above the set value.
+
+        **NOTE** - You must input your "Bathroom Humidity Sensor" above for this option
+        to work.'
+      default: maximum_humidity_disabled
+      selector:
+        select:
+          options:
+          - label: Enable the maximum humidity option
+            value: maximum_humidity_enabled
+          - label: Disable the maximum humidity option
+            value: maximum_humidity_disabled
+          multiple: false
+          custom_value: false
+    winter_max_humidity:
+      name: Winter Maximum Humidity
+      description: Set the maximum humidity. When using this option, it is recommended
+        to set this value as high as possible to stop false triggers.
+      default: 100
+      selector:
+        number:
+          min: 95.0
+          max: 100.0
+          step: 0.5
+          unit_of_measurement: '%'
+          mode: slider
+    include_lights:
+      name: Use The Lights Options (Optional)
+      description: This is useful for turning on different lights when having a shower.
+        It is normally used when you have LED lights in a shower niche. If you would
+        like more lighting options, consider using my [sensor Light](https://community.home-assistant.io/t/481048)
+        blueprint.
+      default: lights_disabled
+      selector:
+        select:
+          options:
+          - label: Enable the lights options
+            value: lights_enabled
+          - label: Disable the lights options
+            value: lights_disabled
+          multiple: false
+          custom_value: false
+    light_switch:
+      name: Lights
+      description: 'The lights that get turned on by the trigger sensor.
+
+        **NOTE** - You can only use light entities. Areas and devices are not supported.'
+      default: {}
+      selector:
+        target:
+          entity:
+          - domain:
+            - light
+    include_light_control:
+      name: Use The Light Control Options (Optional)
+      description: Select any option you would like to use. It will only control a
+        "light" entity that supports each option you select. The settings are below
+        for each option.
+      default: []
+      selector:
+        select:
+          multiple: true
+          options:
+          - label: Use brightness
+            value: use_brightness
+          - label: Use colour temperature
+            value: use_colour_temperature
+          - label: Use transition
+            value: use_transition
+          custom_value: false
+    light_brightness:
+      name: Brightness
+      description: The brightness setting for the lights when they are turned ON.
+      default: 100
+      selector:
+        number:
+          min: 1.0
+          max: 100.0
+          mode: slider
+          step: 1.0
+          unit_of_measurement: '%'
+    light_colour_temperature:
+      name: Colour Temperature
+      description: The colour temperature setting for the lights when they are turned
+        ON.
+      default: 5000
+      selector:
+        number:
+          min: 2000.0
+          max: 8000.0
+          mode: slider
+          step: 100.0
+          unit_of_measurement: kelvin
+    light_transition_on:
+      name: Transition - ON
+      description: The transition setting for the lights when they are turned ON.
+      default: 1
+      selector:
+        number:
+          min: 0.0
+          max: 5.0
+          mode: slider
+          step: 0.5
+          unit_of_measurement: seconds
+    light_transition_off:
+      name: Transition - OFF
+      description: The transition setting for the lights when they are turned OFF.
+      default: 1
+      selector:
+        number:
+          min: 0.0
+          max: 30.0
+          mode: slider
+          step: 1.0
+          unit_of_measurement: seconds
+    include_bypass:
+      name: Use The Trigger Sensor By-pass Option (Optional)
+      description: Select enable or disable. All of the three enable options will
+        allow manual control of your fans. The three enable options are only for selecting
+        what should happen when you turn the by-pass ON.
+      default: bypass_disabled
+      selector:
+        select:
+          options:
+          - label: 1 - Enable the By-pass - Turn fan ON
+            value: bypass_enabled_turn_on
+          - label: 2 - Enable the By-pass - Turn fan OFF
+            value: bypass_enabled
+          - label: 3 - Enable the By-pass - Keep the current fan state
+            value: bypass_enabled_stop
+          - label: Disable the By-pass option
+            value: bypass_disabled
+          multiple: false
+          custom_value: false
+    by_pass:
+      name: Humidity Derivative Sensor By-pass
+      description: Select a switch that will By-pass the humidity derivative sensor
+        and make your fan function as normal. The entity cannot be included in, "Fan
+        Switch" and or "Fan Speed - Switch Off Option" selections.
+      default: []
+      selector:
+        entity: {}
+    bypass_options:
+      name: By-pass Options
+      description: Select what extra option you would like.
+      default: []
+      selector:
+        select:
+          multiple: true
+          options:
+          - label: When you turn the by-pass off - Do not run the automation and turn
+              the fan off instantly
+            value: bypass_turn_fan_off
+          custom_value: false
+    include_bypass_auto_off:
+      name: Use The By-pass Auto OFF Option (Optional)
+      description: This is used when you turn the by-pass ON and you would like the
+        by-pass to automatically turn OFF in a set time delay. It can also be used
+        as a timer to turn the fan ON and then OFF if you have chosen to use "Enable
+        the By-pass - Turn fan ON" above.
+      default: bypass_auto_off_disabled
+      selector:
+        select:
+          options:
+          - label: Enable the by-pass auto off option
+            value: bypass_auto_off_enabled
+          - label: Disable the by-pass auto off option
+            value: bypass_auto_off_disabled
+          multiple: false
+          custom_value: false
+    bypass_auto_off_delay:
+      name: By-pass Auto OFF - Time Delay
+      description: Set the by-pass auto OFF time delay.
+      default: 60
+      selector:
+        number:
+          min: 1.0
+          max: 240.0
+          step: 1.0
+          unit_of_measurement: minutes
+          mode: slider
+  source_url: https://gist.github.com/Blackshome/8e09a8213b834f1be4ab49ba880abed8
+mode: restart
+max_exceeded: silent
+variables:
+  trigger: !input trigger
+  fan_switch: !input fan_switch
+  include_fan_speed_off: !input include_fan_speed_off
+  fan_speed_off: !input fan_speed_off
+  bathroom_humidity_sensor: !input bathroom_humidity_sensor
+  rising_humidity: !input rising_humidity
+  falling_humidity: !input falling_humidity
+  time_delay: !input time_delay
+  time_out: !input time_out
+  include_max_humidity: !input include_max_humidity
+  max_humidity: !input max_humidity
+  include_winter_mode: !input include_winter_mode
+  month_winter_mode: !input month_winter_mode
+  winter_rising_humidity: !input winter_rising_humidity
+  winter_falling_humidity: !input winter_falling_humidity
+  winter_time_delay: !input winter_time_delay
+  winter_time_out: !input winter_time_out
+  winter_include_max_humidity: !input winter_include_max_humidity
+  winter_max_humidity: !input winter_max_humidity
+  include_lights: !input include_lights
+  light_switch: !input light_switch
+  include_light_control: !input include_light_control
+  light_brightness: !input light_brightness
+  brightness_value: '{{ iif (''use_brightness'' in include_light_control , light_brightness,
+    ) }}'
+  light_colour_temperature: !input light_colour_temperature
+  temperature_value: '{{ iif (''use_colour_temperature'' in include_light_control
+    , light_colour_temperature, [] ) }}'
+  light_transition_on: !input light_transition_on
+  light_transition_off: !input light_transition_off
+  transition_on_value: '{{ iif (''use_transition'' in include_light_control, light_transition_on,
+    ) }}'
+  transition_off_value: '{{ iif (''use_transition'' in include_light_control, light_transition_off,
+    ) }}'
+  include_bypass: !input include_bypass
+  by_pass: !input by_pass
+  bypass_options: !input bypass_options
+  include_bypass_auto_off: !input include_bypass_auto_off
+  bypass_auto_off_delay: !input bypass_auto_off_delay
+trigger:
+- platform: numeric_state
+  id: t0
+  entity_id: !input trigger
+  above: !input winter_rising_humidity
+  below: '100'
+- platform: numeric_state
+  id: t1
+  entity_id: !input bathroom_humidity_sensor
+  above: !input winter_max_humidity
+  below: '100'
+- platform: homeassistant
+  id: t2
+  event: start
+- platform: numeric_state
+  id: t3
+  entity_id: !input trigger
+  above: !input rising_humidity
+  below: '100'
+- platform: numeric_state
+  id: t4
+  entity_id: !input bathroom_humidity_sensor
+  above: !input max_humidity
+  below: '100'
+- platform: state
+  id: t5
+  entity_id: !input by_pass
+  from: 'off'
+  to: 'on'
+- platform: state
+  id: t6
+  entity_id: !input by_pass
+  from: 'on'
+  to: 'off'
+condition:
+- condition: or
+  conditions:
+  - condition: and
+    conditions:
+    - '{{ include_winter_mode == ''winter_mode_enabled'' }}'
+    - condition: template
+      value_template: '{{ (now().month | string in month_winter_mode ) }}'
+    - condition: trigger
+      id: t0
+  - condition: and
+    conditions:
+    - '{{ (include_winter_mode == ''winter_mode_enabled'') and (winter_include_max_humidity
+      == ''maximum_humidity_enabled'') }}'
+    - condition: template
+      value_template: '{{ (now().month | string in month_winter_mode ) }}'
+    - condition: trigger
+      id: t1
+  - condition: and
+    conditions:
+    - '{{ (expand(fan_switch.entity_id) | selectattr(''state'', ''=='', ''on'') |
+      list | count > 0) or ((include_lights == ''lights_enabled'') and (expand(light_switch.entity_id)
+      | selectattr(''state'', ''=='', ''on'') | list | count > 0)) or (expand(fan_switch.entity_id)
+      | selectattr(''domain'', ''=='', ''script'') | list | count > 0) }}'
+    - condition: trigger
+      id: t2
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ (include_winter_mode == ''winter_mode_disabled'') or ((include_winter_mode
+        == ''winter_mode_enabled'') and not (now().month | string in month_winter_mode
+        )) }}'
+    - condition: trigger
+      id: t3
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ ((include_winter_mode == ''winter_mode_disabled'') and (include_max_humidity
+        == ''maximum_humidity_enabled'')) or ((include_winter_mode == ''winter_mode_enabled'')
+        and (include_max_humidity == ''maximum_humidity_enabled'') and not (now().month
+        | string in month_winter_mode )) }}'
+    - condition: trigger
+      id: t4
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t5
+    - '{{ (include_bypass == ''bypass_enabled_turn_on'') or (include_bypass == ''bypass_enabled'')
+      or (include_bypass == ''bypass_enabled_stop'') }}'
+  - condition: and
+    conditions:
+    - condition: trigger
+      id: t6
+    - '{{ (include_bypass == ''bypass_enabled'') or (include_bypass == ''bypass_enabled_stop'')
+      or (include_bypass == ''bypass_enabled_turn_on'') }}'
+    - '{{ (expand(fan_switch.entity_id) | selectattr(''state'', ''=='', ''on'') |
+      list | count > 0 ) or ((include_lights == ''lights_enabled'') and (expand(light_switch.entity_id)
+      | selectattr(''state'', ''=='', ''on'') | list | count > 0)) or (expand(fan_switch.entity_id)
+      | selectattr(''domain'', ''=='', ''script'') | list | count > 0) }}'
+- condition: or
+  conditions:
+  - '{{ include_bypass == ''bypass_disabled'' }}'
+  - '{{ by_pass == [] }}'
+  - '{{ (include_bypass == ''bypass_enabled_turn_on'') and (states[by_pass].state
+    == ''off'') }}'
+  - '{{ (include_bypass == ''bypass_enabled'') and (states[by_pass].state == ''off'')
+    }}'
+  - '{{ (include_bypass == ''bypass_enabled_stop'') and (states[by_pass].state ==
+    ''off'') }}'
+  - '{{ (include_bypass_auto_off == ''bypass_auto_off_enabled'') and (states[by_pass].state
+    == ''off'') }}'
+  - '{{ (include_bypass_auto_off == ''bypass_auto_off_enabled'') and (states[by_pass].state
+    == ''on'') and (trigger.id == ''t2'') }}'
+  - condition: trigger
+    id: t5
+action:
+- choose:
+  - alias: For winter mode when enabled and within the set winter months
+    conditions:
+    - condition: or
+      conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id:
+          - t0
+          - t1
+      - condition: and
+        conditions:
+        - '{{ include_winter_mode == ''winter_mode_enabled'' }}'
+        - condition: template
+          value_template: '{{ (now().month | string in month_winter_mode ) }}'
+        - condition: trigger
+          id:
+          - t2
+          - t5
+          - t6
+    sequence:
+    - choose:
+      - alias: By-pass is turned on  & check by-pass option - turn fan off
+        conditions:
+        - condition: trigger
+          id: t5
+        - condition: template
+          value_template: '{{ include_bypass == ''bypass_enabled'' }}'
+        sequence:
+        - alias: Turn off the fan
+          service: homeassistant.turn_off
+          target: !input fan_switch
+        - choose:
+          - alias: Check if the fan speed off is enabled
+            conditions:
+            - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+            sequence:
+            - alias: Fan speed off option
+              service: homeassistant.turn_on
+              entity_id: !input fan_speed_off
+        - choose:
+          - alias: Check if the lights are enabled
+            conditions:
+            - '{{ include_lights == ''lights_enabled'' }}'
+            sequence:
+            - alias: Turn off the lights
+              service: light.turn_off
+              target: !input light_switch
+              data:
+                transition: '{{ transition_off_value }}'
+        - alias: Check by-pass settings and preform the correct action
+          if:
+          - alias: Check if the by-pass auto off is enabled
+            condition: template
+            value_template: '{{ include_bypass_auto_off == ''bypass_auto_off_enabled''
+              }}'
+          then:
+          - alias: Wait the number of minutes set in the by-pass auto off time delay
+            delay:
+              minutes: !input bypass_auto_off_delay
+          - alias: Turn off the by-pass
+            service: homeassistant.turn_off
+            entity_id: !input by_pass
+          - stop: Stop the automation
+          else:
+          - stop: Stop the automation
+      - alias: By-pass is turned on  & check by-pass option - keep the current fan
+          state
+        conditions:
+        - condition: trigger
+          id: t5
+        - condition: template
+          value_template: '{{ include_bypass == ''bypass_enabled_stop'' }}'
+        sequence:
+        - alias: Check by-pass settings and preform the correct action
+          if:
+          - alias: Check if the by-pass auto off is enabled
+            condition: template
+            value_template: '{{ include_bypass_auto_off == ''bypass_auto_off_enabled''
+              }}'
+          then:
+          - alias: Wait the number of minutes set in the by-pass auto off time delay
+            delay:
+              minutes: !input bypass_auto_off_delay
+          - alias: Turn off the by-pass
+            service: homeassistant.turn_off
+            entity_id: !input by_pass
+          - stop: Stop the automation
+          else:
+          - stop: Stop the automation
+      - alias: By-pass is turned off  & preform the correct action
+        conditions:
+        - condition: trigger
+          id: t6
+        sequence:
+        - choose:
+          - alias: Check by-pass options - turn fan off is enabled
+            conditions:
+            - condition: template
+              value_template: '{{ ''bypass_turn_fan_off'' in bypass_options }}'
+            sequence:
+            - alias: Turn off the fan
+              service: homeassistant.turn_off
+              target: !input fan_switch
+            - choose:
+              - alias: Check if the fan speed off is enabled
+                conditions:
+                - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+                sequence:
+                - alias: Fan speed off option
+                  service: homeassistant.turn_on
+                  entity_id: !input fan_speed_off
+            - choose:
+              - alias: Check if the lights are enabled
+                conditions:
+                - '{{ include_lights == ''lights_enabled'' }}'
+                sequence:
+                - alias: Turn off the lights
+                  service: light.turn_off
+                  target: !input light_switch
+                  data:
+                    transition: '{{ transition_off_value }}'
+            - stop: Stop the automation
+          - alias: Check if the sensor is below falling humidity & by-pass options
+              - turn fan off is disabled
+            conditions:
+            - alias: Check if the motion trigger is on
+              condition: numeric_state
+              entity_id: !input trigger
+              below: !input winter_falling_humidity
+            - condition: not
+              conditions:
+              - condition: template
+                value_template: '{{ ''bypass_turn_fan_off'' in bypass_options }}'
+            sequence:
+            - alias: Wait the number of minutes that has been set for the time delay
+              delay:
+                minutes: !input winter_time_delay
+            - alias: Turn off the fan
+              service: homeassistant.turn_off
+              target: !input fan_switch
+            - choose:
+              - alias: Check if the fan speed off is enabled
+                conditions:
+                - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+                sequence:
+                - alias: Fan speed off option
+                  service: homeassistant.turn_on
+                  entity_id: !input fan_speed_off
+            - choose:
+              - alias: Check if the lights are enabled
+                conditions:
+                - '{{ include_lights == ''lights_enabled'' }}'
+                sequence:
+                - alias: Turn off the lights
+                  service: light.turn_off
+                  target: !input light_switch
+                  data:
+                    transition: '{{ transition_off_value }}'
+            - stop: Stop the automation
+          default:
+          - alias: Wait until Humidity Derivative Sensor drops or it times out
+            wait_for_trigger:
+              platform: numeric_state
+              entity_id: !input trigger
+              below: !input winter_falling_humidity
+            timeout:
+              minutes: !input winter_time_out
+          - alias: Wait the number of minutes that has been set for the time delay
+            delay:
+              minutes: !input winter_time_delay
+          - alias: Turn off the fan
+            service: homeassistant.turn_off
+            target: !input fan_switch
+          - choose:
+            - alias: Check if the fan speed off is enabled
+              conditions:
+              - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+              sequence:
+              - alias: Fan speed off option
+                service: homeassistant.turn_on
+                entity_id: !input fan_speed_off
+          - choose:
+            - alias: Check if the lights are enabled
+              conditions:
+              - '{{ include_lights == ''lights_enabled'' }}'
+              sequence:
+              - alias: Turn off the lights
+                service: light.turn_off
+                target: !input light_switch
+                data:
+                  transition: '{{ transition_off_value }}'
+          - stop: Stop the automation
+      - alias: Safe Guard when HA restarts
+        conditions:
+        - condition: trigger
+          id: t2
+        sequence:
+        - alias: Check automation and preform the correct action
+          if:
+          - alias: Check if the motion trigger is on
+            condition: numeric_state
+            entity_id: !input trigger
+            below: !input winter_falling_humidity
+          then:
+          - choose:
+            - alias: Check if the by-pass auto off is enabled and by-pass is ON
+              conditions:
+              - condition: template
+                value_template: '{{ (include_bypass_auto_off == ''bypass_auto_off_enabled'')
+                  and (states[by_pass].state == ''on'') }}'
+              sequence:
+              - alias: Wait the number of minutes set in the by-pass auto off time
+                  delay
+                delay:
+                  minutes: !input bypass_auto_off_delay
+              - alias: Turn off the by-pass
+                service: homeassistant.turn_off
+                entity_id: !input by_pass
+              - stop: Stop the automation
+          - alias: Wait the number of minutes that has been set for the time delay
+            delay:
+              minutes: !input winter_time_delay
+          - alias: Turn off the fan
+            service: homeassistant.turn_off
+            target: !input fan_switch
+          - choose:
+            - alias: Check if the fan speed off is enabled
+              conditions:
+              - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+              sequence:
+              - alias: Fan speed off option
+                service: homeassistant.turn_on
+                entity_id: !input fan_speed_off
+          - choose:
+            - alias: Check if the lights are enabled
+              conditions:
+              - '{{ include_lights == ''lights_enabled'' }}'
+              sequence:
+              - alias: Turn off the lights
+                service: light.turn_off
+                target: !input light_switch
+                data:
+                  transition: '{{ transition_off_value }}'
+          - stop: Stop the automation
+          else:
+          - choose:
+            - alias: Check if the by-pass auto off is enabled and by-pass is ON
+              conditions:
+              - condition: template
+                value_template: '{{ (include_bypass_auto_off == ''bypass_auto_off_enabled'')
+                  and (states[by_pass].state == ''on'') }}'
+              sequence:
+              - alias: Wait the number of minutes set in the by-pass auto off time
+                  delay
+                delay:
+                  minutes: !input bypass_auto_off_delay
+              - alias: Turn off the by-pass
+                service: homeassistant.turn_off
+                entity_id: !input by_pass
+              - stop: Stop the automation
+          - alias: Wait until Humidity Derivative Sensor drops or it times out
+            wait_for_trigger:
+              platform: numeric_state
+              entity_id: !input trigger
+              below: !input winter_falling_humidity
+            timeout:
+              minutes: !input winter_time_out
+          - alias: Wait the number of minutes that has been set for the time delay
+            delay:
+              minutes: !input winter_time_delay
+          - alias: Turn off the fan
+            service: homeassistant.turn_off
+            target: !input fan_switch
+          - choose:
+            - alias: Check if the fan speed off is enabled
+              conditions:
+              - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+              sequence:
+              - alias: Fan speed off option
+                service: homeassistant.turn_on
+                entity_id: !input fan_speed_off
+          - choose:
+            - alias: Check if the lights are enabled
+              conditions:
+              - '{{ include_lights == ''lights_enabled'' }}'
+              sequence:
+              - alias: Turn off the lights
+                service: light.turn_off
+                target: !input light_switch
+                data:
+                  transition: '{{ transition_off_value }}'
+          - stop: Stop the automation
+    - alias: Turn on the fan
+      service: homeassistant.turn_on
+      target: !input fan_switch
+    - choose:
+      - alias: Check if the lights are enabled
+        conditions:
+        - '{{ include_lights == ''lights_enabled'' }}'
+        sequence:
+        - choose:
+          - alias: Set the brightness and transition for the lights
+            conditions:
+            - condition: template
+              value_template: '{{ (''use_brightness'' in include_light_control) and
+                not (''use_colour_temperature'' in include_light_control) }}'
+            sequence:
+            - service: light.turn_on
+              target: !input light_switch
+              data:
+                brightness_pct: '{{ brightness_value }}'
+                transition: '{{ transition_on_value }}'
+        - choose:
+          - alias: Set the brightness, temperature and transition for the lights
+            conditions:
+            - condition: template
+              value_template: '{{ (''use_brightness'' in include_light_control) and
+                (''use_colour_temperature'' in include_light_control) }}'
+            sequence:
+            - service: light.turn_on
+              target: !input light_switch
+              data:
+                brightness_pct: '{{ brightness_value }}'
+                kelvin: '{{temperature_value}}'
+                transition: '{{ transition_on_value }}'
+        - choose:
+          - alias: Set the temperature and transition for the lights
+            conditions:
+            - condition: template
+              value_template: '{{ (''use_colour_temperature'' in include_light_control)
+                and not (''use_brightness'' in include_light_control) }}'
+            sequence:
+            - service: light.turn_on
+              target: !input light_switch
+              data:
+                kelvin: '{{temperature_value}}'
+                transition: '{{ transition_on_value }}'
+        - choose:
+          - alias: Set the transition for the lights - Default
+            conditions:
+            - condition: template
+              value_template: '{{ (''use_brightness'' not in include_light_control)
+                and (''use_colour_temperature'' not in include_light_control) }}'
+            sequence:
+            - service: light.turn_on
+              target: !input light_switch
+              data:
+                transition: '{{ transition_on_value }}'
+    - choose:
+      - alias: By-pass is enabled & check by-pass option - turn fan on
+        conditions:
+        - condition: trigger
+          id: t5
+        - condition: template
+          value_template: '{{ include_bypass == ''bypass_enabled_turn_on'' }}'
+        sequence:
+        - alias: Check by-pass settings and preform the correct action
+          if:
+          - alias: Check if the by-pass auto off is enabled
+            condition: template
+            value_template: '{{ include_bypass_auto_off == ''bypass_auto_off_enabled''
+              }}'
+          then:
+          - alias: Wait the number of minutes set in the by-pass auto off time delay
+            delay:
+              minutes: !input bypass_auto_off_delay
+          - alias: Turn off the by-pass
+            service: homeassistant.turn_off
+            entity_id: !input by_pass
+          - stop: Stop the automation
+          else:
+          - stop: Stop the automation
+    - alias: Wait until Humidity Derivative Sensor drops or it times out
+      wait_for_trigger:
+        platform: numeric_state
+        entity_id: !input trigger
+        below: !input winter_falling_humidity
+      timeout:
+        minutes: !input winter_time_out
+    - alias: Wait the number of minutes that has been set for the time delay
+      delay:
+        minutes: !input winter_time_delay
+    - alias: Turn off the fan
+      service: homeassistant.turn_off
+      target: !input fan_switch
+    - choose:
+      - alias: Check if the fan speed off is enabled
+        conditions:
+        - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+        sequence:
+        - alias: Fan speed off option
+          service: homeassistant.turn_on
+          entity_id: !input fan_speed_off
+    - choose:
+      - alias: Check if the lights are enabled
+        conditions:
+        - '{{ include_lights == ''lights_enabled'' }}'
+        sequence:
+        - alias: Turn off the lights
+          service: light.turn_off
+          target: !input light_switch
+          data:
+            transition: '{{ transition_off_value }}'
+  default:
+  - alias: Check if the triggers
+    condition: trigger
+    id:
+    - t2
+    - t3
+    - t4
+    - t5
+    - t6
+  - choose:
+    - alias: By-pass is turned on  & check by-pass option - turn fan off
+      conditions:
+      - condition: trigger
+        id: t5
+      - condition: template
+        value_template: '{{ include_bypass == ''bypass_enabled'' }}'
+      sequence:
+      - alias: Turn off the fan
+        service: homeassistant.turn_off
+        target: !input fan_switch
+      - choose:
+        - alias: Check if the fan speed off is enabled
+          conditions:
+          - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+          sequence:
+          - alias: Fan speed off option
+            service: homeassistant.turn_on
+            entity_id: !input fan_speed_off
+      - choose:
+        - alias: Check if the lights are enabled
+          conditions:
+          - '{{ include_lights == ''lights_enabled'' }}'
+          sequence:
+          - alias: Turn off the lights
+            service: light.turn_off
+            target: !input light_switch
+            data:
+              transition: '{{ transition_off_value }}'
+      - alias: Check by-pass settings and preform the correct action
+        if:
+        - alias: Check if the by-pass auto off is enabled
+          condition: template
+          value_template: '{{ include_bypass_auto_off == ''bypass_auto_off_enabled''
+            }}'
+        then:
+        - alias: Wait the number of minutes set in the by-pass auto off time delay
+          delay:
+            minutes: !input bypass_auto_off_delay
+        - alias: Turn off the by-pass
+          service: homeassistant.turn_off
+          entity_id: !input by_pass
+        - stop: Stop the automation
+        else:
+        - stop: Stop the automation
+    - alias: By-pass is turned on  & check by-pass option - keep the current fan state
+      conditions:
+      - condition: trigger
+        id: t5
+      - condition: template
+        value_template: '{{ include_bypass == ''bypass_enabled_stop'' }}'
+      sequence:
+      - alias: Check by-pass settings and preform the correct action
+        if:
+        - alias: Check if the by-pass auto off is enabled
+          condition: template
+          value_template: '{{ include_bypass_auto_off == ''bypass_auto_off_enabled''
+            }}'
+        then:
+        - alias: Wait the number of minutes set in the by-pass auto off time delay
+          delay:
+            minutes: !input bypass_auto_off_delay
+        - alias: Turn off the by-pass
+          service: homeassistant.turn_off
+          entity_id: !input by_pass
+        - stop: Stop the automation
+        else:
+        - stop: Stop the automation
+    - alias: By-pass is turned off  & check if the sensor is below falling humidity
+      conditions:
+      - condition: trigger
+        id: t6
+      sequence:
+      - choose:
+        - alias: Check by-pass options - turn fan off is enabled
+          conditions:
+          - condition: template
+            value_template: '{{ ''bypass_turn_fan_off'' in bypass_options }}'
+          sequence:
+          - alias: Turn off the fan
+            service: homeassistant.turn_off
+            target: !input fan_switch
+          - choose:
+            - alias: Check if the fan speed off is enabled
+              conditions:
+              - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+              sequence:
+              - alias: Fan speed off option
+                service: homeassistant.turn_on
+                entity_id: !input fan_speed_off
+          - choose:
+            - alias: Check if the lights are enabled
+              conditions:
+              - '{{ include_lights == ''lights_enabled'' }}'
+              sequence:
+              - alias: Turn off the lights
+                service: light.turn_off
+                target: !input light_switch
+                data:
+                  transition: '{{ transition_off_value }}'
+          - stop: Stop the automation
+        - alias: Check if the sensor is below falling humidity & by-pass options -
+            turn fan off is disabled
+          conditions:
+          - alias: Check if the motion trigger is on
+            condition: numeric_state
+            entity_id: !input trigger
+            below: !input falling_humidity
+          - condition: not
+            conditions:
+            - condition: template
+              value_template: '{{ ''bypass_turn_fan_off'' in bypass_options }}'
+          sequence:
+          - alias: Wait the number of minutes that has been set for the time delay
+            delay:
+              minutes: !input time_delay
+          - alias: Turn off the fan
+            service: homeassistant.turn_off
+            target: !input fan_switch
+          - choose:
+            - alias: Check if the fan speed off is enabled
+              conditions:
+              - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+              sequence:
+              - alias: Fan speed off option
+                service: homeassistant.turn_on
+                entity_id: !input fan_speed_off
+          - choose:
+            - alias: Check if the lights are enabled
+              conditions:
+              - '{{ include_lights == ''lights_enabled'' }}'
+              sequence:
+              - alias: Turn off the lights
+                service: light.turn_off
+                target: !input light_switch
+                data:
+                  transition: '{{ transition_off_value }}'
+          - stop: Stop the automation
+        default:
+        - alias: Wait until Humidity Derivative Sensor drops or it times out
+          wait_for_trigger:
+            platform: numeric_state
+            entity_id: !input trigger
+            below: !input falling_humidity
+          timeout:
+            minutes: !input time_out
+        - alias: Wait the number of minutes that has been set for the time delay
+          delay:
+            minutes: !input time_delay
+        - alias: Turn off the fan
+          service: homeassistant.turn_off
+          target: !input fan_switch
+        - choose:
+          - alias: Check if the fan speed off is enabled
+            conditions:
+            - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+            sequence:
+            - alias: Fan speed off option
+              service: homeassistant.turn_on
+              entity_id: !input fan_speed_off
+        - choose:
+          - alias: Check if the lights are enabled
+            conditions:
+            - '{{ include_lights == ''lights_enabled'' }}'
+            sequence:
+            - alias: Turn off the lights
+              service: light.turn_off
+              target: !input light_switch
+              data:
+                transition: '{{ transition_off_value }}'
+        - stop: Stop the automation
+    - alias: Safe Guard when HA restarts
+      conditions:
+      - condition: trigger
+        id: t2
+      sequence:
+      - alias: Check automation and preform the correct action
+        if:
+        - alias: Check if the motion trigger is on
+          condition: numeric_state
+          entity_id: !input trigger
+          below: !input falling_humidity
+        then:
+        - choose:
+          - alias: Check if the by-pass auto off is enabled and by-pass is ON
+            conditions:
+            - condition: template
+              value_template: '{{ (include_bypass_auto_off == ''bypass_auto_off_enabled'')
+                and (states[by_pass].state == ''on'') }}'
+            sequence:
+            - alias: Wait the number of minutes set in the by-pass auto off time delay
+              delay:
+                minutes: !input bypass_auto_off_delay
+            - alias: Turn off the by-pass
+              service: homeassistant.turn_off
+              entity_id: !input by_pass
+            - stop: Stop the automation
+        - alias: Wait the number of minutes that has been set for the time delay
+          delay:
+            minutes: !input time_delay
+        - alias: Turn off the fan
+          service: homeassistant.turn_off
+          target: !input fan_switch
+        - choose:
+          - alias: Check if the fan speed off is enabled
+            conditions:
+            - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+            sequence:
+            - alias: Fan speed off option
+              service: homeassistant.turn_on
+              entity_id: !input fan_speed_off
+        - choose:
+          - alias: Check if the lights are enabled
+            conditions:
+            - '{{ include_lights == ''lights_enabled'' }}'
+            sequence:
+            - alias: Turn off the lights
+              service: light.turn_off
+              target: !input light_switch
+              data:
+                transition: '{{ transition_off_value }}'
+        - stop: Stop the automation
+        else:
+        - choose:
+          - alias: Check if the by-pass auto off is enabled and by-pass is ON
+            conditions:
+            - condition: template
+              value_template: '{{ (include_bypass_auto_off == ''bypass_auto_off_enabled'')
+                and (states[by_pass].state == ''on'') }}'
+            sequence:
+            - alias: Wait the number of minutes set in the by-pass auto off time delay
+              delay:
+                minutes: !input bypass_auto_off_delay
+            - alias: Turn off the by-pass
+              service: homeassistant.turn_off
+              entity_id: !input by_pass
+            - stop: Stop the automation
+        - alias: Wait until Humidity Derivative Sensor drops or it times out
+          wait_for_trigger:
+            platform: numeric_state
+            entity_id: !input trigger
+            below: !input falling_humidity
+          timeout:
+            minutes: !input time_out
+        - alias: Wait the number of minutes that has been set for the time delay
+          delay:
+            minutes: !input time_delay
+        - alias: Turn off the fan
+          service: homeassistant.turn_off
+          target: !input fan_switch
+        - choose:
+          - alias: Check if the fan speed off is enabled
+            conditions:
+            - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+            sequence:
+            - alias: Fan speed off option
+              service: homeassistant.turn_on
+              entity_id: !input fan_speed_off
+        - choose:
+          - alias: Check if the lights are enabled
+            conditions:
+            - '{{ include_lights == ''lights_enabled'' }}'
+            sequence:
+            - alias: Turn off the lights
+              service: light.turn_off
+              target: !input light_switch
+              data:
+                transition: '{{ transition_off_value }}'
+        - stop: Stop the automation
+  - alias: Turn on the fan
+    service: homeassistant.turn_on
+    target: !input fan_switch
+  - choose:
+    - alias: Check if the lights are enabled
+      conditions:
+      - '{{ include_lights == ''lights_enabled'' }}'
+      sequence:
+      - choose:
+        - alias: Set the brightness and transition for the lights
+          conditions:
+          - condition: template
+            value_template: '{{ (''use_brightness'' in include_light_control) and
+              not (''use_colour_temperature'' in include_light_control) }}'
+          sequence:
+          - service: light.turn_on
+            target: !input light_switch
+            data:
+              brightness_pct: '{{ brightness_value }}'
+              transition: '{{ transition_on_value }}'
+      - choose:
+        - alias: Set the brightness, temperature and transition for the lights
+          conditions:
+          - condition: template
+            value_template: '{{ (''use_brightness'' in include_light_control) and
+              (''use_colour_temperature'' in include_light_control) }}'
+          sequence:
+          - service: light.turn_on
+            target: !input light_switch
+            data:
+              brightness_pct: '{{ brightness_value }}'
+              kelvin: '{{temperature_value}}'
+              transition: '{{ transition_on_value }}'
+      - choose:
+        - alias: Set the temperature and transition for the lights
+          conditions:
+          - condition: template
+            value_template: '{{ (''use_colour_temperature'' in include_light_control)
+              and not (''use_brightness'' in include_light_control) }}'
+          sequence:
+          - service: light.turn_on
+            target: !input light_switch
+            data:
+              kelvin: '{{temperature_value}}'
+              transition: '{{ transition_on_value }}'
+      - choose:
+        - alias: Set the transition for the lights - Default
+          conditions:
+          - condition: template
+            value_template: '{{ (''use_brightness'' not in include_light_control)
+              and (''use_colour_temperature'' not in include_light_control) }}'
+          sequence:
+          - service: light.turn_on
+            target: !input light_switch
+            data:
+              transition: '{{ transition_on_value }}'
+  - choose:
+    - alias: By-pass is enabled & check by-pass option - turn fan on
+      conditions:
+      - condition: trigger
+        id: t5
+      - condition: template
+        value_template: '{{ include_bypass == ''bypass_enabled_turn_on'' }}'
+      sequence:
+      - alias: Check by-pass settings and preform the correct action
+        if:
+        - alias: Check if the by-pass auto off is enabled
+          condition: template
+          value_template: '{{ include_bypass_auto_off == ''bypass_auto_off_enabled''
+            }}'
+        then:
+        - alias: Wait the number of minutes set in the by-pass auto off time delay
+          delay:
+            minutes: !input bypass_auto_off_delay
+        - alias: Turn off the by-pass
+          service: homeassistant.turn_off
+          entity_id: !input by_pass
+        - stop: Stop the automation
+        else:
+        - stop: Stop the automation
+  - alias: Wait until Humidity Derivative Sensor drops or it times out
+    wait_for_trigger:
+      platform: numeric_state
+      entity_id: !input trigger
+      below: !input falling_humidity
+    timeout:
+      minutes: !input time_out
+  - alias: Wait the number of minutes that has been set for the time delay
+    delay:
+      minutes: !input time_delay
+  - alias: Turn off the fan
+    service: homeassistant.turn_off
+    target: !input fan_switch
+  - choose:
+    - alias: Check if the fan speed off is enabled
+      conditions:
+      - '{{ include_fan_speed_off == ''fan_speed_off_enabled'' }}'
+      sequence:
+      - alias: Fan speed off option
+        service: homeassistant.turn_on
+        entity_id: !input fan_speed_off
+  - choose:
+    - alias: Check if the lights are enabled
+      conditions:
+      - '{{ include_lights == ''lights_enabled'' }}'
+      sequence:
+      - alias: Turn off the lights
+        service: light.turn_off
+        target: !input light_switch
+        data:
+          transition: '{{ transition_off_value }}'

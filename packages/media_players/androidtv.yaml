@@ -1,4 +1,0 @@
-#media_player:
-#  - platform: androidtv
-#    name: Philips Android TV
-#    host: !secret tv_ip

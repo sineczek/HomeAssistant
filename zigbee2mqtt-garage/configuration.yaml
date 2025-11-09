@@ -1,0 +1,63 @@
+homeassistant:
+  enabled: true
+advanced:
+  network_key:
+    - 237
+    - 248
+    - 114
+    - 102
+    - 18
+    - 107
+    - 4
+    - 213
+    - 144
+    - 29
+    - 169
+    - 88
+    - 165
+    - 170
+    - 44
+    - 158
+  pan_id: 5719
+  ext_pan_id:
+    - 224
+    - 166
+    - 171
+    - 85
+    - 91
+    - 77
+    - 206
+    - 73
+  last_seen: ISO_8601
+mqtt:
+  base_topic: zigbee2mqtt-garage
+  server: mqtt://192.168.4.9:1883
+  user: sinq
+  password: michal123
+serial:
+  port: tcp://192.168.4.179:6638
+  adapter: ember
+  baudrate: 115200
+frontend:
+  enabled: true
+  port: 8099
+device_options: {}
+availability:
+  enabled: true
+  active:
+    timeout: 16
+  passive:
+    timeout: 1500
+version: 4
+devices:
+  '0x04cf8cdf3c8b90f3':
+    friendly_name: Garaż - włącznik światła i brama
+    state_action: false
+  '0xa4c138f3d3b6c713':
+    friendly_name: Garaż - brama
+    retain: true
+  '0x001788010e5065f5':
+    friendly_name: Garaż - czujnik ruchu
+    temperature_precision: ''
+    illuminance_raw: false
+    no_occupancy_since: []

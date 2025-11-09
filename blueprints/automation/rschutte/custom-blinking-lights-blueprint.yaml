@@ -1,0 +1,128 @@
+blueprint:
+  name: Blinking Lights with Restore and Transition
+  description: Blink selected lights in a specific color and restore their original
+    state, with custom transition support.
+  domain: automation
+  input:
+    lights:
+      name: Lights
+      description: Select the lights to blink.
+      selector:
+        target:
+          entity:
+          - domain:
+            - light
+    color:
+      name: Blink Color
+      description: Choose a color for blinking.
+      selector:
+        color_rgb: {}
+    blink_count:
+      name: Blink Count
+      description: How many times should the lights blink?
+      default: 3
+      selector:
+        number:
+          min: 1.0
+          max: 10.0
+          step: 1.0
+          mode: slider
+    blink_duration:
+      name: Blink Duration (seconds)
+      description: How long should each blink last?
+      default: 1
+      selector:
+        number:
+          min: 0.1
+          max: 5.0
+          step: 0.1
+          mode: slider
+    trigger_entity:
+      name: Trigger Entity
+      description: Select the entity that triggers this automation.
+      selector:
+        entity:
+          multiple: false
+    from_state:
+      name: From State (optional)
+      description: Enter the state to trigger from (leave empty for any state).
+      default: ''
+      selector:
+        text:
+          multiline: false
+          multiple: false
+    to_state:
+      name: To State (optional)
+      description: Enter the state to trigger to (leave empty for any state).
+      default: ''
+      selector:
+        text:
+          multiline: false
+          multiple: false
+    flash_with_off:
+      name: Flash with Off
+      description: Turn off lights between blinks? If unchecked, the lights will return
+        to their original color between blinks.
+      default: true
+      selector:
+        boolean: {}
+    transition_length:
+      name: Transition Length (seconds)
+      description: Set a custom transition time for the lights (overrides device default).
+      default: 0.5
+      selector:
+        number:
+          min: 0.0
+          max: 5.0
+          step: 0.1
+          mode: slider
+  source_url: https://community.home-assistant.io/t/custom-blinking-lights-blueprint/796494
+mode: restart
+variables:
+  lights: !input lights
+  blink_count: !input blink_count
+  blink_duration: !input blink_duration
+  color: !input color
+  trigger_entity: !input trigger_entity
+  from_state: !input from_state
+  to_state: !input to_state
+  flash_with_off: !input flash_with_off
+  transition_length: !input transition_length
+trigger:
+- platform: state
+  entity_id: !input trigger_entity
+action:
+- service: scene.create
+  data:
+    scene_id: light_restore_scene
+    snapshot_entities: '{{ lights.entity_id }}'
+- repeat:
+    count: '{{ blink_count }}'
+    sequence:
+    - service: light.turn_on
+      target: '{{ lights }}'
+      data:
+        rgb_color: '{{ color }}'
+        brightness: 255
+        transition: '{{ transition_length }}'
+    - delay: '{{ blink_duration | float }}'
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ flash_with_off }}'
+        sequence:
+        - service: light.turn_off
+          target: '{{ lights }}'
+          data:
+            transition: '{{ transition_length }}'
+      - conditions:
+        - condition: template
+          value_template: '{{ not flash_with_off }}'
+        sequence:
+        - service: scene.turn_on
+          data:
+            entity_id: scene.light_restore_scene
+    - delay: '{{ blink_duration | float }}'
+- service: scene.turn_on
+  data:
+    entity_id: scene.light_restore_scene

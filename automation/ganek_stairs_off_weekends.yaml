@@ -1,0 +1,16 @@
+description: ""
+mode: single
+trigger:
+  - platform: time
+    at: "23:45:00"
+condition:
+  - condition: time
+    weekday:
+      - sat
+      - sun
+      - fri
+action:
+  - type: turn_off
+    device_id: 116d9328aa450b7d1d9253558ea7e04b
+    entity_id: switch.schody_na_ganek
+    domain: switch

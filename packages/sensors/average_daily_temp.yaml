@@ -1,7 +1,0 @@
-sensor:
-  - platform: average
-    name: 'Średnia dzienna temperatura Netatmo'
-    duration:
-      days: 1
-    entities:
-      - sensor.netatmo_dom_pokoj_dzienny_ganek_temperature

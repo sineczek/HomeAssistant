@@ -1,4 +1,0 @@
-sensor:
-  - platform: uptime
-    name: Uptime HA
-    unit_of_measurement: hours

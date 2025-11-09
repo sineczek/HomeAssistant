@@ -1,0 +1,83 @@
+blueprint:
+  name: Shelly switch events
+  description: Control anything from shelly SW
+  domain: automation
+  input:
+    remote:
+      name: Switch
+      description: Button to use
+      selector:
+        device:
+          integration: shelly
+          multiple: false
+    channel:
+      name: Channel
+      description: Which shelly channel should trigger this automation
+      default: 1
+      selector:
+        number:
+          min: 0.0
+          max: 20.0
+          mode: box
+          step: 1.0
+    button_single:
+      name: Short click
+      default: []
+      selector:
+        action: {}
+    button_double:
+      name: Double click
+      default: []
+      selector:
+        action: {}
+    button_triple:
+      name: Triple click
+      default: []
+      selector:
+        action: {}
+    button_long:
+      name: Long click
+      default: []
+      selector:
+        action: {}
+    button_single_long:
+      name: Button single long
+      default: []
+      selector:
+        action: {}
+    button_long_single:
+      name: Button long single
+      default: []
+      selector:
+        action: {}
+  source_url: https://community.home-assistant.io/t/shelly-device-switch-template-for-each-click-type/296528
+mode: restart
+max_exceeded: silent
+trigger:
+- platform: event
+  event_type: shelly.click
+  event_data:
+    device_id: !input remote
+    channel: !input channel
+action:
+- variables:
+    event: '{{ trigger.event.data.click_type }}'
+- choose:
+  - conditions:
+    - '{{ event == "single" }}'
+    sequence: !input button_single
+  - conditions:
+    - '{{ event == "double" }}'
+    sequence: !input button_double
+  - conditions:
+    - '{{ event == "triple" }}'
+    sequence: !input button_triple
+  - conditions:
+    - '{{ event == "long" }}'
+    sequence: !input button_long
+  - conditions:
+    - '{{ event == "single_long" }}'
+    sequence: !input button_single_long
+  - conditions:
+    - '{{ event == "long_single" }}'
+    sequence: !input button_long_single

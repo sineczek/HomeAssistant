@@ -1,4 +1,0 @@
-sensor:
-  - platform: version
-    name: Current version
-    source: local

@@ -1,0 +1,13 @@
+mqtt:
+  sensor:
+    - state_topic: "shellies/shellyht-toilet/sensor/temperature"  
+      name: "Czujnik temperatury w łazience - temperatura"  
+      unit_of_measurement: "°C"  
+    - state_topic: "shellies/shellyht-toilet/sensor/humidity"  
+      name: "Czujnik temperatury w łazience - wilgotnosc"  
+      unit_of_measurement: "%"  
+      device_class: battery
+    - state_topic: "shellies/shellyht-toilet/sensor/battery"  
+      name: "Czujnik temperatury w łazience - bateria"  
+      unit_of_measurement: "%"  
+      device_class: battery

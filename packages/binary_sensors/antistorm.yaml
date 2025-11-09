@@ -1,7 +1,0 @@
-binary_sensor:
-  - platform: antistorm
-    station_id: 148
-    monitored_conditions:
-      - "storm_alarm"
-      - "rain_alarm"
-      - "storm_active"

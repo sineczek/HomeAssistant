@@ -1,0 +1,24 @@
+alias: Zmywarka.stan
+description: ''
+trigger:
+  - type: power
+    platform: device
+    device_id: f1a5f1cb08e111eba0bc1909e0d89c47
+    entity_id: sensor.zmywarka_power
+    domain: sensor
+    above: 2
+    for: '00:02:00'
+condition:
+  - type: is_power
+    condition: device
+    device_id: f1a5f1cb08e111eba0bc1909e0d89c47
+    entity_id: sensor.zmywarka_power
+    domain: sensor
+    below: 1
+    for: '00:02:00'
+action:
+  - service: notify.mobile_app_iphone_2
+    data:
+      message: Zmywarka zakończyła pracę!
+      title: Zmywarka
+mode: single

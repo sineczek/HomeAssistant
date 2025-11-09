@@ -1,51 +1,51 @@
 #kwiatki
-plant.Kwiatek1:
-  friendly_name: Dendrobium Nobile (Dzienny)
-  entity_picture: /local/DendrobiumNobile.jpg
+# plant.Kwiatek1:
+#   friendly_name: Dendrobium Nobile (Dzienny)
+#   entity_picture: /local/DendrobiumNobile.jpg
 
-plant.Kwiatek2:
-  friendly_name: Fuchsia Fulgens (Ganek)
-  entity_picture: /local/FuchsiaFulgens.jpg
+# plant.Kwiatek2:
+#   friendly_name: Fuchsia Fulgens (Ganek)
+#   entity_picture: /local/FuchsiaFulgens.jpg
     
-plant.Kwiatek3:
-  friendly_name: Rosa Multiflora (Przy bramce)
-  entity_picture: /local/RosaMultiflora.jpg
+# plant.Kwiatek3:
+#   friendly_name: Rosa Multiflora (Przy bramce)
+#   entity_picture: /local/RosaMultiflora.jpg
 
-plant.Kwiatek4:
-  friendly_name: Phalaenopsis Andorra (Dzienny)
-  entity_picture: /local/PhalaenopsisAndorra.jpg
+# plant.Kwiatek4:
+#   friendly_name: Phalaenopsis Andorra (Dzienny)
+#   entity_picture: /local/PhalaenopsisAndorra.jpg
 
-plant.Kwiatek5:
-  friendly_name: Viola Alpina (Dzienny)
-  entity_picture: /local/ViolaAlpina.jpg
+# plant.Kwiatek5:
+#   friendly_name: Viola Alpina (Dzienny)
+#   entity_picture: /local/ViolaAlpina.jpg
 
-plant.Kwiatek6:
-  friendly_name: Prunus Triloba (Przed domem)
-  entity_picture: /local/PrunusTriloba.jpg
+# plant.Kwiatek6:
+#   friendly_name: Prunus Triloba (Przed domem)
+#   entity_picture: /local/PrunusTriloba.jpg
 
-plant.Kwiatek7:
-  friendly_name: Rosa Gloria Dei (Podjazd)
-  entity_picture: /local/RosaGloriaDei.jpg
+# plant.Kwiatek7:
+#   friendly_name: Rosa Gloria Dei (Podjazd)
+#   entity_picture: /local/RosaGloriaDei.jpg
 
-plant.Kwiatek8:
-  friendly_name: Petunia Opera Supreme (Parapet ganku)
-  entity_picture: /local/PetuniaOperaSupreme.jpg
+# plant.Kwiatek8:
+#   friendly_name: Petunia Opera Supreme (Parapet ganku)
+#   entity_picture: /local/PetuniaOperaSupreme.jpg
   
-plant.Kwiatek9:
-  friendly_name: Yucca Rostrata Tree (Salon)
-  entity_picture: /local/YuccaRostrata.jpg
+# plant.Kwiatek9:
+#   friendly_name: Yucca Rostrata Tree (Salon)
+#   entity_picture: /local/YuccaRostrata.jpg
 
-plant.Kwiatek10:
-  friendly_name: Ficus Benjamina (Salon)
-  entity_picture: /local/FicusBenjamina.jpg  
+# plant.Kwiatek10:
+#   friendly_name: Ficus Benjamina (Salon)
+#   entity_picture: /local/FicusBenjamina.jpg  
 
-plant.Kwiatek11:
-  friendly_name: Delphinium Delphis Emetald (Podjazd)
-  entity_picture: /local/DelphiniumDelphisEmerald.jpg
+# plant.Kwiatek11:
+#   friendly_name: Delphinium Delphis Emetald (Podjazd)
+#   entity_picture: /local/DelphiniumDelphisEmerald.jpg
 
-plant.Kwiatek12:
-  friendly_name: Delphinium Aurora (Ogródek za domem)
-  entity_picture: /local/DelphiniumAurora.jpg  
+# plant.Kwiatek12:
+#   friendly_name: Delphinium Aurora (Ogródek za domem)
+#   entity_picture: /local/DelphiniumAurora.jpg  
   
   
 #automation.power_state_on_ha_start_up:
@@ -60,6 +60,9 @@ sensor.sonoffosuszacz_dht11_humidity:
   icon: mdi:water-percent
 sensor.sonoffosuszacz_dht11_temperature:
   friendly_name: Pokój dzienny - Temperatura
+  value_template: "{{ states('sensor.sonoffosuszacz_dht11_temperature') | float - 4 }}"
+
+
   icon: mdi:thermometer
 sensor.sonoffsalon_dht11_humidity:
   friendly_name: Salon - Wilgotność
@@ -68,8 +71,12 @@ sensor.sonoffsalon_dht11_temperature:
   friendly_name: Salon - Temperatura
   icon: mdi:thermometer
 
-sensor.sensative_strips_access_control:
-  icon: mdi:door
+#sensor.sensative_strips_access_control:
+#  icon: mdi:door
 
-switch.drzwi_lazienki:
-  icon: mdi:door
+#switch.drzwi_lazienki:
+#  icon: mdi:door
+
+sensor.netatmo_dom_pokoj_dzienny_temperature:
+  value_template: "{{ states('sensor.netatmo_dom_pokoj_dzienny_temperature') | float - 3 }}"
+

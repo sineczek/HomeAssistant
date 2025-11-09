@@ -1,0 +1,177 @@
+homeassistant:
+  enabled: true
+advanced:
+  network_key:
+    - 233
+    - 202
+    - 99
+    - 66
+    - 176
+    - 150
+    - 54
+    - 167
+    - 93
+    - 50
+    - 87
+    - 253
+    - 52
+    - 233
+    - 220
+    - 194
+  pan_id: 6311
+  ext_pan_id:
+    - 58
+    - 98
+    - 221
+    - 255
+    - 191
+    - 246
+    - 244
+    - 253
+  last_seen: ISO_8601
+  log_level: error
+mqtt:
+  server: mqtt://192.168.4.9:1883
+  password: michal123
+  user: sinq
+  base_topic: zigbee2mqtt
+serial:
+  port: tcp://192.168.4.178:6638
+  adapter: ember
+  baudrate: 115200
+frontend:
+  enabled: true
+  port: 8099
+device_options:
+  homeassistant:
+    last_seen:
+      enabled_by_default: true
+devices:
+  '0x00124b00258a6201':
+    friendly_name: Gniazdko Goscinny Okno
+  '0x001788010bfaf169':
+    friendly_name: Philips Hue Bulb Dzienny duza
+  '0x001788010c0d70c3':
+    friendly_name: Philips Huew Bulb Dzienny mala(1z2)
+  '0x001788010c0e0e8b':
+    friendly_name: Philips Huew Bulb Dzienny mala(2z2)
+  '0xb4e3f9fffe1e3233':
+    friendly_name: Gas Sensor Zigbee Kuchnia
+  '0x3410f4fffe5f332a':
+    friendly_name: Termometr Zigbee Kuchnia
+  '0x001788010cd59995':
+    friendly_name: Philips Motion Sensor Zigbee Kuchnia
+    temperature_calibration: -1
+    temperature_precision: ''
+    illuminance_raw: false
+    no_occupancy_since: []
+  '0x00124b0026b78b34':
+    friendly_name: Gniazdko Taras Podest LED
+  '0x3410f4fffe03c4ac':
+    friendly_name: Termometr Salon Zigbee
+  '0xe8e07efffe070b96':
+    friendly_name: Termometr Goscinny Zigbee
+  '0x00124b0026b78d45':
+    friendly_name: Gniazdko Strych szafa rack
+  '0xa4c138902f28de14':
+    friendly_name: Żarówka na ganku
+  '0x00124b002918c487':
+    friendly_name: Skrzynka na listy
+  '0xa4c13832b4af3239':
+    friendly_name: Gniazdko Zigbee Ganek
+  '0x847127fffe938ccd':
+    friendly_name: Włącznik schody do piwnicy
+    description: ''
+  '0x00124b002928deed':
+    friendly_name: Wejscie do piwnicy
+  '0x001788010c2f85cb':
+    friendly_name: Philips Hue Bulb do czytania
+  '0x001788010c0fd4cc':
+    friendly_name: Philips Hue Bulb Salon Nocna
+  '0x00124b00258a6287':
+    friendly_name: Gniazdko Piwnica oczyszczacz wody
+  '0x3410f4fffe0ca009':
+    friendly_name: Termometr Zigbee Piwnica
+  '0x00124b002facd0ff':
+    friendly_name: Drzwi do piwnicy
+  '0xa4c1387607799951':
+    friendly_name: Czujnik Zalania Odstojnik Piwnica
+  '0xa4c1388554b639fa':
+    friendly_name: Światło w piwnicy
+  '0x00124b002918ddb2':
+    friendly_name: Wejscie na strych
+  '0x00124b0029190d9e':
+    friendly_name: Czujnik ruchu na strychu
+  '0x00124b002918d290':
+    friendly_name: Dzwi szafy rack na strychu
+  '0x00158d0008cf0c44':
+    friendly_name: Termometr w szafie rack na strychu
+  '0x28dba7fffeb4c06e':
+    friendly_name: Sterownik nawadniania
+    disabled: true
+  '0x001788010bd63f8f':
+    friendly_name: 'Philips Hue 1055lm 9.5W ganek '
+  '0xa4c1388c3ebf6155':
+    friendly_name: Czujnik dymu w kuchni
+  '0x001788010b3bdcde':
+    friendly_name: Philips Hue 1055lm 9.5W wejscie ganek
+  '0x00124b0025499056':
+    friendly_name: Czujnik ruchu schody do piwnicy
+  '0xa4c13802293bad2a':
+    friendly_name: 'Lampki salon komoda '
+    color_sync: false
+    state_action: true
+  '0xa4c13817adfdcc94':
+    friendly_name: Lampki dzienny okno
+    disabled: true
+  '0xa4c138416fb5f7b7':
+    friendly_name: AirQualitySensor_Piec
+    debounce: 30
+    debounce_ignore:
+      - linkquality
+      - last_seen
+    reporting:
+      co2:
+        min: 300
+        max: 300
+      formaldehyd:
+        min: 300
+        max: 300
+      humidity:
+        min: 300
+        max: 300
+      temperature:
+        min: 300
+        max: 300
+      voc:
+        min: 300
+        max: 300
+  '0xa4c13889569faf25':
+    friendly_name: Gniazdko tablet
+  '0x54ef441000c179b1':
+    friendly_name: Ganek
+  '0x001788010df74fac':
+    friendly_name: Ganek - czujnik ruchu na schodach
+    illuminance_raw: false
+    no_occupancy_since: []
+  '0xa4c138d1369d595d':
+    friendly_name: Kuchnia - blat lewy
+    color_sync: false
+  '0xa4c138488777ba50':
+    friendly_name: Kuchnia - blat prawy
+  '0xa4c13814a060bc18':
+    friendly_name: Kuchnia - cokol
+  '0x00124b002a2f5089':
+    friendly_name: '0x00124b002a2f5089'
+groups:
+  '1':
+    friendly_name: Lampa dzienny
+  '2':
+    friendly_name: led w kuchni
+availability:
+  enabled: true
+  active:
+    timeout: 20
+  passive:
+    timeout: 1500
+version: 4

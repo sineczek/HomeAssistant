@@ -1,28 +1,24 @@
-- alias: washer.done
-  description: ''
-  trigger:
-  - type: power
-    platform: device
-    device_id: f1ccc25e08e111ebb369f7d13280fa46
-    entity_id: switch.kuchnia_pralka
-    domain: sensor
-    above: 0
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-    below: 2
-  condition:
-  - type: is_power
-    condition: device
-    device_id: f1ccc25e08e111ebb369f7d13280fa46
-    entity_id: switch.kuchnia_pralka
-    domain: sensor
-    above: 0
-    below: 2
-  action:
-  - service: notify.mobile_app_komofon_sinq
-    data:
-      message: Pralka zakończyła pracę!
-      title: Pralka
-  mode: single
+alias: washer.done
+description: ''
+trigger:
+- type: power
+  platform: device
+  device_id: f1ccc25e08e111ebb369f7d13280fa46
+  entity_id: switch.kuchnia_pralka
+  domain: sensor
+  above: 2
+  for: '00:02:00'
+condition:
+- type: is_power
+  condition: device
+  device_id: f1ccc25e08e111ebb369f7d13280fa46
+  entity_id: switch.kuchnia_pralka
+  domain: sensor
+  below: 1
+  for: '00:02:00'
+action:
+- service: notify.mobile_app_iphone_2
+  data:
+    message: Pralka zakończyła pracę!
+    title: Pralka
+mode: single

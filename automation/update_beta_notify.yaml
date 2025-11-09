@@ -19,7 +19,7 @@
           
       
 
-    - service: notify.sinq
+    - service: notify.mobile_app_iphone_2
       data:
         title: Update Home Assistant
         message: >

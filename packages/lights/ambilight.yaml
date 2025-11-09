@@ -1,6 +1,0 @@
-light:
-  - platform: philips_ambilight
-    name: Dzienny Ambilight
-    host: !secret tv_ip
-    username: !secret philipsl
-    password: !secret philipsp

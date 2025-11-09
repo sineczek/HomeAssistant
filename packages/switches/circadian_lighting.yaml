@@ -1,0 +1,8 @@
+switch:
+  - platform: circadian_lighting
+    name: "Circadian Swiatlo w kuchni"
+    lights_ct:
+      - light.kuchnia_cokol
+#    lights_brightness:
+#      - light.ledy_blat_lewy
+#      - light.ledywkuchni_2

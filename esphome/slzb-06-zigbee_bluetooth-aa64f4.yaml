@@ -1,0 +1,283 @@
+
+
+  
+# 1. SUBSTITUTIONS (Names to be used in sensor IDs)
+substitutions:
+  name: "slzb-06-zigbee_bluetooth"
+
+
+# 2. GENERAL ESPHOME CONFIGURATION SETTINGS
+
+## Project information
+esphome:
+  name: "${name}"
+  name_add_mac_suffix: true
+  project:
+    name: SMLIGHT.SLZB-06*(Zigbee+Bluetooth)
+    version: "1.31"
+  on_boot:
+    priority: 600
+    then:
+      - switch.turn_on: zRST_gpio
+      - delay: 15ms
+      - switch.turn_off: zRST_gpio
+
+## Board information
+esp32:
+  board: esp32dev
+  flash_size: 16MB
+  framework:
+    type: arduino
+
+## Connection to Home Assistant through API is enabled
+api:
+##  encryption:
+##    key: I47+dsAjpiUHeAkd7xWmu3mvw1sepuFpFJGuRC5sDH4=
+
+## Logger is enabled
+#logger:
+
+## OTA firmware updates are available
+ota:
+    safe_mode: true
+
+
+## Accessible portal with control buttons is available
+web_server:
+  port: 80
+  local: True
+
+## WiFi settings
+#wifi:
+#  ssid: !secret wifi_ssid
+#  password: !secret wifi_password
+#
+#  # Enable fallback hotspot (captive portal) in case wifi connection fails
+#  ap:
+#    ssid: "slzb-06 Hotspot"
+#    password: "slzb06"
+
+## Enabling captive portal
+# captive_portal:
+
+
+# 3. EXTERNAL COMPONENTS USED
+external_components:
+  - source: github://tube0013/esphome-stream-server-v2
+
+dashboard_import:
+  package_import_url: github://smlight-tech/testesphome/zb-bt.yaml
+
+
+# 4. COMMUNICATION SETTINGS
+## Ethernet Connection
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO0_IN
+  phy_addr: 1
+  power_pin: GPIO16
+
+## UART Settings
+uart:
+  id: uart_bus
+  rx_pin: GPIO5
+  tx_pin: GPIO17
+  baud_rate: 115200
+
+## Stream Server
+stream_server:
+  uart_id: uart_bus
+  id: streamServer
+  port: 6638
+
+## MDNS service settings
+mdns:
+  services:
+    - service: "_slzb-06"
+      protocol: "_tcp"
+      port: 6638
+      txt:
+        version: 1.0
+        name: SMLIGHT SLZB-06
+        radio_type: znp
+        baud_rate: 115200
+        data_flow_control: software
+
+
+# 5. BLLUETOOTH PROXY COMPONENTS
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 1100ms
+    window: 1100ms
+    active: true
+
+bluetooth_proxy:
+  active: true
+
+#button:
+#- platform: safe_mode
+#  name: Safe Mode Boot
+#  entity_category: diagnostic
+
+
+# 6. SENSORS
+## Upteime information as sensor
+text_sensor:
+  - platform: template
+    name: "SLZB-06 Uptime"
+    lambda: |-
+      uint32_t dur = id(uptime_s).state;
+      int dys = 0;
+      int hrs = 0;
+      int mnts = 0;
+      if (dur > 86399) {
+        dys = trunc(dur / 86400);
+        dur = dur - (dys * 86400);
+      }
+      if (dur > 3599) {
+        hrs = trunc(dur / 3600);
+        dur = dur - (hrs * 3600);
+      }
+      if (dur > 59) {
+        mnts = trunc(dur / 60);
+        dur = dur - (mnts * 60);
+      }
+      char buffer[17];
+      sprintf(buffer, "%ud %02uh %02um %02us", dys, hrs, mnts, dur);
+      return {buffer};
+    icon: mdi:clock-start
+    update_interval: 60s
+
+
+## Uptime generic sensor
+sensor:
+  - platform: uptime
+    id: uptime_s
+    update_interval: 60s
+
+## Status of physical button - sensor
+binary_sensor:
+  - platform: gpio
+    name: "Physical button status"
+    icon: mdi:toggle-switch
+    id: gpio35btn1
+    pin:
+      number: GPIO35
+      mode:
+        input: true
+      inverted: yes
+    on_press:
+      then:
+        - switch.toggle: modeSwitchTemplate
+  - platform: stream_server
+    stream_server: streamServer
+    name: "SLZB-06* Serial Connected"
+
+# 7. SWITCHES
+## ESP32 Restart
+switch:
+  - platform: restart
+    id: coreRestart
+    name: "Core only restart"
+## Zigbee Restart
+  - platform: gpio
+    pin: 33
+    id: zRST_gpio
+    inverted: yes
+    restore_mode: ALWAYS_OFF
+  - platform: template
+    name: "Zigbee Restart"
+    icon: mdi:toggle-switch
+    id: zRST
+    turn_on_action:
+      - switch.turn_on: zRST_gpio
+      - delay: 15ms
+      - switch.turn_off: zRST_gpio
+## Full Restart
+  - platform: template
+    name: "Full (Core+Zigbee) Restart"
+    icon: mdi:toggle-switch
+    id: fullRST
+    turn_on_action:
+      - switch.turn_on: zRST_gpio
+      - delay: 15ms
+      - switch.turn_off: zRST_gpio
+      - delay: 15ms
+      - switch.turn_on: coreRestart
+
+## Zigbee to flash mode switch      
+  - platform: gpio
+    pin: 32
+    name: "Zigbee flash Mode internal"
+    icon: mdi:toggle-switch
+    id: zBSL
+    inverted: yes
+    restore_mode: ALWAYS_OFF
+    internal: true
+    
+  - platform: template
+    name: "Zigbee flash Mode"
+    icon: mdi:cellphone-arrow-down
+    turn_on_action:
+      - script.execute: fw_update_mode
+    turn_off_action:
+      - switch.toggle: zRST
+
+## Mode LAN/USB switch
+  - platform: template
+    name: "DEVICE MODE SWITCH (LAN|OFF / USB|ON)"
+    id: modeSwitchTemplate
+    turn_on_action:
+      - switch.turn_on: gpio12LED1
+      - switch.turn_on: gpio4Select
+      - switch.template.publish:
+          id: modeSwitchTemplate
+          state: ON
+    turn_off_action:
+      - switch.turn_off: gpio12LED1
+      - switch.turn_off: gpio4Select
+      - switch.template.publish:
+          id: modeSwitchTemplate
+          state: OFF
+
+  - platform: gpio
+    name: "DEVICE MODE SWITCH (LAN|OFF / USB|ON)"
+    restore_mode: ALWAYS_OFF
+    icon: mdi:toggle-switch
+    internal: true
+    id: gpio4Select
+    pin:
+      number: GPIO4
+
+### LEDs swithces
+  - platform: gpio
+    name: "LED - device mode (Blue)"
+    restore_mode: ALWAYS_OFF
+    icon: mdi:toggle-switch
+    id: gpio12LED1
+    pin:
+      number: GPIO12
+
+  - platform: gpio
+    name: "LED - power (Yellow)"
+    restore_mode: ALWAYS_ON
+    icon: mdi:toggle-switch
+    id: gpio14LED2
+    pin:
+      number: GPIO14
+
+# 8. SCRIPTS
+script:
+  - id: fw_update_mode
+    then:
+      - switch.turn_on: zBSL
+      - delay: 1s
+      - switch.turn_on: zRST_gpio
+      - delay: 1s
+      - switch.turn_off: zRST_gpio
+      - logger.log: "Wait 1 seconds for Zigbee chip to be ready"
+      - delay: 1s
+      - switch.turn_off: zBSL
+      - logger.log: "Update Zigbee with your Z-Stack firmware now!"

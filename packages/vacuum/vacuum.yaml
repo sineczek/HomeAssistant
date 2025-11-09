@@ -1,0 +1,16 @@
+template:
+  - sensor:
+      - name: "Alex Main Brush Time (h)"
+        state: "{{ (states('sensor.alex_main_brush_time_left') | float(0) / 3600) | round(1) }}"
+        unit_of_measurement: "h"
+        unique_id: alex_main_brush_hours
+
+      - name: "Alex Side Brush Time (h)"
+        state: "{{ (states('sensor.alex_szczotka_boczna') | float(0) / 3600) | round(1) }}"
+        unit_of_measurement: "h"
+        unique_id: alex_side_brush_hours
+
+      - name: "Alex Filter Time (h)"
+        state: "{{ (states('sensor.alex_filter_time_left') | float(0) / 3600) | round(1) }}"
+        unit_of_measurement: "h"
+        unique_id: alex_filter_hours

@@ -1,0 +1,4 @@
+sensor:
+  - platform: worxlandroid
+    host: 192.168.55.238
+    pin: 1111

@@ -1,99 +1,25 @@
-class CustomLightBrightnessRow extends Polymer.Element {
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "light-brightness-preset-row",
+  name: "light brightness preset row",
+  description: "A plugin to display your light controls in a button row.",
+  preview: false,
+});
 
-	static get template() {
-		return Polymer.html`
-			<style is="custom-style" include="iron-flex iron-flex-alignment"></style>
-			<style>
-				:host {
-					line-height: inherit;
-				}
-				.brightness {
-				min-width: 30px;
-				max-width: 30px;
-				height: 30px;
-				margin-left: 2px;
-				margin-right: 2px;
-				background-color: #759aaa;
-				border: 1px solid lightgrey; 
-				border-radius: 4px;
-				font-size: 10px !important;
-				color: inherit;
-				text-align: center;
-				float: right !important;
-				padding: 1px;
-				cursor: pointer;
-				}
-				
-				</style>
-					<hui-generic-entity-row hass="[[hass]]" config="[[_config]]">
-						<div class='horizontal justified layout' on-click="stopPropagation">
-							<button
-								class='brightness'
-								style='[[_leftColor]]'
-								toggles name="[[_leftName]]"
-								on-click='setBrightness'
-								disabled='[[_leftState]]'>[[_leftText]]</button>
-							<button
-								class='brightness'
-								style='[[_midLeftColor]]'
-								toggles name="[[_midLeftName]]"
-								on-click='setBrightness'
-								disabled='[[_midLeftState]]'>[[_midLeftText]]</button>
-							<button
-								class='brightness'
-								style='[[_midRightColor]]'
-								toggles name="[[_midRightName]]"
-								on-click='setBrightness'
-								disabled='[[_midRightState]]'>[[_midRightText]]</button>
-							<button
-								class='brightness'
-								style='[[_rightColor]]'
-								toggles name="[[_rightName]]"
-								on-click='setBrightness'
-								disabled='[[_rightState]]'>[[_rightText]]</button>
-						</div>
-					</hui-generic-entity-row>
-		`;
-    }
+const LitElement = customElements.get("ha-panel-lovelace") ? Object.getPrototypeOf(customElements.get("ha-panel-lovelace")) : Object.getPrototypeOf(customElements.get("hc-lovelace"));
+const html = LitElement.prototype.html;
+const css = LitElement.prototype.css;
 
-    static get properties() {
-		return {
-			hass: {
-				type: Object,
-				observer: 'hassChanged'
-			},
-				_config: Object,
-				_stateObj: Object,
-				_lowSP: Number,
-				_medSP: Number,
-				_highSP: Number,
-				_leftColor: String,
-				_midLeftColor: String,
-				_midRightColor: String,
-				_rightColor: String,
-				_leftText: String,
-				_midLeftText: String,
-				_midRightText: String,
-				_rightText: String,
-				_leftName: String,
-				_midLeftName: String,
-				_midRightName: String,
-				_rightName: String,
-				_leftState: Boolean,
-				_midLeftState: Boolean,
-				_midRightState: Boolean,
-				_rightState: Boolean,
-				
-		}
-	}
+class CustomLightBrightnessRow extends LitElement {
 
-	setConfig(config) {
-		this._config = config;
-		
+	constructor() {
+		super();
 		this._config = {
 			customTheme: false,
 			customSetpoints: false,
 			reverseButtons: false,
+			width: '30px',
+			height: '30px',
 			lowBrightness: 43,
 			medBrightness: 128,
 			hiBrightness: 213,
@@ -106,17 +32,120 @@ class CustomLightBrightnessRow extends Polymer.Element {
 			customLowText: 'LOW',
 			customMedText: 'MED',
 			customHiText: 'HIGH',
-			...config
+		};
+	}
+	
+	static get properties() {
+		return {
+			hass: Object,
+			_config: Object,
+			_stateObj: Object,
+			_lowSP: Number,
+			_medSP: Number,
+			_highSP: Number,
+			_width: String,
+			_height: String,
+			_leftColor: String,
+			_midLeftColor: String,
+			_midRightColor: String,
+			_rightColor: String,
+			_leftText: String,
+			_midLeftText: String,
+			_midRightText: String,
+			_rightText: String,
+			_leftName: String,
+			_midLeftName: String,
+			_midRightName: String,
+			_rightName: String,
+			_leftState: Boolean,
+			_midLeftState: Boolean,
+			_midRightState: Boolean,
+			_rightState: Boolean,
 		};
 	}
 
+	static get styles() {
+		return css`
+			:host {
+				line-height: inherit;
+			}
+			.box {
+				display: flex;
+				flex-direction: row;
+			}
+			.brightness {
+				margin-left: 2px;
+				margin-right: 2px;
+				background-color: #759aaa;
+				border: 1px solid lightgrey; 
+				border-radius: 4px;
+				font-size: 10px !important;
+				color: inherit;
+				text-align: center;
+				float: left !important;
+				padding: 1px;
+				cursor: pointer;
+			}
+		`;
+	}
+	
+	render() {
+		return html`
+			<hui-generic-entity-row .hass="${this.hass}" .config="${this._config}">
+				<div id='button-container' class='box'>
+					<button
+						class='brightness'
+						style='${this._leftColor};min-width:${this._width};max-width:${this._width};height:${this._height}'
+						toggles name="${this._leftName}"
+						@click=${this.setBrightness}
+						.disabled=${this._leftState}>${this._leftText}</button>
+					<button
+						class='brightness'
+						style='${this._midLeftColor};min-width:${this._width};max-width:${this._width};height:${this._height}'
+						toggles name="${this._midLeftName}"
+						@click=${this.setBrightness}
+						.disabled=${this._midLeftState}>${this._midLeftText}</button>
+					<button
+						class='brightness'
+						style='${this._midRightColor};min-width:${this._width};max-width:${this._width};height:${this._height}'
+						toggles name="${this._midRightName}"
+						@click=${this.setBrightness}
+						.disabled=${this._midRightState}>${this._midRightText}</button>
+					<button
+						class='brightness'
+						style='${this._rightColor};min-width:${this._width};max-width:${this._width};height:${this._height}'
+						toggles name="${this._rightName}"
+						@click=${this.setBrightness}
+						.disabled=${this._rightState}>${this._rightText}</button>
+				</div>
+			</hui-generic-entity-row>
+		`;
+	}
+	
+	firstUpdated() {
+		super.firstUpdated();
+		this.shadowRoot.getElementById('button-container').addEventListener('click', (ev) => ev.stopPropagation());
+	}
+
+	setConfig(config) {
+		this._config = { ...this._config, ...config };
+	}
+
+	updated(changedProperties) {
+		if (changedProperties.has("hass")) {
+			this.hassChanged();
+		}
+	}
+	
 	hassChanged(hass) {
 
 		const config = this._config;
-		const stateObj = hass.states[config.entity];
+		const stateObj = this.hass.states[config.entity];
 		const custTheme = config.customTheme;
 		const custSetpoint = config.customSetpoints;
 		const revButtons = config.reverseButtons;
+		const buttonWidth = config.width;
+		const buttonHeight = config.height;
 		const OnLowClr = config.isOnLowColor;
 		const OnMedClr = config.isOnMedColor;
 		const OnHiClr = config.isOnHiColor;
@@ -232,69 +261,65 @@ class CustomLightBrightnessRow extends Polymer.Element {
 		let offtext = custOffTxt;
 		let lowtext = custLowTxt;
 		let medtext = custMedTxt;
-		let hitext = custHiTxt;	
+		let hitext = custHiTxt;
 		
 		let offname = 'off'
 		let lowname = 'low'
 		let medname = 'medium'
 		let hiname = 'high'
 		
-		if (revButtons) {
-			this.setProperties({
-				_stateObj: stateObj,
-				_leftState: offstate == 'on',
-				_midLeftState: low === 'on',
-				_midRightState: med === 'on',
-				_rightState: high === 'on',
-				_leftColor: offcolor,
-				_midLeftColor: lowcolor,
-				_midRightColor: medcolor,
-				_rightColor: hicolor,
-				_lowSP: lowSetpoint,
-				_medSP: medSetpoint,
-				_highSP: hiSetpoint,
-				_leftText: offtext,
-				_midLeftText: lowtext,
-				_midRightText: medtext,
-				_rightText: hitext,
-				_leftName: offname,
-				_midLeftName: lowname,
-				_midRightName: medname,
-				_rightName: hiname,
-
-			});
-		} else {
-			this.setProperties({
-				_stateObj: stateObj,
-				_leftState: high == 'on',
-				_midLeftState: med === 'on',
-				_midRightState: low === 'on',
-				_rightState: offstate === 'on',
-				_leftColor: hicolor,
-				_midLeftColor: medcolor,
-				_midRightColor: lowcolor,
-				_rightColor: offcolor,
-				_lowSP: lowSetpoint,
-				_medSP: medSetpoint,
-				_highSP: hiSetpoint,
-				_leftText: hitext,
-				_midLeftText: medtext,
-				_midRightText: lowtext,
-				_rightText: offtext,
-				_leftName: hiname,
-				_midLeftName: medname,
-				_midRightName: lowname,
-				_rightName: offname,
-			});
-		}
-				
+		let buttonwidth = buttonWidth;
+		let buttonheight = buttonHeight;
 		
+		if (revButtons) {
+			this._stateObj = stateObj;
+			this._leftState = (offstate == 'on');
+			this._midLeftState = (low === 'on');
+			this._midRightState = (med === 'on');
+			this._rightState = (high === 'on');
+			this._width = buttonwidth;
+			this._height = buttonheight;
+			this._leftColor = offcolor;
+			this._midLeftColor = lowcolor;
+			this._midRightColor = medcolor;
+			this._rightColor = hicolor;
+			this._lowSP = lowSetpoint;
+			this._medSP = medSetpoint;
+			this._highSP = hiSetpoint;
+			this._leftText = offtext;
+			this._midLeftText = lowtext;
+			this._midRightText = medtext;
+			this._rightText = hitext;
+			this._leftName = offname;
+			this._midLeftName = lowname;
+			this._midRightName = medname;
+			this._rightName = hiname;
+		} else {
+			this._stateObj = stateObj;
+			this._leftState = (high == 'on');
+			this._midLeftState = (med === 'on');
+			this._midRightState = (low === 'on');
+			this._rightState = (offstate === 'on');
+			this._width = buttonwidth;
+			this._height = buttonheight;
+			this._leftColor = hicolor;
+			this._midLeftColor = medcolor;
+			this._midRightColor = lowcolor;
+			this._rightColor = offcolor;
+			this._lowSP = lowSetpoint;
+			this._medSP = medSetpoint;
+			this._highSP = hiSetpoint;
+			this._leftText = hitext;
+			this._midLeftText = medtext;
+			this._midRightText = lowtext;
+			this._rightText = offtext;
+			this._leftName = hiname;
+			this._midLeftName = medname;
+			this._midRightName = lowname;
+			this._rightName = offname;
+		}
 	}
 
-	stopPropagation(e) {
-		e.stopPropagation();
-	}
-	
 	setBrightness(e) {
 		const level = e.currentTarget.getAttribute('name');
 		const param = {entity_id: this._config.entity};

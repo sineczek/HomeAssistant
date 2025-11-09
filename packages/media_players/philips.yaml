@@ -1,8 +1,0 @@
-media_player:
-  - platform: philips_android_tv
-    name: Philips_TV
-    host: !secret tv_ip
-    mac: !secret philipsmac
-    username: !secret philipsl
-    password: !secret philipsp
-    favorite_channels_only: false

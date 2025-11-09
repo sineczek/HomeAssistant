@@ -1,0 +1,56 @@
+- alias: blinds_kitchen_sunrise
+  description: "otwarcie 33% o swicie"
+  mode: single
+  trigger:
+    - platform: time
+      at: "06:15:00"
+    - platform: sun
+      event: sunrise
+      offset: 0
+  condition: []
+  action:
+    - service: cover.set_cover_position
+      data:
+        position: 33
+      target:
+        device_id: 61abb4dbe991d78b9f93a326c239309e
+- alias: blinds_kitchen_9
+  description: "otwarcie 80% o 9AM"
+  mode: single
+  trigger:
+    - platform: time
+      at: "09:00:00"
+  condition: []
+  action:
+    - service: cover.set_cover_position
+      data:
+        position: 80
+      target:
+        device_id: 61abb4dbe991d78b9f93a326c239309e
+- alias: blinds_kitchen_23
+  description: "zamkniecie 100% o 23PM"
+  mode: single
+  trigger:
+    - platform: time
+      at: "23:00:00"
+  condition: []
+  action:
+    - service: cover.set_cover_position
+      data:
+        position: 0
+      target:
+        device_id: 61abb4dbe991d78b9f93a326c239309e
+- alias: blinds_kitchen_sunset
+  description: "zamkniecie 25% o zmierzchu"
+  mode: single
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: 0
+  condition: []
+  action:
+    - service: cover.set_cover_position
+      data:
+        position: 25
+      target:
+        device_id: 61abb4dbe991d78b9f93a326c239309e

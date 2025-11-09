@@ -1,0 +1,10 @@
+#################################################################
+## HUE: Komenda rozłączająca sesję Ambilight+Hue (API v1)
+#################################################################
+
+rest_command:
+  hue_stop_entertainment:
+    url: "http://192.168.4.169/api/AIORurf3rQVvhuKDdfkt4bLTnhuZG7vQJbmpUzPj/groups/200"
+    method: PUT
+    content_type: "application/json"
+    payload: '{"stream":{"active":false}}'

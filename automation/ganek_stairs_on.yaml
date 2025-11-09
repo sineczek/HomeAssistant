@@ -1,0 +1,51 @@
+- alias: outside_stairs_lights_on
+  description: "zapalenie o zmroku"
+  mode: single
+  trigger:
+    - platform: time
+      at: "21:15:00"
+    - platform: sun
+      event: sunset
+      offset: 1
+  condition: []
+  action:
+    - type: turn_on
+      device_id: 116d9328aa450b7d1d9253558ea7e04b
+      entity_id: switch.schody_na_ganek
+      domain: switch
+  mode: single
+- alias: outside_stairs_lights_off_week
+  description: "zgaszenie swiatel o 23 w tygodniu"
+  mode: single
+  trigger:
+    - platform: time
+      at: "23:00:00"
+  condition:
+    - condition: time
+      weekday:
+        - thu
+        - wed
+        - tue
+        - mon
+  action:
+    - type: turn_off
+      device_id: 116d9328aa450b7d1d9253558ea7e04b
+      entity_id: switch.schody_na_ganek
+      domain: switch
+- alias: outside_stairs_lights_off_weekend
+  description: "zgaszenie swiatel o 23:30 w tygodniu"
+  mode: single
+  trigger:
+    - platform: time
+      at: "23:30:00"
+  condition:
+    - condition: time
+      weekday:
+        - sat
+        - sun
+        - fri
+  action:
+    - type: turn_off
+      device_id: 116d9328aa450b7d1d9253558ea7e04b
+      entity_id: switch.schody_na_ganek
+      domain: switch

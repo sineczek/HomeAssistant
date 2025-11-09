@@ -1,13 +1,12 @@
-binary_sensor:
-  - platform: mqtt
-    name: Water Leak Celar Sensor
-    state_topic: celarwatersensor/stat/STATUS
-    value_template: ''
-    device_class: moisture
-  - platform: mqtt
-    name: Water Leak Celar Sensor Battery
-    state_topic: celarwatersensor/stat/BATT
-    value_template: ''
-    device_class: battery
+mqtt:
+  binary_sensor:
+    - state_topic: celarwatersensor/stat/STATUS #RFBridge/Water1/stat/STATUS
+      name: Water Leak Celar Sensor
+      value_template: ''
+      device_class: moisture
+    - state_topic: celarwatersensor/stat/STATUS #RFBridge/Water1/stat/BATT
+      name: Water Leak Celar Sensor Battery
+      value_template: ''
+      device_class: battery
     
 

@@ -1,5 +1,0 @@
-sensor:
-  - platform: version
-    name: Beta version
-    source: hassio
-    beta: true

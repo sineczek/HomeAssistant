@@ -1,0 +1,37 @@
+description: "Single button click"
+mode: single
+trigger:
+  - platform: device
+    device_id: 640130e94a129a05de71a530e530011e
+    domain: shelly
+    type: single
+    subtype: button
+condition: []
+action:
+  - if:
+      - condition: state
+        entity_id: light.ledy_blat_lewy
+        state: "on"
+      - condition: state
+        entity_id: light.ledywkuchni_2
+        state: "on"
+    then:
+      - type: turn_off
+        device_id: 0d2f3bf4099c11eba662e173e3263a60
+        entity_id: light.ledywkuchni_2
+        domain: light
+      - type: turn_off
+        device_id: 94bbe1e7f3f8a6b4a65e92b9dbc01996
+        entity_id: light.ledy_blat_lewy
+        domain: light
+    else:
+      - type: turn_on
+        device_id: 0d2f3bf4099c11eba662e173e3263a60
+        entity_id: light.ledywkuchni_2
+        domain: light
+        brightness_pct: 255
+      - type: turn_on
+        device_id: 94bbe1e7f3f8a6b4a65e92b9dbc01996
+        entity_id: light.ledy_blat_lewy
+        domain: light
+        brightness_pct: 255

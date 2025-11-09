@@ -1,25 +1,26 @@
-#- alias: Niski Stan Baterii Froda Wieczorem
-#  description: ''
-#  trigger:
-#  - platform: time
-#    at: '22:55:00'
-#  condition:
-#  - condition: state
-#    entity_id: sensor.hwuvoilu_battery
-#    state: <40
-#  action:
-#  - service: notify.mobile_app_komofon_sinq
-#    data: 
-#      title: Niski stan baterii u Froda
-#      message: >
-#        Jest wieczór a poziom baterii Froda wynosi
-#          * {{ states("sensor.hwuvoilu_battery") }}
-#          Może podłaczyć do ładowania ... ?
-#  - service: notify.mobile_app_iphone_malgorzata
-#    data: 
-#      title: Niski stan baterii u Froda
-#      message: >
-#        Jest wieczór a poziom baterii Froda wynosi
-#          * {{ states("sensor.hwuvoilu_battery") }}
-#          Może podłaczyć do ładowania ... ?
-#  mode: single
+- alias: Niski Stan Baterii Froda Wieczorem
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:55:00'
+  condition:
+  - condition: state
+    entity_id: sensor.hwuvoilu_battery
+    state: <40
+  action:
+  - service: notify.mobile_app_iphone_2
+    data: 
+      title: Niski stan baterii u Froda
+      message: >
+        Jest wieczór a poziom baterii Froda wynosi
+          * {{ states("sensor.hwuvoilu_battery") }}
+          Może podłaczyć do ładowania ... ?
+  - service: notify.mobile_app_iphone_malgorzata
+    data: 
+      title: Niski stan baterii u Froda
+      message: >
+        Jest wieczór a poziom baterii Froda wynosi
+          * {{ states("sensor.hwuvoilu_battery") }}
+          Może podłaczyć do ładowania ... ?
+  mode: single
+  id: 

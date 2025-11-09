@@ -1,8 +1,8 @@
-binary_sensor:
-  - platform: mqtt
-    name: "Ruch w piwnicy"
-    state_topic: "rfbridge/pir_schody"
-    payload_on: "ON"
-    payload_off: "OFF"
-    device_class: motion
-    #qos: 2
+mqtt:
+  binary_sensor:
+    - state_topic: "rfbridge/pir_schody"
+      name: "Ruch w piwnicy"
+      payload_on: "ON"
+      payload_off: "OFF"
+      device_class: motion
+      #qos: 2

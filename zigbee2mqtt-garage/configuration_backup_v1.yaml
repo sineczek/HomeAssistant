@@ -1,0 +1,51 @@
+homeassistant: true
+advanced:
+  network_key:
+    - 237
+    - 248
+    - 114
+    - 102
+    - 18
+    - 107
+    - 4
+    - 213
+    - 144
+    - 29
+    - 169
+    - 88
+    - 165
+    - 170
+    - 44
+    - 158
+  pan_id: 5719
+  ext_pan_id:
+    - 224
+    - 166
+    - 171
+    - 85
+    - 91
+    - 77
+    - 206
+    - 73
+  homeassistant_legacy_entity_attributes: false
+  legacy_api: false
+  legacy_availability_payload: false
+  last_seen: ISO_8601
+mqtt:
+  base_topic: zigbee2mqtt-garage
+  server: mqtt://192.168.4.9:1883
+  user: sinq
+  password: michal123
+serial:
+  port: tcp://192.168.4.179:6638
+  adapter: ember
+  baudrate: 115200
+frontend:
+  port: 8099
+device_options:
+  legacy: false
+availability:
+  active:
+    timeout: 16
+  passive:
+    timeout: 1500

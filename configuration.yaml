@@ -1,4 +1,3 @@
-
 homeassistant:
   name: Centrum dowodzenia
   latitude: !secret lat
@@ -6,20 +5,10 @@ homeassistant:
   elevation: 431
   unit_system: metric
   time_zone: Europe/Warsaw
+  currency: PLN
+  country: PL
   customize: !include customize.yaml
   packages: !include_dir_named packages
-
-#breaking_changes:
-
-panel_iframe:
-  tasmoadmin:
-    title: TasmoAdmin
-    icon: mdi:lightbulb-on
-    url: !secret tasmo_url
-  vscode:
-    title: VSCode
-    url: !secret vscode_url
-    icon: mdi:bug
 
 frontend:
   themes: !include_dir_merge_named themes
@@ -30,51 +19,51 @@ config:
 
 mobile_app:
 
-http:
+powercalc:
+  enable_autodiscovery: false
 
-updater:
-  include_used_components: true
+stream:
+
+energy:
+
+http:
+  server_port: 443
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
 
 conversation:
 
-map:
+circadian_lighting:
 
 sun:
 
 cloud:
 
 history:
+
+recorder:
+  db_url: !secret maria_db_url
+  purge_keep_days: 32
+  auto_purge: true
+  commit_interval: 1
+
   include:
     domains:
       - sensor
       - switch
-      - media_player
-recorder:
-  db_url: !secret maria_db_url
-  purge_keep_days: 32
-  include:
+      - light
+      - climate
+      - fan
     entity_globs:
-        - sensor.*energy*
-        - sensor.netatmo_*
-        - weather.*
-        - person.*
-        - sensor.speedtest*
-    domains:
-        - switch
-        - light
-#      - media_player
-        - climate
-        - sensor
+      - sensor.*energy*
+      - sensor.netatmo_*
+      - sensor.gas_*
+      - sensor.*speedtest*
+      - sensor.*battery*
+      - weather.*
+      - person.*
+
   exclude:
-    entity_globs:
-      - sensor.unifi*
-
-      - sensor.wled*
-      - sensor.*wifi_signal_strength
-      - sensor.*_signal_strength
-      - sensor.*signal
-      - sensor.*bssid
-
     domains:
       - camera
       - group
@@ -82,33 +71,34 @@ recorder:
       - binary_sensor
       - input_text
       - input_number
-      #- sensor
-      #- switch
+    entity_globs:
+      - sensor.unifi*
+      - sensor.wled*
+      - sensor.*wifi_signal_strength
+      - sensor.*_signal_strength
+      - sensor.*signal
+      - sensor.*bssid
     entities:
-      - sensor.date
       - sensor.hacs
-      - sensor.last_alexa
       - sensor.last_boot
-      - sensor.last_tag_description
       - sun.sun
-   
+
 logger:
   default: info
 
-discovery:
-#  enable:
-#    - homekit
-
+default_config:
 python_script:
+input_boolean:
+input_select:
 
-
-
-  tts:
+tts:
   - platform: google_translate
 
 group: !include groups.yaml
-automation: !include_dir_merge_list automation/
+# automation manual: !include_dir_merge_list automation/
+automation ui: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 input_text: !include input_text.yaml
 rest_command: !include rest_command.yaml
+# themes: !include_dir_merge_named themes
