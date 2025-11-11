@@ -415,17 +415,17 @@
 - id: '1691933084523'
   alias: FANs -OFF
   description: Włącz wiatraki o 23:15
-  trigger:
-  - platform: time
-    at: '23:15:00'
-  condition: []
-  action:
-  - service: fan.turn_off
-    data: {}
+  triggers:
+  - at: '23:15:00'
+    trigger: time
+  conditions: []
+  actions:
+  - data: {}
     target:
       entity_id:
       - fan.wiatrakpiwnica
-      - fan.bathroom_fan_bathroom_fan
+      - fan.wiatrak_w_lazience
+    action: fan.turn_off
   mode: queued
   max: 10
 - id: '1691936925194'
@@ -537,74 +537,6 @@
           - light.philips_huew_bulb_dzienny_mala_1z2
           - light.philips_huew_bulb_dzienny_mala_2z2
         action: light.toggle
-- id: '1691939587905'
-  alias: Light - Kitchen - main/leds
-  description: ''
-  use_blueprint:
-    path: nok/shelly-device-switch-template-for-each-click-type.yaml
-    input:
-      remote: d7bb37325026cde9bb1c42ed23107923
-      button_single:
-      - if:
-        - condition: time
-          before: '15:00:00'
-          weekday:
-          - sun
-          - sat
-          - fri
-          - thu
-          - wed
-          - mon
-          - tue
-          after: '23:00:00'
-        then:
-        - data:
-            transition: 4
-          target:
-            entity_id:
-            - light.kuchnia_cokol_kuchnia_cokol
-            - light.blat_lewy_ledy_blat_lewy
-            - light.ledywkuchni_2
-          action: light.toggle
-        enabled: false
-      - if:
-        - condition: sun
-          after: sunrise
-        - condition: time
-          after: '15:00:00'
-          weekday:
-          - sun
-          - sat
-          - fri
-          - thu
-          - wed
-          - mon
-          - tue
-          before: '23:00:00'
-        then:
-        - data:
-            transition: 10
-            brightness_pct: 90
-          target:
-            entity_id:
-            - light.ledywkuchni_2
-            - light.kuchnia_cokol_kuchnia_cokol
-            - light.blat_lewy_ledy_blat_lewy
-          action: light.toggle
-        enabled: false
-      - data:
-          profile: Kuchnia main
-        action: light.toggle
-        target:
-          entity_id: light.kuchnia_2
-      button_long:
-      - data:
-          profile: Kuchnia main
-        action: light.toggle
-        target:
-          entity_id: light.kuchnia_2
-      channel: 2
-      button_double: []
 - id: '1691941854764'
   alias: Light - Salon - Night Lamp
   description: 'single: toggle
@@ -815,9 +747,8 @@
 - id: '1691995298233'
   alias: FAN - Bathroom - Humidity actions
   description: ''
-  trigger:
+  triggers:
   - type: humidity
-    platform: device
     device_id: 5185abf0b8afe4712782037efb7cc929
     entity_id: d84053efb2f9e16c1c44952cf7c7e1b2
     domain: sensor
@@ -827,8 +758,8 @@
       hours: 0
       minutes: 1
       seconds: 0
+    trigger: device
   - type: humidity
-    platform: device
     device_id: 5185abf0b8afe4712782037efb7cc929
     entity_id: d84053efb2f9e16c1c44952cf7c7e1b2
     domain: sensor
@@ -838,8 +769,8 @@
       hours: 0
       minutes: 1
       seconds: 0
+    trigger: device
   - type: humidity
-    platform: device
     device_id: 5185abf0b8afe4712782037efb7cc929
     entity_id: d84053efb2f9e16c1c44952cf7c7e1b2
     domain: sensor
@@ -849,8 +780,9 @@
       hours: 0
       minutes: 1
       seconds: 0
-  condition: []
-  action:
+    trigger: device
+  conditions: []
+  actions:
   - choose:
     - conditions:
       - condition: or
@@ -862,8 +794,9 @@
               hours: 0
               minutes: 15
               seconds: 0
-            entity_id: fan.bathroom_fan_bathroom_fan
-            state: 'on'
+            entity_id: fan.wiatrak_w_lazience
+            state:
+            - 'on'
           - condition: trigger
             id:
             - Bathroom humidity 90+
@@ -874,8 +807,9 @@
               hours: 0
               minutes: 15
               seconds: 0
-            entity_id: fan.bathroom_fan_bathroom_fan
-            state: 'on'
+            entity_id: fan.wiatrak_w_lazience
+            state:
+            - 'on'
           - type: is_humidity
             condition: device
             device_id: 5185abf0b8afe4712782037efb7cc929
@@ -883,10 +817,11 @@
             domain: sensor
             above: 90
       sequence:
-      - service: fan.turn_off
-        data: {}
+      - data: {}
         target:
-          entity_id: fan.bathroom_fan_bathroom_fan
+          entity_id:
+          - fan.wiatrak_w_lazience
+        action: fan.turn_off
     - conditions:
       - condition: or
         conditions:
@@ -897,8 +832,9 @@
               hours: 0
               minutes: 10
               seconds: 0
-            entity_id: fan.bathroom_fan_bathroom_fan
-            state: 'on'
+            entity_id: fan.wiatrak_w_lazience
+            state:
+            - 'on'
           - condition: trigger
             id:
             - Bathroom humidity 80+
@@ -909,8 +845,9 @@
               hours: 0
               minutes: 10
               seconds: 0
-            entity_id: fan.bathroom_fan_bathroom_fan
-            state: 'on'
+            entity_id: fan.wiatrak_w_lazience
+            state:
+            - 'on'
           - type: is_humidity
             condition: device
             device_id: 5185abf0b8afe4712782037efb7cc929
@@ -918,10 +855,11 @@
             domain: sensor
             above: 80
       sequence:
-      - service: fan.turn_off
-        data: {}
+      - data: {}
         target:
-          entity_id: fan.bathroom_fan_bathroom_fan
+          entity_id:
+          - fan.wiatrak_w_lazience
+        action: fan.turn_off
     - conditions:
       - condition: or
         conditions:
@@ -932,8 +870,9 @@
               hours: 0
               minutes: 4
               seconds: 0
-            entity_id: fan.bathroom_fan_bathroom_fan
-            state: 'on'
+            entity_id: fan.wiatrak_w_lazience
+            state:
+            - 'on'
           - condition: trigger
             id:
             - Bathroom humidity 80-
@@ -944,8 +883,9 @@
               hours: 0
               minutes: 4
               seconds: 0
-            entity_id: fan.bathroom_fan_bathroom_fan
-            state: 'on'
+            entity_id: switch.wiatrak_w_lazience
+            state:
+            - 'on'
           - type: is_humidity
             condition: device
             device_id: 5185abf0b8afe4712782037efb7cc929
@@ -953,10 +893,11 @@
             domain: sensor
             below: 80
       sequence:
-      - service: fan.turn_off
-        data: {}
+      - data: {}
         target:
-          entity_id: fan.bathroom_fan_bathroom_fan
+          entity_id:
+          - fan.wiatrak_w_lazience
+        action: fan.turn_off
   mode: queued
   max: 10
 - id: '1692091727545'
@@ -964,9 +905,11 @@
   description: uses another automation
   triggers:
   - entity_id:
-    - light.lazienka_2
-    from: 'off'
-    to: 'on'
+    - light.kuchnia_i_lazienka_switch_0
+    from:
+    - 'off'
+    to:
+    - 'on'
     for:
       hours: 0
       minutes: 0
@@ -974,9 +917,11 @@
     id: Bathroom FAN ON
     trigger: state
   - entity_id:
-    - light.lazienka_2
-    from: 'on'
-    to: 'off'
+    - light.kuchnia_i_lazienka_switch_0
+    from:
+    - 'on'
+    to:
+    - 'off'
     for:
       hours: 0
       minutes: 5
@@ -984,7 +929,7 @@
     id: Bathroom FAN OFF
     trigger: state
   - entity_id:
-    - light.lazienka_2
+    - light.kuchnia_i_lazienka_switch_0
     from: 'on'
     to: 'off'
     for:
@@ -994,7 +939,7 @@
     id: Bathroom FAN OFF
     trigger: state
   - entity_id:
-    - light.lazienka_2
+    - light.kuchnia_i_lazienka_switch_0
     from: 'on'
     to: 'off'
     for:
@@ -1019,7 +964,7 @@
   - data: {}
     target:
       entity_id: fan.bathroom_fan
-    enabled: false
+    enabled: true
     action: fan.turn_on
   - choose:
     - conditions:
@@ -1697,26 +1642,6 @@
     data:
       message: BMW - AUTO ZOSAŁO OTWARTE
   mode: single
-- id: '1726398774714'
-  alias: FAN & Lights - Bathroom lights and FAN
-  description: ''
-  use_blueprint:
-    path: nok/shelly-device-switch-template-for-each-click-type.yaml
-    input:
-      remote: d7bb37325026cde9bb1c42ed23107923
-      button_long:
-      - type: toggle
-        device_id: 03fe8747295dc34e5f89c99fea1bfad9
-        entity_id: 7e25b4b40fff125e12265004607173d9
-        domain: switch
-        enabled: true
-      button_single:
-      - type: toggle
-        device_id: d7bb37325026cde9bb1c42ed23107923
-        entity_id: 3213c3f7920d6e36abef6b2f6d0eaa7e
-        domain: light
-        enabled: true
-      channel: 2
 - id: '1733250789420'
   alias: ALERT - Smoke in the kitchen
   description: ''
@@ -3283,221 +3208,6 @@
     target:
       entity_id: cover.garaz_brama_state
   mode: single
-- id: '1761406757420'
-  alias: Light - Kitchen main/led ori
-  description: ''
-  use_blueprint:
-    path: nok/shelly-device-switch-template-for-each-click-type.yaml
-    input:
-      remote: d7bb37325026cde9bb1c42ed23107923
-      button_single:
-      - if:
-        - condition: time
-          before: '15:00:00'
-          weekday:
-          - sun
-          - sat
-          - fri
-          - thu
-          - wed
-          - mon
-          - tue
-          after: '23:00:00'
-        then:
-        - data:
-            transition: 4
-          target:
-            entity_id:
-            - light.kuchnia_blat_lewy
-            - light.kuchnia_blat_prawy
-            - light.kuchnia_cokol
-          action: light.toggle
-        enabled: true
-      - if:
-        - condition: sun
-          after: sunrise
-        - condition: time
-          after: '15:00:00'
-          weekday:
-          - sun
-          - sat
-          - fri
-          - thu
-          - wed
-          - mon
-          - tue
-          before: '23:00:00'
-        then:
-        - data:
-            transition: 10
-            brightness_pct: 90
-          target:
-            entity_id:
-            - light.kuchnia_blat_lewy
-            - light.kuchnia_blat_prawy
-            - light.kuchnia_cokol
-          action: light.toggle
-        enabled: true
-      button_long:
-      - data:
-          profile: Kuchnia main
-        action: light.toggle
-        target:
-          entity_id: light.kuchnia_2
-      channel: 1
-      button_double: []
-- id: '1761406912009'
-  alias: Light - Kitchen - leds TEMP
-  description: ''
-  use_blueprint:
-    path: nok/shelly-device-switch-template-for-each-click-type.yaml
-    input:
-      remote: d7bb37325026cde9bb1c42ed23107923
-      channel: 1
-      button_single:
-      - if:
-        - condition: or
-          conditions:
-          - condition: time
-            after: '23:00:00'
-          - condition: time
-            before: '15:00:00'
-        - condition: time
-          weekday:
-          - sun
-          - sat
-          - fri
-          - thu
-          - wed
-          - tue
-          - mon
-        then:
-        - choose:
-          - conditions:
-            - condition: state
-              entity_id:
-              - light.kuchnia_blat_lewy
-              - light.kuchnia_blat_prawy
-              - light.kuchnia_cokol
-              match: any
-              state: 'off'
-            sequence:
-            - target:
-                entity_id:
-                - light.kuchnia_blat_lewy
-                - light.kuchnia_blat_prawy
-                - light.kuchnia_cokol
-              data:
-                transition: 4
-              action: light.turn_on
-          - conditions:
-            - condition: state
-              entity_id:
-              - light.kuchnia_blat_lewy
-              - light.kuchnia_blat_prawy
-              - light.kuchnia_cokol
-              match: any
-              state: 'on'
-            sequence:
-            - target:
-                entity_id:
-                - light.kuchnia_blat_lewy
-                - light.kuchnia_blat_prawy
-                - light.kuchnia_cokol
-              data:
-                transition: 4
-              action: light.turn_off
-        enabled: true
-      - if:
-        - condition: sun
-          after: sunrise
-        - condition: time
-          after: '15:00:00'
-          before: '23:00:00'
-          weekday:
-          - sun
-          - sat
-          - fri
-          - thu
-          - wed
-          - tue
-          - mon
-        then:
-        - choose:
-          - conditions:
-            - condition: state
-              entity_id:
-              - light.kuchnia_blat_lewy
-              - light.kuchnia_blat_prawy
-              - light.kuchnia_cokol
-              match: any
-              state: 'off'
-            sequence:
-            - target:
-                entity_id:
-                - light.kuchnia_blat_lewy
-                - light.kuchnia_blat_prawy
-                - light.kuchnia_cokol
-              data:
-                brightness_pct: 90
-                transition: 10
-              action: light.turn_on
-          - conditions:
-            - condition: state
-              entity_id:
-              - light.kuchnia_blat_lewy
-              - light.kuchnia_blat_prawy
-              - light.kuchnia_cokol
-              match: any
-              state: 'on'
-            sequence:
-            - target:
-                entity_id:
-                - light.kuchnia_blat_lewy
-                - light.kuchnia_blat_prawy
-                - light.kuchnia_cokol
-              data:
-                transition: 4
-              action: light.turn_off
-        enabled: true
-      button_long:
-      - choose:
-        - conditions:
-          - condition: state
-            entity_id:
-            - light.kuchnia_blat_lewy
-            - light.kuchnia_blat_prawy
-            - light.kuchnia_cokol
-            match: any
-            state: 'off'
-          sequence:
-          - target:
-              entity_id:
-              - light.kuchnia_blat_lewy
-              - light.kuchnia_blat_prawy
-              - light.kuchnia_cokol
-            data:
-              brightness_pct: 90
-              transition: 4
-            action: light.turn_on
-        - conditions:
-          - condition: state
-            entity_id:
-            - light.kuchnia_blat_lewy
-            - light.kuchnia_blat_prawy
-            - light.kuchnia_cokol
-            match: any
-            state: 'on'
-          sequence:
-          - target:
-              entity_id:
-              - light.kuchnia_blat_lewy
-              - light.kuchnia_blat_prawy
-              - light.kuchnia_cokol
-            data:
-              transition: 4
-            action: light.turn_off
-      button_double: []
 - id: '1762631080831'
   alias: Light - Ambilight manual ON → Hue Sync
   description: Włącza synchronizację Hue, jeśli Ambilight jest włączony ręcznie
@@ -3528,3 +3238,212 @@
       entity_id: switch.philips_tv_ambilight_hue
     action: switch.turn_on
   mode: single
+- id: '1762786471604'
+  alias: Lights & FAN - Lazienka
+  description: ''
+  use_blueprint:
+    path: karagyozovt/shelly-blueprint-for-any-shelly-with-2-detached-inputs.yaml
+    input:
+      button: e10b2e0f5e0758c582f361053e557f69
+      singleb1:
+      - action: switch.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.kuchnia_i_lazienka_switch_0
+      longb1:
+      - action: switch.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.wiatrak_w_lazience
+- id: '1762786996922'
+  description: ''
+  use_blueprint:
+    path: karagyozovt/shelly-blueprint-for-any-shelly-with-2-detached-inputs.yaml
+    input:
+      button: e10b2e0f5e0758c582f361053e557f69
+      longb2:
+      - action: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.kuchnia_glowne
+      singleb2:
+      - alias: W nocy wlaczamy swiatla
+        if:
+        - condition: or
+          conditions:
+          - condition: time
+            after: '23:00:00'
+          - condition: time
+            before: '15:00:00'
+        then:
+        - if:
+          - condition: or
+            conditions:
+            - condition: state
+              entity_id: light.kuchnia_blat_lewy
+              state: 'on'
+            - condition: state
+              entity_id: light.kuchnia_blat_prawy
+              state: 'on'
+            - condition: state
+              entity_id: light.kuchnia_cokol
+              state: 'on'
+          then:
+          - action: light.turn_off
+            metadata: {}
+            data: {}
+            target:
+              entity_id:
+              - light.kuchnia_blat_lewy
+              - light.kuchnia_blat_prawy
+              - light.kuchnia_cokol
+          else:
+          - action: light.turn_on
+            metadata: {}
+            data:
+              transition: 4
+              brightness_pct: 50
+            target:
+              entity_id:
+              - light.kuchnia_blat_lewy
+              - light.kuchnia_blat_prawy
+              - light.kuchnia_cokol
+      - alias: W dzien wlaczamy swiatla
+        if:
+        - condition: time
+          after: '15:00:00'
+          before: '23:00:00'
+        - condition: sun
+          after: sunrise
+        then:
+        - if:
+          - condition: or
+            conditions:
+            - condition: state
+              entity_id: light.kuchnia_blat_lewy
+              state: 'on'
+            - condition: state
+              entity_id: light.kuchnia_blat_prawy
+              state: 'on'
+            - condition: state
+              entity_id: light.kuchnia_cokol
+              state: 'on'
+          then:
+          - action: light.turn_off
+            metadata: {}
+            data: {}
+            target:
+              entity_id:
+              - light.kuchnia_blat_lewy
+              - light.kuchnia_blat_prawy
+              - light.kuchnia_cokol
+          else:
+          - action: light.turn_on
+            metadata: {}
+            data:
+              transition: 4
+              brightness_pct: 95
+            target:
+              entity_id:
+              - light.kuchnia_blat_lewy
+              - light.kuchnia_blat_prawy
+              - light.kuchnia_cokol
+- id: '1762803413683'
+  alias: Ustaw tryb Netatmo wg sugerowanego trybu
+  description: ''
+  triggers:
+  - entity_id: sensor.sugerowany_tryb_ogrzewania
+    trigger: state
+  conditions:
+  - condition: template
+    value_template: '{{ states(''sensor.sugerowany_tryb_ogrzewania'') in [''jesien_zima'',
+      ''wiosna_lato''] }}'
+  actions:
+  - target:
+      entity_id: select.netatmo_nowa
+    data:
+      option: '{{ states(''sensor.sugerowany_tryb_ogrzewania'') }}'
+    action: select.select_option
+  mode: single
+- id: '1762888914643'
+  alias: FAN - Bathroom - Auto control by light and humidity
+  description: 'Włącza wentylator po 30 sek od wejścia do łazienki (światło ON).
+
+    Wyłącza maksymalnie 15 minut po zgaszeniu światła,
+
+    lub szybciej, jeśli wilgotność spadnie poniżej 60%.
+
+    '
+  triggers:
+  - id: bathroom_fan_on
+    entity_id: light.kuchnia_i_lazienka_switch_0
+    from: 'off'
+    to: 'on'
+    for:
+      seconds: 30
+    trigger: state
+  - id: bathroom_fan_off_5min
+    entity_id: light.kuchnia_i_lazienka_switch_0
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: 5
+    trigger: state
+  - id: bathroom_fan_off_10min
+    entity_id: light.kuchnia_i_lazienka_switch_0
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: 10
+    trigger: state
+  - id: bathroom_fan_off_15min
+    entity_id: light.kuchnia_i_lazienka_switch_0
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: 15
+    trigger: state
+  conditions:
+  - condition: time
+    after: 05:00:00
+    before: '23:00:00'
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: bathroom_fan_on
+      sequence:
+      - target:
+          entity_id: fan.wiatrak_w_lazience
+        action: fan.turn_on
+    - conditions:
+      - condition: trigger
+        id: bathroom_fan_off_5min
+      - condition: numeric_state
+        entity_id: sensor.shellyht_02f210_humidity
+        below: 60
+      sequence:
+      - target:
+          entity_id: fan.wiatrak_w_lazience
+        action: fan.turn_off
+    - conditions:
+      - condition: trigger
+        id: bathroom_fan_off_10min
+      - condition: numeric_state
+        entity_id: sensor.shellyht_02f210_humidity
+        below: 60
+      sequence:
+      - target:
+          entity_id: fan.wiatrak_w_lazience
+        action: fan.turn_off
+    - conditions:
+      - condition: trigger
+        id: bathroom_fan_off_15min
+      sequence:
+      - target:
+          entity_id: fan.wiatrak_w_lazience
+        action: fan.turn_off
+  mode: restart

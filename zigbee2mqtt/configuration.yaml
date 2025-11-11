@@ -163,6 +163,10 @@ devices:
     friendly_name: Kuchnia - cokol
   '0x00124b002a2f5089':
     friendly_name: '0x00124b002a2f5089'
+  '0x001788010e26e00c':
+    friendly_name: Kuchnia - Główne
+  '0xdc8e95fffe19c823':
+    friendly_name: Wiatrak w Łazience
 groups:
   '1':
     friendly_name: Lampa dzienny

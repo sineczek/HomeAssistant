@@ -1,0 +1,25 @@
+template:
+  - sensor:
+      - name: "Średnia temperatura wewnętrzna"
+        unit_of_measurement: "°C"
+        state: >
+          {% set temps = [
+            states('sensor.netatmo_dom_pokoj_dzienny_temperature') | float(0),
+            states('sensor.netatmo_dom_pokoj_dzienny_salon_temperature') | float(0)
+          ] %}
+          {{ (temps | sum / temps | count) | round(1) }}
+
+  - sensor:
+      - name: "Sugerowany tryb ogrzewania"
+        state: >
+          {% set t_wew = states('sensor.srednia_temperatura_wewnetrzna') | float(0) %}
+          {% set t_zew = states('sensor.netatmo_dom_pokoj_dzienny_ganek_temperature') | float(0) %}
+
+          {% if t_wew < 20 and t_zew < 12 %}
+            jesien_zima
+          {% elif t_wew > 23 and t_zew > 17 %}
+            wiosna_lato
+          {% else %}
+            neutralny
+          {% endif %}
+

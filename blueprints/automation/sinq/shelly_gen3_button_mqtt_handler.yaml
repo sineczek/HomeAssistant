@@ -1,0 +1,63 @@
+blueprint:
+  name: Shelly Gen3 MQTT Button Handler
+  description: Reaguje na zdarzenia przycisków Shelly Gen3 przez MQTT (single, long, double push)
+  domain: automation
+  input:
+    mqtt_topic:
+      name: Topic MQTT urządzenia
+      description: Pełny topic, np. shelly2pmg3-28372f24cccc/events
+      selector:
+        text:
+    input_id:
+      name: Numer wejścia
+      description: input:0 lub input:1
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 1
+          mode: slider
+    single_push:
+      name: Akcja dla single_push
+      default: []
+      selector:
+        action: {}
+    long_push:
+      name: Akcja dla long_push
+      default: []
+      selector:
+        action: {}
+    double_push:
+      name: Akcja dla double_push
+      default: []
+      selector:
+        action: {}
+
+trigger:
+  - platform: mqtt
+    topic: !input mqtt_topic
+
+condition:
+  - condition: template
+    value_template: >
+      {% set data = trigger.payload_json %}
+      {{ data.method == "NotifyEvent" and
+         data.params.events[0].component == "input:" + (inputs.input_id | string) }}
+
+action:
+  - variables:
+      event_type: "{{ trigger.payload_json.params.events[0].event }}"
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ event_type == 'single_push' }}"
+        sequence: !input single_push
+      - conditions:
+          - condition: template
+            value_template: "{{ event_type == 'long_push' }}"
+        sequence: !input long_push
+      - conditions:
+          - condition: template
+            value_template: "{{ event_type == 'double_push' }}"
+        sequence: !input double_push
+mode: single
