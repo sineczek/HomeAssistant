@@ -167,6 +167,14 @@ devices:
     friendly_name: Kuchnia - Główne
   '0xdc8e95fffe19c823':
     friendly_name: Wiatrak w Łazience
+  '0xf0d1b800001cddd0':
+    friendly_name: Lampki podjazd
+    disabled: true
+  '0x001788010f6a7305':
+    friendly_name: Ganek - Czujnik ruchu
+    illuminance_raw: false
+  '0x7cb03eaa0a07d4f1':
+    friendly_name: Lampki przed domem
 groups:
   '1':
     friendly_name: Lampa dzienny

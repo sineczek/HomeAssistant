@@ -617,6 +617,9 @@
   - condition: time
     after: 05:55:00
     before: '10:00:00'
+  - condition: state
+    entity_id: input_boolean.kitchen_drugs_active
+    state: 'off'
   actions:
   - choose:
     - conditions:
@@ -711,6 +714,9 @@
     - wed
     - tue
     - mon
+  - condition: state
+    entity_id: input_boolean.kitchen_drugs_active
+    state: 'off'
   actions:
   - choose:
     - conditions:
@@ -2784,15 +2790,16 @@
     domain: binary_sensor
     trigger: device
   conditions:
-  - condition: sun
-    before: sunrise
-    before_offset: -02:00:00
-    after_offset: 02:00:00
-    after: sunset
+  - condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+      after_offset: -02:00:00
+    - condition: sun
+      before: sunrise
+      before_offset: 02:00:00
   actions:
   - action: light.turn_on
-    metadata: {}
-    data: {}
     target:
       entity_id: light.garaz_wlacznik_swiatla_i_brama_right
   mode: single
@@ -2805,7 +2812,7 @@
     entity_id: 5868693e851970e49cffa150e898573a
     domain: binary_sensor
     trigger: device
-    id: brak ruchu
+    id: brak_ruchu
   - type: occupied
     device_id: cb2764d49707478b0b3d845df674f886
     entity_id: 5868693e851970e49cffa150e898573a
@@ -2817,11 +2824,13 @@
   - if:
     - condition: trigger
       id:
-      - brak ruchu
+      - brak_ruchu
     then:
+    - delay: 00:06:00
+    - condition: state
+      entity_id: binary_sensor.garaz_czujnik_ruchu_occupancy
+      state: 'off'
     - action: light.turn_off
-      metadata: {}
-      data: {}
       target:
         entity_id:
         - light.garaz_wlacznik_swiatla_i_brama_right
@@ -2832,37 +2841,28 @@
       - ruchu
     then:
     - action: light.turn_on
-      metadata: {}
-      data: {}
       target:
         entity_id:
         - light.garaz_wlacznik_swiatla_i_brama_right
         - light.garaz_wlacznik_swiatla_i_brama_left
-  mode: parallel
-  max: 10
+  mode: restart
 - id: '1756836637324'
-  alias: Garaz - wylacone swiatlo gdy brama zamknieta
-  description: ''
+  alias: Garaz - wylaczone swiatlo gdy brama zamknieta
+  description: Wyłącza światła w garażu, gdy brama zamknięta i brak ruchu
   triggers:
-  - device_id: bb2f1d531f3de9de7a6f6c2dd85cfc5d
-    domain: cover
-    entity_id: 0a56af6b4e0d1a14e64e3799c5baebce
-    type: closed
-    trigger: device
+  - entity_id: cover.garaz_brama_state
+    to: closed
+    trigger: state
   conditions:
-  - type: is_not_occupied
-    condition: device
-    device_id: cb2764d49707478b0b3d845df674f886
-    entity_id: 5868693e851970e49cffa150e898573a
-    domain: binary_sensor
+  - condition: state
+    entity_id: binary_sensor.garaz_czujnik_ruchu_occupancy
+    state: 'off'
   actions:
-  - action: light.turn_off
-    metadata: {}
-    data: {}
-    target:
+  - target:
       entity_id:
       - light.garaz_wlacznik_swiatla_i_brama_right
       - light.garaz_wlacznik_swiatla_i_brama_left
+    action: light.turn_off
   mode: parallel
   max: 10
 - id: '1757189540687'
@@ -3258,6 +3258,7 @@
         target:
           entity_id: switch.wiatrak_w_lazience
 - id: '1762786996922'
+  alias: Light - Kitchen - main/leds
   description: ''
   use_blueprint:
     path: karagyozovt/shelly-blueprint-for-any-shelly-with-2-detached-inputs.yaml
@@ -3272,6 +3273,9 @@
       singleb2:
       - alias: W nocy wlaczamy swiatla
         if:
+        - condition: state
+          entity_id: input_boolean.kitchen_drugs_active
+          state: 'off'
         - condition: or
           conditions:
           - condition: time
@@ -3447,3 +3451,374 @@
           entity_id: fan.wiatrak_w_lazience
         action: fan.turn_off
   mode: restart
+- id: '1763223974248'
+  alias: Light - Ganek przy ruchu
+  description: Zapala światło w ganku przy ruchu w określonych warunkach
+  triggers:
+  - entity_id: binary_sensor.ganek_czujnik_ruchu_occupancy
+    to: 'on'
+    id: ruch
+    trigger: state
+  - entity_id: binary_sensor.ganek_czujnik_ruchu_occupancy
+    to: 'off'
+    for:
+      minutes: 1
+    id: brak_ruchu
+    trigger: state
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.ganek_czujnik_ruchu_illuminance
+    below: 21
+  - condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+    - condition: sun
+      before: sunrise
+      after_offset: 00:30:00
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: ruch
+      sequence:
+      - target:
+          entity_id: light.philips_hue_1055lm_9_5w_ganek
+        action: light.turn_on
+    - conditions:
+      - condition: trigger
+        id: brak_ruchu
+      sequence:
+      - target:
+          entity_id: light.philips_hue_1055lm_9_5w_ganek
+        action: light.turn_off
+  mode: restart
+- id: '1763224422830'
+  alias: Szafa rack - LED automatyka z zapamiętywaniem koloru
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.szafa_rack_przednie_drzwi_contact
+    - binary_sensor.szafa_rack_boczne_drzwi_contact
+    to: 'on'
+    trigger: state
+  - entity_id:
+    - binary_sensor.szafa_rack_przednie_drzwi_contact
+    - binary_sensor.szafa_rack_boczne_drzwi_contact
+    to: 'off'
+    trigger: state
+  actions:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.szafa_rack_przednie_drzwi_contact
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.szafa_rack_boczne_drzwi_contact
+          state: 'on'
+      sequence:
+      - data:
+          scene_id: rack_ledy_poprzedni_stan
+          snapshot_entities:
+          - light.szafa_rack_prawy
+          - light.szafa_rack_lewa
+        action: scene.create
+      - target:
+          entity_id:
+          - light.szafa_rack_prawy
+          - light.szafa_rack_lewa
+        data:
+          color_temp: 250
+          brightness: 255
+        action: light.turn_on
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.szafa_rack_przednie_drzwi_contact
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.szafa_rack_boczne_drzwi_contact
+          state: 'off'
+      sequence:
+      - target:
+          entity_id: scene.rack_ledy_poprzedni_stan
+        action: scene.turn_on
+  mode: restart
+- id: '1763225244176'
+  alias: Szafa Rack - sterowanie nowymi warunkami
+  triggers:
+  - entity_id:
+    - switch.garaz_brama_state
+    - binary_sensor.garaz_czujnik_ruchu_occupancy
+    - light.garaz_wlacznik_swiatla_i_brama_right
+    - light.garaz_wlacznik_swiatla_i_brama_left
+    - binary_sensor.szafa_rack_przednie_drzwi_contact
+    - binary_sensor.szafa_rack_boczne_drzwi_contact
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.szafa_rack_przednie_drzwi_contact
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.szafa_rack_boczne_drzwi_contact
+          state: 'on'
+      sequence:
+      - target:
+          entity_id:
+          - light.szafa_rack_prawy
+          - light.szafa_rack_lewa
+        data:
+          brightness: 255
+          color_temp: 250
+        action: light.turn_on
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: switch.garaz_brama_state
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.garaz_czujnik_ruchu_occupancy
+          state: 'on'
+        - condition: state
+          entity_id: light.garaz_wlacznik_swiatla_i_brama_right
+          state: 'on'
+        - condition: state
+          entity_id: light.garaz_wlacznik_swiatla_i_brama_left
+          state: 'on'
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.szafa_rack_przednie_drzwi_contact
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.szafa_rack_boczne_drzwi_contact
+          state: 'off'
+      sequence:
+      - target:
+          entity_id: light.szafa_rack_lewa
+        data:
+          brightness: 255
+          rgb_color:
+          - 255
+          - 0
+          - 0
+        action: light.turn_on
+      - target:
+          entity_id: light.szafa_rack_prawy
+        data:
+          brightness: 255
+          rgb_color:
+          - 0
+          - 0
+          - 255
+        action: light.turn_on
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: switch.garaz_brama_state
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.garaz_czujnik_ruchu_occupancy
+          state: 'off'
+        - condition: state
+          entity_id: light.garaz_wlacznik_swiatla_i_brama_right
+          state: 'off'
+        - condition: state
+          entity_id: light.garaz_wlacznik_swiatla_i_brama_left
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.szafa_rack_przednie_drzwi_contact
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.szafa_rack_boczne_drzwi_contact
+          state: 'off'
+      sequence:
+      - target:
+          entity_id:
+          - light.szafa_rack_prawy
+          - light.szafa_rack_lewa
+        action: light.turn_off
+  mode: restart
+- id: '1763402999928'
+  alias: Light - Ganek przy ruchu (dzien i noc)
+  description: Zapala światło w ganku przy ruchu w określonych warunkach
+  triggers:
+  - id: ruch
+    entity_id: binary_sensor.ganek_czujnik_ruchu_occupancy
+    to: 'on'
+    trigger: state
+  - id: brak_ruchu
+    entity_id: binary_sensor.ganek_czujnik_ruchu_occupancy
+    to: 'off'
+    for:
+      minutes: 1
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: ruch
+      - condition: numeric_state
+        entity_id: sensor.ganek_czujnik_ruchu_illuminance
+        below: 21
+      - condition: or
+        conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          after_offset: 00:30:00
+      sequence:
+      - target:
+          entity_id: light.philips_hue_1055lm_9_5w_ganek
+        action: light.turn_on
+    - conditions:
+      - condition: trigger
+        id: brak_ruchu
+      - condition: numeric_state
+        entity_id: sensor.ganek_czujnik_ruchu_illuminance
+        below: 21
+      - condition: or
+        conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          after_offset: 00:30:00
+      sequence:
+      - target:
+          entity_id: light.philips_hue_1055lm_9_5w_ganek
+        action: light.turn_off
+    - conditions:
+      - condition: trigger
+        id: brak_ruchu
+      - condition: or
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.ganek_czujnik_ruchu_illuminance
+          above: 21
+        - condition: sun
+          after: sunrise
+          before: sunset
+          before_offset: -00:30:00
+      - condition: state
+        entity_id: light.philips_hue_1055lm_9_5w_ganek
+        state: 'on'
+      sequence:
+      - target:
+          entity_id: light.philips_hue_1055lm_9_5w_ganek
+        action: light.turn_off
+  mode: restart
+- id: '1763404077065'
+  alias: Light - Kitchen - blue when time for drugs
+  description: ''
+  triggers:
+  - at: '23:00:00'
+    trigger: time
+  - at: 07:00:00
+    trigger: time
+  actions:
+  - action: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.kitchen_drugs_active
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.kuchnia_blat_lewy
+      - light.kuchnia_blat_prawy
+    data:
+      brightness_pct: 100
+  - action: light.turn_on
+    target:
+      entity_id: light.kuchnia_cokol
+    data:
+      rgb_color:
+      - 0
+      - 0
+      - 255
+      brightness_pct: 100
+  - delay: 00:05:00
+  - action: light.turn_on
+    target:
+      entity_id:
+      - light.kuchnia_blat_lewy
+      - light.kuchnia_blat_prawy
+    data:
+      transition: 10
+      brightness_pct: 75
+  - action: light.turn_on
+    target:
+      entity_id: light.kuchnia_cokol
+    data:
+      transition: 20
+      brightness_pct: 95
+      rgb_color:
+      - 255
+      - 199
+      - 119
+  - action: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.kitchen_drugs_active
+  mode: queued
+- id: '1763486343823'
+  alias: Powiadomienia o kwiatach - Python
+  triggers:
+  - at: 07:00:00
+    trigger: time
+  - at: '19:00:00'
+    trigger: time
+  - trigger: time
+    at: '19:10:00'
+  conditions: []
+  actions:
+  - action: python_script.plants_notify
+  mode: single
+- id: '1763494843748'
+  alias: Codzienna kontrola baterii
+  description: ''
+  triggers:
+  - at: 07:30:00
+    trigger: time
+  actions:
+  - action: python_script.battery_check
+- id: '1763567904288'
+  alias: Włącz światło na 10 min po wejściu do Centrum Dowodzenia (po zmroku)
+  description: 'Jeśli person.michal lub person.gosia wejdą ze strefy Spacer do strefy
+    Centrum Dowodzenia i jest po zachodzie słońca, włącz światło na 10 minut.
+
+    '
+  triggers:
+  - trigger: state
+    entity_id:
+    - person.michal
+    - person.gosia
+    from:
+    - Spacer
+    to:
+    - home
+  conditions:
+  - condition: sun
+    after: sunset
+    after_offset: +00:15:00
+    before: sunrise
+    before_offset: -00:15:00
+  actions:
+  - action: light.turn_on
+    target:
+      entity_id: light.philips_hue_1055lm_9_5w_wejscie_ganek
+  - delay: 00:10:00
+  - action: light.turn_off
+    target:
+      entity_id: light.philips_hue_1055lm_9_5w_wejscie_ganek
+  mode: single

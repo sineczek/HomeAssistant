@@ -61,3 +61,13 @@ devices:
     temperature_precision: ''
     illuminance_raw: false
     no_occupancy_since: []
+  '0x001788010d1236d6':
+    friendly_name: Szafa rack prawy
+  '0x001788010e2c4fdc':
+    friendly_name: Nie wiem co jeszcze
+  '0x001788010e319759':
+    friendly_name: Szafa rack lewa
+  '0xa4c1381b89cb03e2':
+    friendly_name: Szafa rack przednie drzwi
+  '0xa4c1382682125764':
+    friendly_name: Szafa rack boczne drzwi

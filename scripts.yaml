@@ -1,1 +1,26 @@
- 
+otworz_garaz:
+  alias: Otwórz garaż
+  sequence:
+  - target:
+      entity_id: cover.garaz_brama_state
+    action: cover.open_cover
+  mode: single
+  description: ''
+  icon: mdi:garage-open-variant
+zamknij_garaz:
+  alias: Zamknij garaż
+  sequence:
+  - target:
+      entity_id: cover.garaz_brama_state
+    action: cover.close_cover
+  mode: single
+  description: ''
+  icon: mdi:garage-variant
+przelacz_garaz:
+  alias: Przełącz garaż
+  sequence:
+  - target:
+      entity_id: cover.garaz_brama_state
+    action: cover.toggle
+  description: ''
+  icon: mdi:garage-alert-variant
