@@ -175,6 +175,7 @@ devices:
     illuminance_raw: false
   '0x7cb03eaa0a07d4f1':
     friendly_name: Lampki przed domem
+    disabled: true
 groups:
   '1':
     friendly_name: Lampa dzienny

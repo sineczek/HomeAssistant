@@ -1,88 +1,88 @@
-plants:
-  - name: Viola Alpina
-    image: /local/fiolek-alpejski.jpg
-    sensors:
-      moisture: sensor.plant_sensor_no11_wilgoc
-      temp: sensor.plant_sensor_no11_temperatura
-      cond: sensor.plant_sensor_no11_przewodnosc_elektryczna
-    ranges:
-      moisture: {gmin: 30, gmax: 50, ymin: 25, ymax: 55}
-      temp: {gmin: 12, gmax: 16, ymin: 10, ymax: 18}
-      cond: {gmin: 500, gmax: 1500, ymin: 350, ymax: 2000}
+# plants:
+#   - name: Viola Alpina
+#     image: /local/fiolek-alpejski.jpg
+#     sensors:
+#       moisture: sensor.plant_sensor_no11_wilgoc
+#       temp: sensor.plant_sensor_no11_temperatura
+#       cond: sensor.plant_sensor_no11_przewodnosc_elektryczna
+#     ranges:
+#       moisture: {gmin: 30, gmax: 50, ymin: 25, ymax: 55}
+#       temp: {gmin: 12, gmax: 16, ymin: 10, ymax: 18}
+#       cond: {gmin: 500, gmax: 1500, ymin: 350, ymax: 2000}
 
-  - name: Phalaenopsis
-    image: /local/phalaenopsis_fiolet.png
-    sensors:
-      moisture: sensor.plant_sensor_no01_wilgoc
-      temp: sensor.plant_sensor_no01_temperatura
-      cond: sensor.plant_sensor_no01_przewodnosc_elektryczna
-    ranges:
-      moisture: {gmin: 30, gmax: 50, ymin: 25, ymax: 55}
-      temp: {gmin: 20, gmax: 24, ymin: 18, ymax: 25}
-      cond: {gmin: 500, gmax: 1000, ymin: 300, ymax: 1200}
+#   - name: Phalaenopsis
+#     image: /local/phalaenopsis_fiolet.png
+#     sensors:
+#       moisture: sensor.plant_sensor_no01_wilgoc
+#       temp: sensor.plant_sensor_no01_temperatura
+#       cond: sensor.plant_sensor_no01_przewodnosc_elektryczna
+#     ranges:
+#       moisture: {gmin: 30, gmax: 50, ymin: 25, ymax: 55}
+#       temp: {gmin: 20, gmax: 24, ymin: 18, ymax: 25}
+#       cond: {gmin: 500, gmax: 1000, ymin: 300, ymax: 1200}
 
-  - name: Phalaenopsis (bez kwiatka)
-    image: /local/phalaenopsis_fiolet.png
-    sensors:
-      moisture: sensor.plant_sensor_no02_wilgoc
-      temp: sensor.plant_sensor_no02_temperatura
-      cond: sensor.plant_sensor_no02_przewodnosc_elektryczna
-    ranges:
-      moisture: {gmin: 30, gmax: 50, ymin: 25, ymax: 55}
-      temp: {gmin: 20, gmax: 24, ymin: 18, ymax: 25}
-      cond: {gmin: 500, gmax: 1000, ymin: 300, ymax: 1200}
+#   - name: Phalaenopsis (bez kwiatka)
+#     image: /local/phalaenopsis_fiolet.png
+#     sensors:
+#       moisture: sensor.plant_sensor_no02_wilgoc
+#       temp: sensor.plant_sensor_no02_temperatura
+#       cond: sensor.plant_sensor_no02_przewodnosc_elektryczna
+#     ranges:
+#       moisture: {gmin: 30, gmax: 50, ymin: 25, ymax: 55}
+#       temp: {gmin: 20, gmax: 24, ymin: 18, ymax: 25}
+#       cond: {gmin: 500, gmax: 1000, ymin: 300, ymax: 1200}
 
-  - name: Ficus
-    image: /local/ficus.jpg
-    sensors:
-      moisture: sensor.plant_sensor_10_moisture
-      temp: sensor.plant_sensor_10_temperature
-      cond: sensor.plant_sensor_10_conductivity
-    ranges:
-      moisture: {gmin: 25, gmax: 45, ymin: 20, ymax: 50}
-      temp: {gmin: 20, gmax: 23, ymin: 18, ymax: 24}
-      cond: {gmin: 500, gmax: 1500, ymin: 350, ymax: 2000}
+#   - name: Ficus
+#     image: /local/ficus.jpg
+#     sensors:
+#       moisture: sensor.plant_sensor_10_moisture
+#       temp: sensor.plant_sensor_10_temperature
+#       cond: sensor.plant_sensor_10_conductivity
+#     ranges:
+#       moisture: {gmin: 25, gmax: 45, ymin: 20, ymax: 50}
+#       temp: {gmin: 20, gmax: 23, ymin: 18, ymax: 24}
+#       cond: {gmin: 500, gmax: 1500, ymin: 350, ymax: 2000}
 
-  - name: Viola Alpina (2gi od lewej)
-    image: /local/fiolek-alpejski.jpg
-    sensors:
-      moisture: sensor.plant_sensor_no04_wilgoc
-      temp: sensor.plant_sensor_no04_temperatura
-      cond: sensor.plant_sensor_no04_przewodnosc_elektryczna
-    ranges:
-      moisture: {gmin: 30, gmax: 50, ymin: 25, ymax: 55}
-      temp: {gmin: 12, gmax: 16, ymin: 10, ymax: 18}
-      cond: {gmin: 500, gmax: 1500, ymin: 350, ymax: 2000}
+#   - name: Viola Alpina (2gi od lewej)
+#     image: /local/fiolek-alpejski.jpg
+#     sensors:
+#       moisture: sensor.plant_sensor_no04_wilgoc
+#       temp: sensor.plant_sensor_no04_temperatura
+#       cond: sensor.plant_sensor_no04_przewodnosc_elektryczna
+#     ranges:
+#       moisture: {gmin: 30, gmax: 50, ymin: 25, ymax: 55}
+#       temp: {gmin: 12, gmax: 16, ymin: 10, ymax: 18}
+#       cond: {gmin: 500, gmax: 1500, ymin: 350, ymax: 2000}
 
-  - name: Viola Alpina (1szy od lewej)
-    image: /local/fiolek-alpejski.jpg
-    sensors:
-      moisture: sensor.plant_sensor_no05_wilgoc
-      temp: sensor.plant_sensor_no05_temperatura
-      cond: sensor.plant_sensor_no05_przewodnosc_elektryczna
-    ranges:
-      moisture: {gmin: 30, gmax: 50, ymin: 25, ymax: 55}
-      temp: {gmin: 12, gmax: 16, ymin: 10, ymax: 18}
-      cond: {gmin: 500, gmax: 1500, ymin: 350, ymax: 2000}
+#   - name: Viola Alpina (1szy od lewej)
+#     image: /local/fiolek-alpejski.jpg
+#     sensors:
+#       moisture: sensor.plant_sensor_no05_wilgoc
+#       temp: sensor.plant_sensor_no05_temperatura
+#       cond: sensor.plant_sensor_no05_przewodnosc_elektryczna
+#     ranges:
+#       moisture: {gmin: 30, gmax: 50, ymin: 25, ymax: 55}
+#       temp: {gmin: 12, gmax: 16, ymin: 10, ymax: 18}
+#       cond: {gmin: 500, gmax: 1500, ymin: 350, ymax: 2000}
 
-  - name: Yuka
-    image: /local/juka.webp
-    sensors:
-      moisture: sensor.plant_sensor_no08_wilgoc
-      temp: sensor.plant_sensor_no08_temperatura
-      cond: sensor.plant_sensor_no08_przewodnosc_elektryczna
-    ranges:
-      moisture: {gmin: 15, gmax: 30, ymin: 12, ymax: 35}
-      temp: {gmin: 21, gmax: 24, ymin: 20, ymax: 25}
-      cond: {gmin: 500, gmax: 1200, ymin: 300, ymax: 1500}
+#   - name: Yuka
+#     image: /local/juka.webp
+#     sensors:
+#       moisture: sensor.plant_sensor_no08_wilgoc
+#       temp: sensor.plant_sensor_no08_temperatura
+#       cond: sensor.plant_sensor_no08_przewodnosc_elektryczna
+#     ranges:
+#       moisture: {gmin: 15, gmax: 30, ymin: 12, ymax: 35}
+#       temp: {gmin: 21, gmax: 24, ymin: 20, ymax: 25}
+#       cond: {gmin: 500, gmax: 1200, ymin: 300, ymax: 1500}
 
-  - name: Anturium
-    image: /local/anturium.jpg
-    sensors:
-      moisture: sensor.plant_sensor_no12_wilgoc
-      temp: sensor.plant_sensor_no12_temperatura
-      cond: sensor.plant_sensor_no12_przewodnosc_elektryczna
-    ranges:
-      moisture: {gmin: 35, gmax: 55, ymin: 30, ymax: 60}
-      temp: {gmin: 20, gmax: 26, ymin: 18, ymax: 28}
-      cond: {gmin: 800, gmax: 2000, ymin: 400, ymax: 2500}
+#   - name: Anturium
+#     image: /local/anturium.jpg
+#     sensors:
+#       moisture: sensor.plant_sensor_no12_wilgoc
+#       temp: sensor.plant_sensor_no12_temperatura
+#       cond: sensor.plant_sensor_no12_przewodnosc_elektryczna
+#     ranges:
+#       moisture: {gmin: 35, gmax: 55, ymin: 30, ymax: 60}
+#       temp: {gmin: 20, gmax: 26, ymin: 18, ymax: 28}
+#       cond: {gmin: 800, gmax: 2000, ymin: 400, ymax: 2500}

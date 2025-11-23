@@ -1,0 +1,70 @@
+import datetime
+
+day_price = 1.25
+night_price = 0.70
+day_start = 6
+day_end = 22
+
+def calculate_energy():
+    try:
+        hour = datetime.datetime.now().hour
+        price = day_price if day_start <= hour < day_end else night_price
+        tariff = 'day' if day_start <= hour < day_end else 'night'
+        timestamp = datetime.datetime.now().isoformat()
+
+        total_energy = 0.0
+        counted_entities = []
+
+        entity_ids = state.names(domain='sensor')
+
+        for entity_id in entity_ids:
+            if entity_id == 'sensor.total_energy':
+                continue
+
+            value_str = state.get(entity_id)
+            attrs = state.getattr(entity_id)
+            unit = attrs.get("unit_of_measurement", "").lower()
+
+            if value_str is None or unit == "":
+                continue
+
+            if 'kwh' in unit or 'wh' in unit:
+                try:
+                    value = float(value_str)
+                    if unit == 'wh':
+                        value = value / 1000
+                    total_energy += value
+                    counted_entities.append(entity_id)
+                except ValueError:
+                    continue
+
+        state.set(
+            'sensor.total_energy',
+            round(total_energy, 2),
+            {
+                'unit_of_measurement': 'kWh',
+                'device_class': 'energy',
+                'state_class': 'total_increasing',
+                'friendly_name': 'Total Energy',
+                'entities_counted': ', '.join(counted_entities),
+                'cost_estimate': round(total_energy * price, 2),
+                'price_used': price,
+                'tariff': tariff,
+                'last_update': timestamp
+            }
+        )
+
+        log.info(f"Total energy updated: {total_energy} kWh, cost: {round(total_energy * price, 2)} PLN")
+
+    except Exception as e:
+        log.error(f"Error in calculate_energy: {e}")
+
+
+@time_trigger("period(1 min)")
+def total_energy_full():
+    calculate_energy()
+
+
+@service
+def total_energy_full_service():
+    calculate_energy()

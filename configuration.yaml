@@ -79,7 +79,6 @@ recorder:
       - sensor.*signal
       - sensor.*bssid
     entities:
-      - sensor.hacs
       - sensor.last_boot
       - sun.sun
 
@@ -88,6 +87,11 @@ logger:
 
 default_config:
 python_script:
+pyscript:
+  allow_all_imports: true
+  allow_state_changes: true
+  debug: true
+
 input_boolean:
 input_select:
 

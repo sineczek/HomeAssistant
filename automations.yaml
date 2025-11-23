@@ -3451,48 +3451,6 @@
           entity_id: fan.wiatrak_w_lazience
         action: fan.turn_off
   mode: restart
-- id: '1763223974248'
-  alias: Light - Ganek przy ruchu
-  description: Zapala światło w ganku przy ruchu w określonych warunkach
-  triggers:
-  - entity_id: binary_sensor.ganek_czujnik_ruchu_occupancy
-    to: 'on'
-    id: ruch
-    trigger: state
-  - entity_id: binary_sensor.ganek_czujnik_ruchu_occupancy
-    to: 'off'
-    for:
-      minutes: 1
-    id: brak_ruchu
-    trigger: state
-  conditions:
-  - condition: numeric_state
-    entity_id: sensor.ganek_czujnik_ruchu_illuminance
-    below: 21
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      after_offset: 00:30:00
-  actions:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: ruch
-      sequence:
-      - target:
-          entity_id: light.philips_hue_1055lm_9_5w_ganek
-        action: light.turn_on
-    - conditions:
-      - condition: trigger
-        id: brak_ruchu
-      sequence:
-      - target:
-          entity_id: light.philips_hue_1055lm_9_5w_ganek
-        action: light.turn_off
-  mode: restart
 - id: '1763224422830'
   alias: Szafa rack - LED automatyka z zapamiętywaniem koloru
   description: ''
@@ -3793,7 +3751,8 @@
   actions:
   - action: python_script.battery_check
 - id: '1763567904288'
-  alias: Włącz światło na 10 min po wejściu do Centrum Dowodzenia (po zmroku)
+  alias: Light - Ganek - Włącz światło na 10 min po wejściu do strefy domowej (po
+    zmroku)
   description: 'Jeśli person.michal lub person.gosia wejdą ze strefy Spacer do strefy
     Centrum Dowodzenia i jest po zachodzie słońca, włącz światło na 10 minut.
 
@@ -3822,3 +3781,382 @@
     target:
       entity_id: light.philips_hue_1055lm_9_5w_wejscie_ganek
   mode: single
+- id: '1763672953218'
+  alias: System - Update Total Energy
+  description: Uruchamia skrypt python_script.total_energy co 5 minut
+  triggers:
+  - minutes: /5
+    trigger: time_pattern
+  conditions: []
+  actions:
+  - action: python_script.total_energy
+  mode: single
+- id: '1763744056982'
+  alias: Light - Kitchen - Dim when no motion (05:55-23:15)
+  description: Przyciemnianie świateł w kuchni po 1 min bez ruchu; powrót do pełnej
+    jasności po ruchu.
+  triggers:
+  - id: Kitchen - no motion
+    trigger: state
+    entity_id: binary_sensor.philips_motion_sensor_zigbee_kuchnia_occupancy
+    to: 'off'
+    for:
+      minutes: 1
+  - id: Kitchen - motion detected
+    trigger: state
+    entity_id: binary_sensor.philips_motion_sensor_zigbee_kuchnia_occupancy
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: input_boolean.kitchen_drugs_active
+    state: 'off'
+  - condition: time
+    after: 05:55:00
+    before: '23:15:00'
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: Kitchen - no motion
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id:
+          - light.kuchnia_blat_lewy
+          - light.kuchnia_blat_prawy
+          - light.kuchnia_cokol
+        data:
+          brightness_pct: 3
+          transition: 10
+    - conditions:
+      - condition: trigger
+        id: Kitchen - motion detected
+      sequence:
+      - action: light.turn_on
+        target:
+          entity_id:
+          - light.kuchnia_blat_lewy
+          - light.kuchnia_blat_prawy
+        data:
+          brightness_pct: 95
+          transition: 2
+      - action: light.turn_on
+        target:
+          entity_id: light.kuchnia_cokol
+        data:
+          brightness_pct: 75
+          transition: 2
+  mode: queued
+  max: 10
+- id: '1763912422536'
+  alias: Light - Ganek przy ruchu (dzien i noc) + iluminacja ponizej 10lx
+  description: Zapala światło w ganku przy ruchu w określonych warunkach
+  triggers:
+  - id: ruch
+    entity_id: binary_sensor.ganek_czujnik_ruchu_occupancy
+    to: 'on'
+    trigger: state
+  - id: brak_ruchu
+    entity_id: binary_sensor.ganek_czujnik_ruchu_occupancy
+    to: 'off'
+    for:
+      minutes: 1
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: ruch
+      - condition: or
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.ganek_czujnik_ruchu_illuminance
+          below: 21
+        - condition: and
+          conditions:
+          - condition: numeric_state
+            entity_id: sensor.srednie_oswietlenie_w_ganku_15min
+            below: 10
+          - condition: sun
+            after: sunrise
+            before: sunset
+      sequence:
+      - target:
+          entity_id: light.philips_hue_1055lm_9_5w_ganek
+        action: light.turn_on
+    - conditions:
+      - condition: trigger
+        id: brak_ruchu
+      - condition: numeric_state
+        entity_id: sensor.ganek_czujnik_ruchu_illuminance
+        below: 21
+      - condition: or
+        conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          after_offset: 00:30:00
+      sequence:
+      - target:
+          entity_id: light.philips_hue_1055lm_9_5w_ganek
+        action: light.turn_off
+    - conditions:
+      - condition: trigger
+        id: brak_ruchu
+      - condition: or
+        conditions:
+        - condition: numeric_state
+          entity_id: sensor.ganek_czujnik_ruchu_illuminance
+          above: 21
+        - condition: sun
+          after: sunrise
+          before: sunset
+          before_offset: -00:30:00
+      - condition: state
+        entity_id: light.philips_hue_1055lm_9_5w_ganek
+        state: 'on'
+      sequence:
+      - target:
+          entity_id: light.philips_hue_1055lm_9_5w_ganek
+        action: light.turn_off
+  mode: restart
+- id: '1763913443652'
+  alias: Lights - schody na ganek - ruch w weekend + rano
+  description: 'Włącza światło na ganku po zachodzie słońca lub rano w weekendy, jeśli
+    wykryto ruch. Gasi po 5 minutach braku ruchu.
+
+    '
+  triggers:
+  - type: occupied
+    device_id: a2592b402fb7ae88d40737757c624fa8
+    entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+    domain: binary_sensor
+    id: ruch przy schodach
+    trigger: device
+  - type: not_occupied
+    device_id: a2592b402fb7ae88d40737757c624fa8
+    entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+    domain: binary_sensor
+    id: brak ruchu przy schodach
+    for:
+      minutes: 5
+    trigger: device
+  - event: sunset
+    offset: +00:30:00
+    id: po zachodzie słońca
+    trigger: sun
+  - event: sunset
+    offset: -01:00:00
+    id: 60_minut_przed_zachodem
+    trigger: sun
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: ruch przy schodach
+      - condition: time
+        after: 05:00:00
+        before: 08:00:00
+      - condition: numeric_state
+        entity_id: sensor.srednie_oswietlenie_na_ganku_15_min
+        below: 10
+      sequence:
+      - target:
+          entity_id: light.schody_na_ganek_2
+        action: light.turn_on
+      - data:
+          name: Schody na ganek
+          message: Włączono światło – rano, wykryto ruch.
+        action: logbook.log
+    - conditions:
+      - condition: trigger
+        id: brak ruchu przy schodach
+      sequence:
+      - target:
+          entity_id: light.schody_na_ganek_2
+        action: light.turn_off
+      - data:
+          name: Schody na ganek
+          message: Zgaszono światło – brak ruchu przez 5 minut.
+        action: logbook.log
+    - conditions:
+      - condition: trigger
+        id: po zachodzie słońca
+      - condition: numeric_state
+        entity_id: sensor.srednie_oswietlenie_na_ganku_15_min
+        below: 10
+      sequence:
+      - target:
+          entity_id: light.schody_na_ganek_2
+        action: light.turn_on
+      - data:
+          name: Schody na ganek
+          message: Włączono światło – po zachodzie, ruch trwa.
+        action: logbook.log
+    - conditions:
+      - condition: trigger
+        id: 60_minut_przed_zachodem
+      - condition: numeric_state
+        entity_id: sensor.srednie_oswietlenie_na_ganku_15_min
+        below: 5
+      sequence:
+      - target:
+          entity_id: light.schody_na_ganek_2
+        action: light.turn_on
+      - data:
+          name: Schody na ganek
+          message: Włączono światło – 60 minut przed zachodem przy niskim oświetleniu.
+        action: logbook.log
+  mode: restart
+- id: '1763913538285'
+  alias: Lights - schody na ganek w tygodniu + rano
+  description: 'Włącza światło na ganku po zachodzie słońca lub rano w dni robocze,
+    jeśli wykryto ruch. Gasi po 5 minutach braku ruchu.
+
+    '
+  triggers:
+  - type: occupied
+    device_id: a2592b402fb7ae88d40737757c624fa8
+    entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+    domain: binary_sensor
+    id: ruch przy schodach
+    trigger: device
+  - type: not_occupied
+    device_id: a2592b402fb7ae88d40737757c624fa8
+    entity_id: binary_sensor.ganek_czujnik_ruchu_na_schodach_occupancy
+    domain: binary_sensor
+    id: brak ruchu przy schodach
+    for:
+      minutes: 5
+    trigger: device
+  - event: sunset
+    offset: +00:30:00
+    id: po zachodzie słońca
+    trigger: sun
+  - event: sunset
+    offset: -01:00:00
+    id: 60_minut_przed_zachodem
+    trigger: sun
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: ruch przy schodach
+      - condition: time
+        after: 05:00:00
+        before: 08:00:00
+      - condition: numeric_state
+        entity_id: sensor.srednie_oswietlenie_na_ganku_15_min
+        below: 10
+      sequence:
+      - target:
+          entity_id: light.schody_na_ganek_2
+        action: light.turn_on
+      - data:
+          name: Schody na ganek
+          message: Włączono światło – rano, wykryto ruch (dni robocze).
+        action: logbook.log
+    - conditions:
+      - condition: trigger
+        id: brak ruchu przy schodach
+      sequence:
+      - target:
+          entity_id: light.schody_na_ganek_2
+        action: light.turn_off
+      - data:
+          name: Schody na ganek
+          message: Zgaszono światło – brak ruchu przez 5 minut.
+        action: logbook.log
+    - conditions:
+      - condition: trigger
+        id: po zachodzie słońca
+      - condition: numeric_state
+        entity_id: sensor.srednie_oswietlenie_na_ganku_15_min
+        below: 10
+      - condition: time
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        before: '23:00:00'
+      sequence:
+      - target:
+          entity_id: light.schody_na_ganek_2
+        action: light.turn_on
+      - data:
+          name: Schody na ganek
+          message: Włączono światło – po zachodzie, ruch trwa (dni robocze).
+        action: logbook.log
+    - conditions:
+      - condition: trigger
+        id: 60_minut_przed_zachodem
+      - condition: numeric_state
+        entity_id: sensor.srednie_oswietlenie_na_ganku_15_min
+        below: 5
+      - condition: time
+        weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+      sequence:
+      - target:
+          entity_id: light.schody_na_ganek_2
+        action: light.turn_on
+      - data:
+          name: Schody na ganek
+          message: Włączono światło – 60 minut przed zachodem przy niskim oświetleniu
+            (dni robocze).
+        action: logbook.log
+  mode: restart
+- id: '1763916147217'
+  alias: Light - Kitchen - Turn on when dark after 15:00 with motion and someone home
+  description: Po 15:00, jeśli jest ciemno wg średnich sensorów i wykryto ruch w kuchni,
+    włącz światła.
+  triggers:
+  - id: Kitchen - motion detected
+    trigger: state
+    entity_id: binary_sensor.philips_motion_sensor_zigbee_kuchnia_occupancy
+    to: 'on'
+  conditions:
+  - condition: time
+    after: '14:30:00'
+    before: '23:15:00'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: person.gosia
+      state: home
+    - condition: state
+      entity_id: person.michal
+      state: home
+  - condition: numeric_state
+    entity_id: sensor.srednie_oswietlenie_na_ganku_15_min
+    below: 10
+  - condition: numeric_state
+    entity_id: sensor.srednie_oswietlenie_w_ganku_15min
+    below: 10
+  - condition: numeric_state
+    entity_id: sensor.philips_motion_sensor_zigbee_kuchnia_illuminance
+    below: 15
+  actions:
+  - sequence:
+    - action: light.turn_on
+      target:
+        entity_id:
+        - light.kuchnia_blat_lewy
+        - light.kuchnia_blat_prawy
+      data:
+        brightness_pct: 95
+        transition: 2
+    - action: light.turn_on
+      target:
+        entity_id: light.kuchnia_cokol
+      data:
+        brightness_pct: 75
+        transition: 2
+  mode: queued
+  max: 10
